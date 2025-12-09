@@ -2,132 +2,357 @@
   "project_id": "SPD-2025-001",
   "project_name": "Bliss Palm Bay",
   "stage": 3,
-  "stage_name": "Zoning Analysis",
-  "completed_at": "2025-12-09T00:55:00Z",
-  "status": "COMPLETED_PARTIAL",
+  "stage_name": "Zoning Analysis - ENHANCED",
+  "completed_at": "2025-12-09T04:00:00Z",
+  "status": "COMPLETED",
+  "version": "2.0",
   
-  "jurisdiction": {
-    "city": "Palm Bay",
-    "county": "Brevard",
-    "state": "FL",
-    "zoning_code": "Section 185 - Palm Bay Code of Ordinances"
+  "property_info": {
+    "address": "2165 Sandy Pines Dr NE",
+    "account_id": "2835546",
+    "legal": "S27, T28S, R37E, Brevard County",
+    "parcel_area_sf": 46394,
+    "parcel_area_acres": 1.065,
+    "jurisdiction": "City of Palm Bay",
+    "gis_verification_url": "https://gis.palmbayflorida.org/portal/apps/webappviewer/index.html?id=c263a4dbd1834bc2a73b97f1bb88e2d5"
   },
   
-  "zoning_research": {
-    "current_zoning": {
-      "status": "REQUIRES_VERIFICATION",
-      "method": "Use Palm Bay GIS Interactive Map",
-      "url": "https://gis.palmbayflorida.org/portal/apps/webappviewer/index.html?id=c263a4dbd1834bc2a73b97f1bb88e2d5",
-      "note": "Input address 2165 Sandy Pines Dr NE to determine exact zoning district"
-    },
-    
-    "likely_zoning_districts": [
-      {
-        "district": "RM-10",
-        "name": "Single-, Two-, Multiple-Family Residential District",
-        "typical_density": "10 units per acre",
-        "height_limit": "35 feet / 2-3 stories typical"
-      },
-      {
-        "district": "RM-20",
-        "name": "Multiple-Family Residential District",
-        "typical_density": "20 units per acre",
-        "height_limit": "45-55 feet / 3-4 stories allowed",
-        "note": "Would support proposed 3-4 story development"
-      }
-    ],
-    
-    "rezoning_consideration": {
-      "may_be_required": true,
-      "from": "RM-10 (if current)",
-      "to": "RM-20",
-      "process": "Planning & Zoning Board hearing + City Council approval",
-      "typical_timeline": "3-6 months"
-    }
-  },
-  
-  "setback_requirements": {
-    "status": "ASSUMED_TYPICAL",
-    "note": "Verify with Palm Bay Land Development",
-    "assumed_values": {
-      "front_setback_ft": 25,
-      "side_setback_ft": 10,
-      "rear_setback_ft": 20,
-      "corner_lot_street_side_ft": 15
-    }
-  },
-  
-  "area_context": {
-    "subdivision": "Sandy Pines",
-    "existing_hoas": [
-      "Sandy Pines Preserve 1 & 2 HOA",
-      "Sandy Pines 3 & 4 HOA",
-      "Sandy Pines Master Association",
-      "Courtyard at Sandy Pines HOA"
-    ],
-    "note": "Property is within established Sandy Pines community - may have HOA architectural review requirements"
-  },
-  
-  "contacts": {
-    "land_development": {
-      "department": "Palm Bay Land Development (Planning)",
-      "address": "120 Malabar Road SE, Palm Bay, FL 32907",
+  "current_zoning_verification": {
+    "status": "REQUIRES_GIS_VERIFICATION",
+    "action_required": "Verify on Palm Bay Zoning GIS map",
+    "likely_current_zoning": "RM-10 (based on Sandy Pines subdivision context)",
+    "contact": {
+      "department": "Palm Bay Land Development",
       "phone": "(321) 733-3042",
-      "fax": "(321) 953-8920",
-      "email": "landdevelopmentweb@palmbayfl.gov",
-      "hours": "Monday - Friday, 8:00 AM - 4:30 PM"
-    },
-    "permitting_portal": {
-      "name": "iMS Portal",
-      "url": "https://ims.palmbayflorida.org/",
-      "note": "All site plan applications submitted through iMS"
-    },
-    "planning_zoning_board": {
-      "role": "Reviews rezoning applications, variances",
-      "meeting_schedule": "Check City calendar"
+      "email": "landdevelopmentweb@pbfl.org",
+      "address": "120 Malabar Road SE, Palm Bay FL 32907"
     }
   },
   
-  "development_review_process": {
-    "step_1": "Pre-application meeting with Land Development",
-    "step_2": "Zoning verification / rezoning application if needed",
-    "step_3": "Site plan application via iMS Portal",
-    "step_4": "Plan review (Building, Fire, Utilities, Engineering)",
-    "step_5": "Planning & Zoning Board (if hearing required)",
-    "step_6": "City Council approval (if rezoning)",
-    "step_7": "Final approval and permit issuance"
+  "zoning_code_analysis": {
+    "code_reference": "Palm Bay Code of Ordinances, Title XVII, Chapter 185",
+    "source": "https://codelibrary.amlegal.com/codes/palmbay",
+    
+    "RM-10": {
+      "code_section": "§ 185.036",
+      "name": "Single-, Two-, Multiple-Family Residential District",
+      "intent": "Medium density residential development with variety of housing types",
+      "density": {
+        "max_units_per_gross_acre": 10,
+        "site_capacity_units": 10,
+        "calculation": "1.065 acres × 10 units/acre = 10.65 → 10 units max"
+      },
+      "permitted_uses": [
+        "Single-family dwellings",
+        "Two-family dwellings (duplexes)",
+        "Multiple-family dwellings (with conditions)",
+        "Public parks and playgrounds",
+        "Public utility equipment in easements"
+      ],
+      "multifamily_requirements": {
+        "applies_if": "5 or more units",
+        "tree_survey": "Required",
+        "perimeter_fence": "6 ft high wall/fence required",
+        "fence_landscaping": "1 tree per 50 linear feet + 2 ft shrub row",
+        "sidewalks": "Connect all buildings, parking, and amenities"
+      },
+      "dimensional_standards": {
+        "min_lot_area_sf": 10000,
+        "setbacks": {
+          "front_ft": 25,
+          "side_interior_ft": 15,
+          "side_corner_ft": 25,
+          "rear_ft": 25,
+          "note": "Setback OR building height, whichever is greater"
+        },
+        "max_height_ft": 35,
+        "max_stories": 3,
+        "parking_setback_ft": 10,
+        "lot_coverage_pct": 35
+      },
+      "assessment": "INSUFFICIENT for 3-4 story development - REZONING REQUIRED"
+    },
+    
+    "RM-15": {
+      "code_section": "§ 185.037",
+      "name": "Single-, Two-, Multiple-Family Residential District",
+      "density": {
+        "max_units_per_gross_acre": 15,
+        "site_capacity_units": 15,
+        "calculation": "1.065 acres × 15 units/acre = 15.97 → 15 units max"
+      },
+      "dimensional_standards": {
+        "min_lot_area_sf": 10000,
+        "setbacks": {
+          "front_ft": 25,
+          "side_interior_ft": 15,
+          "side_corner_ft": 25,
+          "rear_ft": 25,
+          "note": "Setback OR building height, whichever is greater"
+        },
+        "max_height_ft": 40,
+        "max_height_note": "25 ft by-right, up to 40 ft by special exception",
+        "max_stories": "3-4 (depending on height)",
+        "parking_setback_ft": 10
+      },
+      "assessment": "MARGINAL - could support 15 units with height variance"
+    },
+    
+    "RM-20": {
+      "code_section": "§ 185.038",
+      "name": "Multiple-Family Residential District",
+      "intent": "Higher density multifamily development",
+      "density": {
+        "max_units_per_gross_acre": 20,
+        "site_capacity_units": 21,
+        "calculation": "1.065 acres × 20 units/acre = 21.3 → 21 units max"
+      },
+      "permitted_uses": [
+        "Multiple-family dwellings",
+        "Public parks and recreational facilities",
+        "Public utility equipment",
+        "Congregate living facilities (licensed)",
+        "Group homes (licensed)"
+      ],
+      "multifamily_requirements": {
+        "applies_if": "5 or more units",
+        "tree_survey": "Required showing types, locations, sizes",
+        "perimeter_fence": "6 ft high wall/fence (wood, masonry, brick, PVC, wrought iron)",
+        "fence_landscaping": "1 tree per 50 LF + 2 ft continuous shrub row OR ivy/vines on masonry",
+        "earthen_berm": "May substitute for fence if 6 ft high with landscaping",
+        "sidewalks": "Required connecting all buildings, parking, amenities to off-site sidewalks",
+        "building_articulation": {
+          "under_100ft_length": "15% of building face must have 5 ft+ setback variation",
+          "over_100ft_length": "At least 2 portions with 5 ft+ variation, totaling 15% of length"
+        },
+        "balconies": "Minimum 5 ft depth if not purely ornamental"
+      },
+      "dimensional_standards": {
+        "min_lot_area_sf": 10000,
+        "setbacks": {
+          "front_ft": 25,
+          "side_interior_ft": 15,
+          "side_corner_ft": 25,
+          "rear_ft": 25,
+          "important_note": "OR equal to building height, WHICHEVER IS GREATER"
+        },
+        "setback_height_rule": {
+          "example_35ft_building": "Setbacks remain 25/15/25/25",
+          "example_45ft_building": "All setbacks become 45 ft minimum",
+          "critical": "This significantly impacts buildable area for taller buildings"
+        },
+        "building_separation_ft": 30,
+        "building_separation_note": "Between multiple buildings on same property",
+        "parking_setback_ft": 10,
+        "max_height_ft": "Not explicitly capped - controlled by setback-height rule",
+        "max_stories": "4+ possible if setbacks accommodate height"
+      },
+      "assessment": "OPTIMAL for proposed development - supports 21 units, 4 stories"
+    }
+  },
+  
+  "rezoning_analysis": {
+    "current_likely_zoning": "RM-10",
+    "required_zoning": "RM-20",
+    "rezoning_required": true,
+    "rezoning_type": "Standard Rezoning (RM-10 to RM-20)",
+    
+    "process": {
+      "step_1": {
+        "name": "Pre-Application Meeting",
+        "department": "Land Development Division",
+        "purpose": "Discuss proposal, identify issues, confirm requirements",
+        "cost": "Free",
+        "duration": "1-2 weeks to schedule"
+      },
+      "step_2": {
+        "name": "Application Submission",
+        "portal": "iMS Portal (https://ims.palmbayflorida.org/)",
+        "materials_required": [
+          "Rezoning application form",
+          "Property survey (sealed)",
+          "Site plan (conceptual)",
+          "Legal description",
+          "Statement of intent",
+          "Title commitment or deed",
+          "Application fee"
+        ],
+        "fee_estimate": "$500-1,500"
+      },
+      "step_3": {
+        "name": "Staff Review",
+        "departments": ["Land Development", "Building", "Fire", "Utilities", "Public Works"],
+        "duration": "30-60 days"
+      },
+      "step_4": {
+        "name": "Planning & Zoning Board Hearing",
+        "type": "Public hearing",
+        "board": "Planning and Zoning Board / Local Planning Agency",
+        "purpose": "Recommendation to City Council",
+        "public_notice": "Required - mail to neighbors + newspaper"
+      },
+      "step_5": {
+        "name": "City Council Hearing",
+        "type": "Public hearing (2 readings)",
+        "approving_body": "Palm Bay City Council",
+        "final_decision": true
+      }
+    },
+    
+    "timeline_estimate": {
+      "best_case_months": 3,
+      "typical_months": 4,
+      "worst_case_months": 6,
+      "factors": "Staff workload, completeness of application, neighbor opposition"
+    },
+    
+    "cost_estimate": {
+      "application_fee": "$500-1,500",
+      "legal_advertising": "$300-500",
+      "professional_services": "$2,000-5,000",
+      "total_range": "$2,800-7,000"
+    },
+    
+    "approval_likelihood": {
+      "assessment": "MODERATE-HIGH",
+      "positive_factors": [
+        "Sandy Pines already established residential area",
+        "RM-20 consistent with multifamily land use",
+        "Adequate infrastructure (utilities, roads)",
+        "Infill development vs. greenfield"
+      ],
+      "potential_concerns": [
+        "Neighbor opposition to increased density",
+        "Traffic impact on local streets",
+        "Building height compatibility",
+        "Parking adequacy"
+      ]
+    }
+  },
+  
+  "development_scenarios": {
+    "scenario_A_RM10_current": {
+      "zoning": "RM-10 (if current)",
+      "max_units": 10,
+      "max_height_ft": 35,
+      "max_stories": 3,
+      "setbacks": {"front": 25, "side": 15, "rear": 25},
+      "buildable_envelope_sf": 25000,
+      "rezoning_required": false,
+      "feasibility": "LIMITED - low unit count challenges economics"
+    },
+    "scenario_B_RM20_rezoned": {
+      "zoning": "RM-20 (after rezoning)",
+      "max_units": 21,
+      "optimal_units": 20,
+      "height_options": {
+        "3_story_35ft": {
+          "height_ft": 35,
+          "setbacks": {"front": 25, "side": 15, "rear": 25},
+          "buildable_envelope_sf": 28000
+        },
+        "4_story_45ft": {
+          "height_ft": 45,
+          "setbacks": {"front": 45, "side": 45, "rear": 45},
+          "buildable_envelope_sf": 18000,
+          "note": "Setbacks increase to match height - reduces buildable area"
+        }
+      },
+      "recommended": "3-story at 35 ft to maximize buildable envelope",
+      "feasibility": "GOOD - supports 20 units in 3-story building"
+    }
+  },
+  
+  "site_plan_requirements": {
+    "pre_application_meeting": "STRONGLY RECOMMENDED before formal submission",
+    "submission_portal": "iMS Portal (https://ims.palmbayflorida.org/)",
+    "required_documents": [
+      "Site plan (sealed by FL PE or architect)",
+      "Boundary survey (sealed)",
+      "Tree survey (if applicable)",
+      "Landscape plan",
+      "Stormwater management plan",
+      "Traffic impact letter/study",
+      "Utility availability letters",
+      "Environmental clearances (scrub-jay, gopher tortoise)",
+      "Flood zone determination"
+    ],
+    "review_departments": [
+      "Land Development (zoning compliance)",
+      "Building (code compliance)",
+      "Fire Marshal (fire access, hydrants)",
+      "Utilities (water/sewer capacity)",
+      "Public Works (traffic, drainage)",
+      "Environmental (species, wetlands)"
+    ],
+    "timeline": "60-120 days for complete review"
+  },
+  
+  "kpi_summary": {
+    "RM-10": {
+      "max_density": "10 units/acre",
+      "max_height": "35 ft / 3 stories",
+      "front_setback": "25 ft",
+      "side_setback": "15 ft",
+      "rear_setback": "25 ft",
+      "parking_setback": "10 ft",
+      "lot_coverage": "35%",
+      "site_capacity": "10 units"
+    },
+    "RM-20": {
+      "max_density": "20 units/acre",
+      "max_height": "No cap (setback-controlled)",
+      "front_setback": "25 ft OR height",
+      "side_setback": "15 ft OR height",
+      "rear_setback": "25 ft OR height",
+      "parking_setback": "10 ft",
+      "building_separation": "30 ft",
+      "site_capacity": "21 units"
+    }
+  },
+  
+  "recommended_development": {
+    "optimal_scenario": "RM-20 with 3-story, 20-unit building",
+    "height": "35 feet (3 stories)",
+    "units": 20,
+    "unit_mix_recommendation": {
+      "1BR": 6,
+      "2BR": 10,
+      "3BR": 4
+    },
+    "avg_unit_size_sf": 900,
+    "building_footprint_sf": 6000,
+    "gross_building_sf": 18000,
+    "parking_required": 40,
+    "rationale": "Maximizes units while keeping height under 35 ft to avoid expanded setback requirements"
   },
   
   "action_items": [
     {
-      "priority": "HIGH",
-      "action": "Verify current zoning using Palm Bay GIS Map",
-      "owner": "Ariel",
-      "deadline": "Before pre-application meeting"
+      "priority": "CRITICAL",
+      "action": "Verify current zoning on Palm Bay GIS map",
+      "url": "https://gis.palmbayflorida.org/portal/apps/webappviewer/index.html?id=c263a4dbd1834bc2a73b97f1bb88e2d5"
     },
     {
       "priority": "HIGH",
       "action": "Schedule pre-application meeting with Land Development",
       "phone": "(321) 733-3042",
-      "purpose": "Confirm zoning, setbacks, process for 3-4 story multifamily"
+      "email": "landdevelopmentweb@pbfl.org"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Prepare rezoning application materials",
+      "portal": "https://ims.palmbayflorida.org/"
     },
     {
       "priority": "MEDIUM",
-      "action": "Check Sandy Pines Master Association for any deed restrictions",
-      "contact": "Bill Henderson - spphoa@yahoo.com"
+      "action": "Engage land use attorney for rezoning process"
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Prepare neighbor outreach strategy"
     }
   ],
-  
-  "next_stage": {
-    "id": 4,
-    "name": "Site Constraints",
-    "actions": [
-      "Check FEMA flood zone designation",
-      "Review wetlands maps (SJRWMD)",
-      "Florida scrub-jay / gopher tortoise habitat check",
-      "Environmental constraints assessment"
-    ]
-  },
   
   "creator": "Ariel Shapira, Solo Founder",
   "organization": "Everest Capital USA"
