@@ -1,0 +1,134 @@
+{
+  "project_id": "SPD-2025-001",
+  "project_name": "Bliss Palm Bay",
+  "stage": 3,
+  "stage_name": "Zoning Analysis",
+  "completed_at": "2025-12-09T00:55:00Z",
+  "status": "COMPLETED_PARTIAL",
+  
+  "jurisdiction": {
+    "city": "Palm Bay",
+    "county": "Brevard",
+    "state": "FL",
+    "zoning_code": "Section 185 - Palm Bay Code of Ordinances"
+  },
+  
+  "zoning_research": {
+    "current_zoning": {
+      "status": "REQUIRES_VERIFICATION",
+      "method": "Use Palm Bay GIS Interactive Map",
+      "url": "https://gis.palmbayflorida.org/portal/apps/webappviewer/index.html?id=c263a4dbd1834bc2a73b97f1bb88e2d5",
+      "note": "Input address 2165 Sandy Pines Dr NE to determine exact zoning district"
+    },
+    
+    "likely_zoning_districts": [
+      {
+        "district": "RM-10",
+        "name": "Single-, Two-, Multiple-Family Residential District",
+        "typical_density": "10 units per acre",
+        "height_limit": "35 feet / 2-3 stories typical"
+      },
+      {
+        "district": "RM-20",
+        "name": "Multiple-Family Residential District",
+        "typical_density": "20 units per acre",
+        "height_limit": "45-55 feet / 3-4 stories allowed",
+        "note": "Would support proposed 3-4 story development"
+      }
+    ],
+    
+    "rezoning_consideration": {
+      "may_be_required": true,
+      "from": "RM-10 (if current)",
+      "to": "RM-20",
+      "process": "Planning & Zoning Board hearing + City Council approval",
+      "typical_timeline": "3-6 months"
+    }
+  },
+  
+  "setback_requirements": {
+    "status": "ASSUMED_TYPICAL",
+    "note": "Verify with Palm Bay Land Development",
+    "assumed_values": {
+      "front_setback_ft": 25,
+      "side_setback_ft": 10,
+      "rear_setback_ft": 20,
+      "corner_lot_street_side_ft": 15
+    }
+  },
+  
+  "area_context": {
+    "subdivision": "Sandy Pines",
+    "existing_hoas": [
+      "Sandy Pines Preserve 1 & 2 HOA",
+      "Sandy Pines 3 & 4 HOA",
+      "Sandy Pines Master Association",
+      "Courtyard at Sandy Pines HOA"
+    ],
+    "note": "Property is within established Sandy Pines community - may have HOA architectural review requirements"
+  },
+  
+  "contacts": {
+    "land_development": {
+      "department": "Palm Bay Land Development (Planning)",
+      "address": "120 Malabar Road SE, Palm Bay, FL 32907",
+      "phone": "(321) 733-3042",
+      "fax": "(321) 953-8920",
+      "email": "landdevelopmentweb@palmbayfl.gov",
+      "hours": "Monday - Friday, 8:00 AM - 4:30 PM"
+    },
+    "permitting_portal": {
+      "name": "iMS Portal",
+      "url": "https://ims.palmbayflorida.org/",
+      "note": "All site plan applications submitted through iMS"
+    },
+    "planning_zoning_board": {
+      "role": "Reviews rezoning applications, variances",
+      "meeting_schedule": "Check City calendar"
+    }
+  },
+  
+  "development_review_process": {
+    "step_1": "Pre-application meeting with Land Development",
+    "step_2": "Zoning verification / rezoning application if needed",
+    "step_3": "Site plan application via iMS Portal",
+    "step_4": "Plan review (Building, Fire, Utilities, Engineering)",
+    "step_5": "Planning & Zoning Board (if hearing required)",
+    "step_6": "City Council approval (if rezoning)",
+    "step_7": "Final approval and permit issuance"
+  },
+  
+  "action_items": [
+    {
+      "priority": "HIGH",
+      "action": "Verify current zoning using Palm Bay GIS Map",
+      "owner": "Ariel",
+      "deadline": "Before pre-application meeting"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Schedule pre-application meeting with Land Development",
+      "phone": "(321) 733-3042",
+      "purpose": "Confirm zoning, setbacks, process for 3-4 story multifamily"
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Check Sandy Pines Master Association for any deed restrictions",
+      "contact": "Bill Henderson - spphoa@yahoo.com"
+    }
+  ],
+  
+  "next_stage": {
+    "id": 4,
+    "name": "Site Constraints",
+    "actions": [
+      "Check FEMA flood zone designation",
+      "Review wetlands maps (SJRWMD)",
+      "Florida scrub-jay / gopher tortoise habitat check",
+      "Environmental constraints assessment"
+    ]
+  },
+  
+  "creator": "Ariel Shapira, Solo Founder",
+  "organization": "Everest Capital USA"
+}
