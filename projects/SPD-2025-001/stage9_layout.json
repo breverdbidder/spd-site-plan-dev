@@ -1,0 +1,121 @@
+{
+  "project_id": "SPD-2025-001",
+  "project_name": "Bliss Palm Bay",
+  "stage": 9,
+  "stage_name": "Site Layout",
+  "completed_at": "2025-12-09T02:30:00Z",
+  "status": "COMPLETED",
+  
+  "conceptual_layout": {
+    "based_on_survey": true,
+    "layout_zones": {
+      "building_zone": {
+        "location": "East side of parcel",
+        "area_sf": 20000,
+        "rationale": "Away from FPL easement, maximizes building area"
+      },
+      "parking_zone": {
+        "location": "West side of parcel",
+        "area_sf": 12000,
+        "rationale": "Per survey concept, street access, under FPL easement OK"
+      },
+      "stormwater_zone": {
+        "location": "Southeast corner",
+        "area_sf": 2500,
+        "rationale": "Natural drainage, away from building"
+      },
+      "landscape_buffer": {
+        "location": "Perimeter, especially Sandy Pines Drive frontage",
+        "area_sf": 3000,
+        "rationale": "Code requirement, screening"
+      }
+    }
+  },
+  
+  "building_envelope": {
+    "setbacks_applied": {
+      "front_ft": 25,
+      "side_ft": 10,
+      "rear_ft": 20
+    },
+    "easement_restrictions": {
+      "tract_o_nw": "No structures in utility easement",
+      "fpl_west": "Height restrictions, parking OK"
+    },
+    "max_building_footprint_sf": 12000,
+    "max_building_height_stories": 4,
+    "max_units_estimate": "30-40 at 750 SF/unit average"
+  },
+  
+  "recommended_scenario": {
+    "name": "Optimal Development - 24 Units",
+    "buildings": 1,
+    "stories": 4,
+    "units": 24,
+    "unit_mix": {
+      "1BR": 8,
+      "2BR": 12,
+      "3BR": 4
+    },
+    "building_footprint_sf": 6000,
+    "gross_building_sf": 24000,
+    "parking_spaces": 48,
+    "parking_ratio": 2.0,
+    "stormwater_pond_sf": 1800,
+    "open_space_sf": 8000,
+    "rationale": "Balances density with site constraints"
+  },
+  
+  "circulation_plan": {
+    "driveway": {
+      "location": "West side, centered on Sandy Pines frontage",
+      "width_ft": 24,
+      "type": "Two-way"
+    },
+    "internal_drive": {
+      "width_ft": 24,
+      "pattern": "Loop around building",
+      "fire_access": "Maintains required fire lane"
+    },
+    "pedestrian": {
+      "sidewalks": "Connect building entries to parking and street",
+      "ada_accessible": "All routes ADA compliant"
+    }
+  },
+  
+  "landscape_plan_concepts": {
+    "street_buffer": {
+      "depth_ft": 10,
+      "trees": "1 per 50 linear feet = 5 trees minimum",
+      "shrubs": "Continuous hedge for screening"
+    },
+    "parking_lot": {
+      "interior_islands": "1 per 10 spaces",
+      "shade_trees": "Per code requirements"
+    },
+    "building_perimeter": {
+      "foundation_planting": "Standard foundation landscaping"
+    }
+  },
+  
+  "site_amenities_potential": [
+    "Pool and deck area (if space permits)",
+    "Dog park / pet area",
+    "Covered picnic pavilion",
+    "Fitness walking path"
+  ],
+  
+  "next_stage": {
+    "id": 10,
+    "name": "ML Feasibility Score",
+    "actions": [
+      "Calculate total development cost",
+      "Estimate rental income potential",
+      "Determine ROI and feasibility score",
+      "Risk assessment"
+    ]
+  },
+  
+  "creator": "Ariel Shapira, Solo Founder",
+  "organization": "Everest Capital USA"
+}
