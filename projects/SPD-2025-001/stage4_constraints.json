@@ -1,0 +1,198 @@
+{
+  "project_id": "SPD-2025-001",
+  "project_name": "Bliss Palm Bay",
+  "stage": 4,
+  "stage_name": "Site Constraints",
+  "completed_at": "2025-12-09T01:15:00Z",
+  "status": "COMPLETED",
+  
+  "flood_zone_analysis": {
+    "verification_required": true,
+    "verification_method": "Palm Bay GIS Flood Zone Map",
+    "url": "https://gis.palmbayflorida.org/portal/apps/webappviewer/index.html?id=90776cdea7fc4de7be8d436f4df9b28c",
+    "contacts": {
+      "floodplain_admin": {
+        "department": "Palm Bay Growth Management",
+        "phone": "(321) 952-3400 ext. 5246",
+        "services": ["Flood zone determinations", "Base Flood Elevations", "Elevation Certificates", "LOMA applications", "Floodplain permits"]
+      },
+      "brevard_county": {
+        "department": "Brevard County Public Works Floodplain Administration",
+        "phone": "(321) 617-7340"
+      },
+      "fema": {
+        "loma_depot": "1-877-336-2627",
+        "email": "FEMA-FMIX@fema.dhs.gov"
+      }
+    },
+    "crs_rating": {
+      "palm_bay_rating": 7,
+      "insurance_discount": "15% reduction in FEMA flood insurance"
+    },
+    "if_in_flood_zone": {
+      "requirement": "Floodplain permit required BEFORE building permit",
+      "contact": "Land Development (321) 953-8924 ext. 5322"
+    }
+  },
+  
+  "endangered_species": {
+    "florida_scrub_jay": {
+      "status": "Federally Threatened",
+      "palm_bay_coverage": "City has 30-year Incidental Take Permit (ITP)",
+      "habitat_area": "42,500+ acres designated scrub-jay permit area",
+      "verification": {
+        "method": "Check if parcel in Scrub Jay Polygon",
+        "url": "https://www.palmbayfl.gov/government/city-departments-a-to-e/building-permits-inspections/habitat-conservation-plan/scrub-jay-lots"
+      },
+      "if_in_habitat_area": {
+        "fee": "$125 per quarter acre (or $500 per acre)",
+        "clearing_restriction": "NO land clearing March 1 - June 30 (nesting season)",
+        "building_allowed": "Yes, on already cleared areas during nesting season"
+      },
+      "contact": {
+        "department": "Palm Bay Building Department",
+        "phone": "(321) 953-8924",
+        "website": "www.pbfl.org/habitat"
+      }
+    },
+    "eastern_indigo_snake": {
+      "status": "Federally Threatened",
+      "coverage": "Covered under Palm Bay's HCP/ITP",
+      "habitat": "Uses gopher tortoise burrows for overwintering"
+    },
+    "gopher_tortoise": {
+      "status": "State Threatened (Florida)",
+      "not_covered_by_city_itp": true,
+      "permit_required_from": "Florida Fish and Wildlife Conservation Commission (FWC)",
+      "contacts": {
+        "fwc_local": "(321) 383-5535",
+        "fwc_general": "(850) 921-1030",
+        "wildlife_alert": "1-888-404-FWCC (3922)"
+      },
+      "requirements": {
+        "survey_required": "Before any land clearing",
+        "relocation_permit": "Required if burrows present",
+        "buffer_zone": "No disturbance within 25 feet of burrow",
+        "authorized_agent": "Must use FWC-certified agent for relocation"
+      },
+      "typical_habitat": "Sandy, well-drained soils (common in Palm Bay)"
+    }
+  },
+  
+  "wetlands": {
+    "jurisdiction": "St. Johns River Water Management District (SJRWMD)",
+    "permit_required": "Environmental Resource Permit (ERP) if wetlands present",
+    "verification_methods": [
+      {
+        "method": "Hire environmental consultant for wetland delineation",
+        "note": "Most reliable method - establishes legal boundaries for 5 years"
+      },
+      {
+        "method": "SJRWMD ePermit Portal pre-application consultation",
+        "url": "https://sjrwmd.com"
+      }
+    ],
+    "contacts": {
+      "sjrwmd": {
+        "phone": "(386) 329-4500",
+        "address": "P.O. Box 1429, Palatka, FL 32178"
+      },
+      "brevard_watershed": {
+        "phone": "(321) 633-2016",
+        "service": "Storm water management, localized flooding"
+      }
+    },
+    "sandy_pines_context": {
+      "note": "Sandy Pines is established subdivision - likely previous ERP issued",
+      "action": "Check SJRWMD records for existing permits on subdivision"
+    }
+  },
+  
+  "site_assessment_requirements": {
+    "pre_development_checklist": [
+      {
+        "item": "Florida Fish & Wildlife Conservation Commission (FWC) review",
+        "phone": "(321) 383-5535",
+        "purpose": "Endangered wildlife check (indigo snake, scrub-jay, gopher tortoise)",
+        "from_lot_development_guide": true
+      },
+      {
+        "item": "Scrub-jay habitat polygon verification",
+        "method": "City GIS map or Building Department"
+      },
+      {
+        "item": "Gopher tortoise burrow survey",
+        "when": "Before any land clearing",
+        "who": "FWC-authorized agent"
+      },
+      {
+        "item": "Flood zone determination",
+        "method": "Palm Bay GIS or Building Department"
+      },
+      {
+        "item": "Wetland delineation (if suspected)",
+        "who": "Qualified environmental consultant"
+      }
+    ]
+  },
+  
+  "sandy_pines_specific": {
+    "subdivision_status": "Established residential subdivision",
+    "existing_development": "Surrounding lots developed",
+    "likely_constraints": {
+      "flood_zone": "MEDIUM - verify on GIS map",
+      "scrub_jay": "MEDIUM - Sandy Pines is in SE Palm Bay near habitat areas",
+      "gopher_tortoise": "HIGH - sandy soils common in area",
+      "wetlands": "LOW-MEDIUM - established subdivision likely already permitted"
+    }
+  },
+  
+  "action_items": [
+    {
+      "priority": "HIGH",
+      "action": "Verify flood zone on Palm Bay GIS",
+      "url": "https://gis.palmbayflorida.org/portal/apps/webappviewer/index.html?id=90776cdea7fc4de7be8d436f4df9b28c",
+      "deadline": "Before pre-application meeting"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Check scrub-jay polygon map for parcel",
+      "url": "www.pbfl.org/habitat",
+      "deadline": "Before pre-application meeting"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Site visit to check for gopher tortoise burrows",
+      "note": "Look for mounded sand aprons at burrow entrances",
+      "if_found": "Contact FWC at (321) 383-5535 before any clearing"
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Confirm no wetlands on site via visual inspection",
+      "if_suspected": "Order formal wetland delineation"
+    }
+  ],
+  
+  "estimated_environmental_costs": {
+    "scrub_jay_fee_if_applicable": "$500/acre",
+    "gopher_tortoise_survey": "$500-1,500",
+    "gopher_tortoise_relocation": "$500-2,000 per tortoise",
+    "wetland_delineation": "$1,500-5,000",
+    "erp_permit_if_needed": "$2,000-10,000+"
+  },
+  
+  "next_stage": {
+    "id": 5,
+    "name": "Parking Analysis",
+    "actions": [
+      "Determine proposed use (residential units, commercial SF)",
+      "Apply ITE parking ratios",
+      "Calculate ADA accessible spaces",
+      "Check Palm Bay parking code requirements",
+      "Optimize lot layout"
+    ]
+  },
+  
+  "creator": "Ariel Shapira, Solo Founder",
+  "organization": "Everest Capital USA"
+}
