@@ -1,0 +1,73 @@
+{
+  "project_id": "SPD-2025-001",
+  "project_name": "Bliss Palm Bay",
+  "stage": 12,
+  "stage_name": "Archive",
+  "completed_at": "2025-12-09T03:00:00Z",
+  "status": "COMPLETED",
+  
+  "archive_summary": {
+    "pipeline_completed": true,
+    "total_stages": 12,
+    "stages_completed": 12,
+    "completion_time": "~3 hours",
+    "ml_score": 63.3,
+    "recommendation": "PROCEED_WITH_CAUTION"
+  },
+  
+  "deliverables": {
+    "report": {
+      "filename": "SPD-2025-001_Report.docx",
+      "location": "GitHub: projects/SPD-2025-001/",
+      "pages": 2
+    },
+    "stage_outputs": [
+      "stage1_discovery.json",
+      "stage2_survey.json",
+      "stage3_zoning.json",
+      "stage4_constraints.json",
+      "stage5_parking.json",
+      "stage6_traffic.json",
+      "stage7_utilities.json",
+      "stage8_stormwater.json",
+      "stage9_layout.json",
+      "stage10_feasibility.json",
+      "stage12_archive.json"
+    ]
+  },
+  
+  "storage_locations": {
+    "github_repo": "https://github.com/breverdbidder/spd-site-plan-dev",
+    "project_folder": "projects/SPD-2025-001/",
+    "supabase_table": "insights (category: spd_analysis)"
+  },
+  
+  "project_metrics": {
+    "parcel_area_sf": 46394,
+    "parcel_acres": 1.065,
+    "optimal_units": 24,
+    "estimated_cost": 4920000,
+    "cap_rate": 5.81,
+    "risks_identified": 4,
+    "action_items": 5
+  },
+  
+  "next_steps": [
+    "Present findings to stakeholders",
+    "Schedule pre-application meeting with Palm Bay",
+    "Conduct gopher tortoise survey",
+    "Get GC construction estimates",
+    "Make go/no-go decision"
+  ],
+  
+  "pipeline_performance": {
+    "stages_auto_completed": 10,
+    "stages_requiring_verification": 2,
+    "data_sources_used": ["BCPAO", "Palm Bay GIS", "ITE Manual", "SJRWMD", "FWC"],
+    "api_calls": 0,
+    "cost": "$0 (FREE tier processing)"
+  },
+  
+  "creator": "Ariel Shapira, Solo Founder",
+  "organization": "Everest Capital USA"
+}
