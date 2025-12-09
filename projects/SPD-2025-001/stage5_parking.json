@@ -1,0 +1,167 @@
+{
+  "project_id": "SPD-2025-001",
+  "project_name": "Bliss Palm Bay",
+  "stage": 5,
+  "stage_name": "Parking Analysis",
+  "completed_at": "2025-12-09T01:45:00Z",
+  "status": "COMPLETED",
+  
+  "site_data": {
+    "net_parcel_area_sf": 46394,
+    "net_parcel_acres": 1.065,
+    "proposed_use": "Multifamily Residential (1-2 buildings, 3-4 stories)",
+    "parking_location": "West side of parcel (per survey concept)"
+  },
+  
+  "palm_bay_parking_code": {
+    "reference": "§ 185.140 Off-Street Parking and Traffic Circulation",
+    "parking_space_dimensions": {
+      "minimum_width_ft": 10,
+      "minimum_length_ft": 19,
+      "area_per_space_sf": 190
+    },
+    "landscaping_requirements": "§ 185.142 - 10' strip along ROW, 1 tree per 50 linear feet",
+    "verification_required": true,
+    "contact": "Land Development (321) 733-3042"
+  },
+  
+  "parking_ratio_analysis": {
+    "typical_florida_multifamily": {
+      "low": 1.5,
+      "standard": 2.0,
+      "high": 2.5,
+      "unit": "spaces per dwelling unit"
+    },
+    "ite_parking_generation_10th_edition": {
+      "land_use_code": 220,
+      "description": "Multifamily Housing (Low-Rise)",
+      "peak_parking_demand": 1.21,
+      "85th_percentile": 1.40,
+      "unit": "spaces per dwelling unit"
+    },
+    "recommended_ratio": 2.0,
+    "note": "Use 2.0 spaces/unit for conservative planning - verify with Palm Bay code"
+  },
+  
+  "unit_capacity_scenarios": [
+    {
+      "scenario": "A - 12 Units (3-story, 1 building)",
+      "units": 12,
+      "parking_required": 24,
+      "parking_with_guest": 27,
+      "parking_area_sf": 5130,
+      "drive_aisle_sf": 2500,
+      "total_parking_area_sf": 7630,
+      "feasibility": "GOOD - fits west parking area easily"
+    },
+    {
+      "scenario": "B - 20 Units (4-story, 1 building)",
+      "units": 20,
+      "parking_required": 40,
+      "parking_with_guest": 45,
+      "parking_area_sf": 8550,
+      "drive_aisle_sf": 4000,
+      "total_parking_area_sf": 12550,
+      "feasibility": "GOOD - fits west parking area"
+    },
+    {
+      "scenario": "C - 30 Units (4-story, 2 buildings)",
+      "units": 30,
+      "parking_required": 60,
+      "parking_with_guest": 67,
+      "parking_area_sf": 12730,
+      "drive_aisle_sf": 6000,
+      "total_parking_area_sf": 18730,
+      "feasibility": "MODERATE - may need structured or compact spaces"
+    },
+    {
+      "scenario": "D - 40 Units (max density)",
+      "units": 40,
+      "parking_required": 80,
+      "parking_with_guest": 90,
+      "parking_area_sf": 17100,
+      "drive_aisle_sf": 8000,
+      "total_parking_area_sf": 25100,
+      "feasibility": "CHALLENGING - likely needs partial structured parking"
+    }
+  ],
+  
+  "ada_requirements": {
+    "reference": "ADA Standards for Accessible Design",
+    "requirements_table": [
+      {"total_spaces": "1-25", "accessible_spaces": 1},
+      {"total_spaces": "26-50", "accessible_spaces": 2},
+      {"total_spaces": "51-75", "accessible_spaces": 3},
+      {"total_spaces": "76-100", "accessible_spaces": 4}
+    ],
+    "van_accessible": "At least 1 of every 6 accessible spaces must be van-accessible (8' access aisle)",
+    "accessible_dimensions": {
+      "standard_accessible_width_ft": 8,
+      "access_aisle_width_ft": 5,
+      "van_accessible_aisle_ft": 8,
+      "total_width_standard_ft": 13,
+      "total_width_van_ft": 16
+    }
+  },
+  
+  "layout_recommendations": {
+    "optimal_layout": {
+      "parking_location": "West side (per survey concept)",
+      "building_location": "East side",
+      "drive_aisle": "24' two-way circulation",
+      "access_point": "Single driveway from Sandy Pines Drive"
+    },
+    "considerations": [
+      "FPL aerial easement on west limits tall structures - OK for surface parking",
+      "Tract O utility easements must remain clear",
+      "10' landscape buffer required along Sandy Pines Drive",
+      "Stormwater retention may reduce available parking area"
+    ]
+  },
+  
+  "parking_area_estimate": {
+    "available_west_area_sf": 15000,
+    "less_landscape_buffer_sf": 2000,
+    "less_utility_easements_sf": 1500,
+    "net_parking_area_sf": 11500,
+    "spaces_at_300sf_each": 38,
+    "note": "300 SF/space includes drive aisle allocation"
+  },
+  
+  "recommendations": [
+    {
+      "priority": "HIGH",
+      "action": "Verify parking ratio with Palm Bay Land Development",
+      "reason": "Code may have specific multifamily requirements"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Confirm unit count before finalizing parking",
+      "reason": "Parking drives site layout feasibility"
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Consider compact spaces (8.5' x 16')",
+      "reason": "Palm Bay may allow 10-20% compact spaces"
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Evaluate structured parking if >30 units",
+      "reason": "Surface parking may not fit for higher density"
+    }
+  ],
+  
+  "next_stage": {
+    "id": 6,
+    "name": "Traffic Impact",
+    "actions": [
+      "Calculate trip generation using ITE rates",
+      "Estimate peak hour volumes",
+      "Assess impact on Sandy Pines Drive",
+      "Determine if traffic study required"
+    ]
+  },
+  
+  "creator": "Ariel Shapira, Solo Founder",
+  "organization": "Everest Capital USA"
+}
