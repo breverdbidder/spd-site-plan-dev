@@ -1,0 +1,152 @@
+{
+  "project_id": "SPD-2025-001",
+  "project_name": "Bliss Palm Bay",
+  "stage": 7,
+  "stage_name": "Utilities Assessment",
+  "completed_at": "2025-12-09T02:10:00Z",
+  "status": "COMPLETED",
+  
+  "utility_providers": {
+    "water_sewer": {
+      "provider": "Palm Bay Utilities",
+      "phone": "(321) 952-3420",
+      "verification_required": "Water and sewer availability",
+      "typical_process": "Will-serve letter required for site plan",
+      "connection_fees": "Capacity fees apply - contact for current rates"
+    },
+    "electric": {
+      "provider": "Florida Power & Light (FPL)",
+      "phone": "1-800-468-8243",
+      "note": "FPL aerial easement on west side of parcel",
+      "service_available": "Existing infrastructure in Sandy Pines"
+    },
+    "gas": {
+      "provider": "Florida City Gas (if available)",
+      "note": "Natural gas not common in Palm Bay residential areas",
+      "alternative": "Propane or all-electric design"
+    },
+    "telecom": {
+      "providers": ["Spectrum", "AT&T"],
+      "note": "Typically available in established subdivisions"
+    },
+    "solid_waste": {
+      "provider": "Waste Management (City contract)",
+      "phone": "(321) 952-3420",
+      "note": "Multifamily may require dumpster enclosure"
+    }
+  },
+  
+  "water_service": {
+    "status": "REQUIRES_VERIFICATION",
+    "contact": "(321) 952-3420",
+    "likely_availability": "HIGH - Sandy Pines is established subdivision with city water",
+    "requirements": {
+      "will_serve_letter": "Required for site plan approval",
+      "meter_sizing": "Based on fixture count and unit count",
+      "fire_flow": "Verify hydrant location and flow test"
+    },
+    "estimated_demand": {
+      "scenario_20_units": {
+        "average_daily_demand_gpd": 5000,
+        "peak_demand_gpm": 50,
+        "note": "Estimate at 250 gpd/unit"
+      },
+      "scenario_40_units": {
+        "average_daily_demand_gpd": 10000,
+        "peak_demand_gpm": 100
+      }
+    }
+  },
+  
+  "sewer_service": {
+    "status": "REQUIRES_VERIFICATION",
+    "contact": "(321) 952-3420",
+    "likely_availability": "HIGH - Sandy Pines is established subdivision",
+    "alternative_if_unavailable": "Environmental Health for septic: (321) 633-2100",
+    "requirements": {
+      "will_serve_letter": "Required",
+      "capacity_analysis": "May be required for 20+ units",
+      "connection_point": "Identify nearest main"
+    }
+  },
+  
+  "fire_protection": {
+    "fire_department": "Palm Bay Fire Rescue",
+    "phone": "(321) 952-4200",
+    "requirements": {
+      "fire_hydrant_spacing": "Within 400-500 feet typically",
+      "fire_flow": "1000-1500 GPM for multifamily",
+      "fire_lane": "20' min width, no parking",
+      "sprinkler_system": "Required for 3+ stories in Florida"
+    },
+    "site_review": "Fire Marshal review part of site plan process"
+  },
+  
+  "stormwater": {
+    "provider": "Palm Bay Public Works / SJRWMD",
+    "requirements": {
+      "retention": "On-site retention/detention required",
+      "permit": "SJRWMD ERP may be required",
+      "design_storm": "25-year, 24-hour typical"
+    },
+    "note": "Covered in Stage 8 - Stormwater Analysis"
+  },
+  
+  "utility_easements_on_site": [
+    {
+      "name": "Tract O",
+      "type": "Public Utility Easement",
+      "impact": "Cannot build structures in easement",
+      "location": "NW corner and east side"
+    },
+    {
+      "name": "FPL Aerial Easement",
+      "type": "Overhead Electric",
+      "impact": "Height restrictions, OK for parking",
+      "location": "West side"
+    }
+  ],
+  
+  "connection_cost_estimates": {
+    "disclaimer": "Estimates only - verify with Palm Bay Utilities",
+    "water_capacity_fee_per_unit": "$1,500 - $2,500",
+    "sewer_capacity_fee_per_unit": "$2,500 - $4,000",
+    "example_20_units": {
+      "water_fees": "$30,000 - $50,000",
+      "sewer_fees": "$50,000 - $80,000",
+      "total_utility_fees": "$80,000 - $130,000"
+    }
+  },
+  
+  "action_items": [
+    {
+      "priority": "HIGH",
+      "action": "Call Palm Bay Utilities (321) 952-3420",
+      "purpose": "Confirm water/sewer availability and get will-serve letter requirements"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Request fire flow test results for nearest hydrant",
+      "purpose": "Verify adequate fire protection"
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Identify utility connection points on Sandy Pines Drive",
+      "purpose": "Plan site utility layout"
+    }
+  ],
+  
+  "next_stage": {
+    "id": 8,
+    "name": "Stormwater Analysis",
+    "actions": [
+      "Estimate impervious area",
+      "Calculate retention/detention requirements",
+      "Determine if SJRWMD ERP required",
+      "Identify stormwater pond location"
+    ]
+  },
+  
+  "creator": "Ariel Shapira, Solo Founder",
+  "organization": "Everest Capital USA"
+}
