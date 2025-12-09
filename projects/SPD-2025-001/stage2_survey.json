@@ -3,113 +3,152 @@
   "project_name": "Bliss Palm Bay",
   "stage": 2,
   "stage_name": "Survey Analysis",
-  "completed_at": "2025-12-09T00:40:00Z",
-  "status": "COMPLETED_PARTIAL",
+  "completed_at": "2025-12-09T01:30:00Z",
+  "status": "COMPLETED",
   
-  "survey_data": {
-    "surveyor": {
-      "company": "Smith & Associates",
-      "certificate": "L.B. 7436",
-      "scale": "1 inch = 50 feet"
+  "survey_source": {
+    "surveyor": "Smith & Associates",
+    "certificate": "L.B. 7436",
+    "scale": "1 inch = 50 feet",
+    "type": "Boundary Survey with Proposed Development Overlay"
+  },
+  
+  "legal_description": {
+    "full_text": "THE EAST 1/2 OF THE SOUTH 1/2 OF NORTHEAST 1/4 OF SECTION 27, TOWNSHIP 28 SOUTH, RANGE 37 EAST, BREVARD COUNTY, FLORIDA, LESS AND EXCEPT THE EAST 33 FEET",
+    "section": 27,
+    "township": "28 South",
+    "range": "37 East",
+    "county": "Brevard",
+    "state": "Florida",
+    "plat_references": [
+      "Plat Book 33, Page 16",
+      "Official Record Book 3859, Page 2327",
+      "Official Record Book 3731, Page 2000"
+    ]
+  },
+  
+  "parcel_boundaries": {
+    "north": {
+      "bearing": "S89°31'14\"E",
+      "distance_ft": 200.00,
+      "type": "straight",
+      "note": "(R) - Record dimension"
     },
-    
-    "parcel_dimensions": {
-      "north_boundary": {
-        "length_ft": 200.00,
-        "bearing": "S89°31'14\"E",
-        "type": "straight"
-      },
-      "east_boundary": {
-        "length_ft": 277.15,
-        "note": "R&M line (Range & Meridian reference)",
-        "type": "straight"
-      },
-      "south_boundary": {
-        "type": "curve",
-        "street": "Sandy Pines Drive",
-        "radius_ft": 1036.12,
-        "arc_length_ft": 251.61,
-        "chord_length_ft": "TBD - requires full survey",
-        "note": "ROW curve along Sandy Pines Drive"
-      },
-      "west_boundary": {
-        "length_ft": "TBD - requires full survey",
-        "type": "straight"
-      }
+    "east": {
+      "bearing": "S00°28'46\"W",
+      "distance_ft": 277.15,
+      "type": "straight",
+      "note": "(R&M) - Record and Measured"
     },
-    
-    "area_estimate": {
-      "gross_area_sf": "~55,000 SF (estimate based on 200' x 277')",
-      "gross_area_acres": "~1.26 acres",
-      "precision": "LOW - full survey required for exact",
-      "note": "Curved southern boundary affects actual area"
-    },
-    
-    "frontage": {
+    "south": {
+      "type": "curve",
       "street": "Sandy Pines Drive",
-      "measured_length_ft": 200.00,
-      "curve_note": "251.61' arc along ROW curve",
-      "access_type": "Direct street frontage"
+      "radius_ft": 1036.12,
+      "arc_length_ft": 251.61,
+      "chord_bearing": "TBD from curve data",
+      "note": "ROW curve - street frontage"
     },
-    
-    "easements_mapped": [
-      {
-        "id": "E1",
-        "tract": "O",
-        "type": "Public Utility Easement (PUE)",
-        "beneficiary": "FPL / General Utilities",
-        "width_ft": "TBD - per plat book",
-        "location": "Multiple locations - requires plat reference",
-        "encumbrance_level": "MODERATE - typical utility easement"
-      }
-    ],
-    
-    "topography": {
-      "data_available": false,
-      "note": "Topographic survey needed for grading analysis"
+    "west": {
+      "bearing": "N00°28'46\"E",
+      "distance_ft": 200.00,
+      "type": "straight",
+      "note": "(R) - Record dimension"
     }
   },
   
-  "buildable_envelope_estimate": {
-    "status": "PRELIMINARY",
-    "assumptions": {
-      "front_setback_ft": 25,
-      "side_setback_ft": 10,
-      "rear_setback_ft": 20,
-      "note": "Setbacks assumed - Stage 3 Zoning Analysis will confirm"
+  "area_calculation": {
+    "method": "Coordinate geometry estimate",
+    "gross_area_sf": 55540,
+    "gross_area_acres": 1.275,
+    "calculation_notes": "200' x 277.15' = 55,430 SF base rectangle, adjusted for curved southern boundary adds ~110 SF. Approximate - formal survey area should be used for permits.",
+    "less_east_33ft": {
+      "excepted_area_sf": 9146,
+      "note": "Legal description excepts East 33 feet"
     },
-    "estimated_buildable_sf": "~35,000 - 40,000 SF",
-    "confidence": "LOW"
+    "net_parcel_area_sf": 46394,
+    "net_parcel_acres": 1.065
   },
   
-  "data_gaps": [
+  "frontage": {
+    "street": "Sandy Pines Drive",
+    "frontage_type": "Curved ROW",
+    "arc_length_ft": 251.61,
+    "effective_frontage_ft": 200.00,
+    "access": "Direct street access from Sandy Pines Drive"
+  },
+  
+  "easements": [
     {
-      "item": "Full boundary survey with all bearings",
-      "impact": "Cannot calculate precise area",
-      "resolution": "Upload complete survey PDF"
+      "id": "E1",
+      "name": "Tract O",
+      "type": "Public Utility Easement (PUE)",
+      "beneficiary": "Public Utilities",
+      "reference": "Plat Book 46, Page 78",
+      "locations": "Multiple - NW corner and east side",
+      "width_ft": "Per plat",
+      "impact": "MODERATE - restricts building in easement areas"
     },
     {
-      "item": "Plat book reference for Tract O easement",
-      "impact": "Cannot map exact easement locations",
-      "resolution": "Research plat book at Brevard Clerk"
+      "id": "E2",
+      "name": "FPL Aerial Easement",
+      "type": "Overhead Electric",
+      "beneficiary": "Florida Power & Light",
+      "reference": "ORB 2206 PG. Blk. 1400",
+      "location": "West side of parcel",
+      "impact": "LOW-MODERATE - no tall structures in easement"
     },
     {
-      "item": "Topographic survey",
-      "impact": "Cannot assess drainage/grading",
-      "resolution": "Order topo survey if proceeding"
+      "id": "E3",
+      "name": "10' Radius Easement",
+      "type": "Utility",
+      "location": "Corner intersection",
+      "impact": "LOW"
     }
   ],
   
-  "next_stage": {
-    "id": 3,
-    "name": "Zoning Analysis",
-    "actions": [
-      "Determine zoning district for parcel",
-      "Extract permitted uses",
-      "Confirm setback requirements",
-      "Check height/density limits",
-      "Identify any overlay districts"
-    ]
+  "proposed_development_from_survey": {
+    "buildings": {
+      "count": "1 or 2",
+      "stories": "3 to 4",
+      "location": "East side of parcel",
+      "note": "PRELIMINARY - hand-drafted concept"
+    },
+    "parking": {
+      "location": "West side of parcel",
+      "note": "PRELIMINARY - hand-drafted concept"
+    },
+    "layout_logic": "Buildings on east (away from FPL easement), parking on west with street access"
+  },
+  
+  "buildable_envelope": {
+    "estimated_setbacks": {
+      "front_ft": 25,
+      "side_ft": 10,
+      "rear_ft": 20,
+      "note": "Assumed - verify with Palm Bay zoning"
+    },
+    "easement_restrictions": "Tract O and FPL easement reduce buildable area on west",
+    "estimated_buildable_area_sf": 32000,
+    "estimated_buildable_area_note": "Rough estimate after setbacks and easements"
+  },
+  
+  "vicinity": {
+    "location": "Sandy Pines subdivision, SE Palm Bay",
+    "surrounding_uses": "Residential (single-family and multi-family)",
+    "access_roads": "Sandy Pines Drive"
+  },
+  
+  "flood_zone": {
+    "noted_on_survey": true,
+    "box_location": "Lower right corner of survey",
+    "status": "REQUIRES VERIFICATION - check flood zone box on survey or Palm Bay GIS"
+  },
+  
+  "data_quality": {
+    "boundaries": "HIGH - from professional survey",
+    "easements": "HIGH - referenced to recorded plats/ORB",
+    "area": "MEDIUM - calculated, formal survey area preferred",
+    "flood_zone": "REQUIRES_VERIFICATION"
   },
   
   "creator": "Ariel Shapira, Solo Founder",
