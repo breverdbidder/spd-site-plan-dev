@@ -1,6 +1,6 @@
 {
-  "version": "1.0.1",
-  "last_updated": "2025-12-09T00:35:00Z",
+  "version": "1.0.3",
+  "last_updated": "2025-12-09T01:00:00Z",
   "projects": [
     {
       "id": "SPD-2025-001",
@@ -10,29 +10,22 @@
       "state": "FL",
       "account_id": "2835546",
       "legal": "S27, T28S, R37E",
-      "frontage": "Sandy Pines Drive (200.00')",
-      "easements": "Tract O - public utility (multiple locations)",
-      "proposed_use": "1-2 Buildings, 3-4 Stories (PRELIMINARY - hand drafted for initial city dialogue)",
-      "parking_preliminary": "West side of parcel (PRELIMINARY)",
-      "current_stage": 2,
-      "stage_name": "SURVEY_ANALYSIS",
+      "current_stage": 4,
+      "stage_name": "SITE_CONSTRAINTS",
       "status": "IN_PROGRESS",
       "stages_completed": [
-        {
-          "stage": 1,
-          "name": "Discovery",
-          "completed_at": "2025-12-09T00:30:00Z",
-          "output": "projects/SPD-2025-001/stage1_discovery.json"
-        }
+        {"stage": 1, "name": "Discovery", "completed_at": "2025-12-09T00:30:00Z", "status": "COMPLETED"},
+        {"stage": 2, "name": "Survey Analysis", "completed_at": "2025-12-09T00:40:00Z", "status": "COMPLETED_PARTIAL"},
+        {"stage": 3, "name": "Zoning Analysis", "completed_at": "2025-12-09T00:55:00Z", "status": "COMPLETED_PARTIAL"}
       ],
       "created_at": "2025-12-09T00:00:00Z"
     }
   ],
   "pipeline_stages": [
     {"id": 1, "name": "Discovery", "status": "COMPLETED"},
-    {"id": 2, "name": "Survey Analysis", "status": "IN_PROGRESS"},
-    {"id": 3, "name": "Zoning Analysis", "status": "PENDING"},
-    {"id": 4, "name": "Site Constraints", "status": "PENDING"},
+    {"id": 2, "name": "Survey Analysis", "status": "COMPLETED_PARTIAL"},
+    {"id": 3, "name": "Zoning Analysis", "status": "COMPLETED_PARTIAL"},
+    {"id": 4, "name": "Site Constraints", "status": "IN_PROGRESS"},
     {"id": 5, "name": "Parking Analysis", "status": "PENDING"},
     {"id": 6, "name": "Traffic Impact", "status": "PENDING"},
     {"id": 7, "name": "Utilities Assessment", "status": "PENDING"},
