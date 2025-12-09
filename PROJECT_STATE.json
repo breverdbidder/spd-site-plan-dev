@@ -1,6 +1,6 @@
 {
-  "version": "1.0.4",
-  "last_updated": "2025-12-09T01:20:00Z",
+  "version": "1.0.5",
+  "last_updated": "2025-12-09T01:50:00Z",
   "projects": [
     {
       "id": "SPD-2025-001",
@@ -10,25 +10,28 @@
       "state": "FL",
       "account_id": "2835546",
       "legal": "S27, T28S, R37E",
-      "current_stage": 5,
-      "stage_name": "PARKING_ANALYSIS",
+      "parcel_area_sf": 46394,
+      "parcel_acres": 1.065,
+      "current_stage": 6,
+      "stage_name": "TRAFFIC_IMPACT",
       "status": "IN_PROGRESS",
       "stages_completed": [
         {"stage": 1, "name": "Discovery", "completed_at": "2025-12-09T00:30:00Z", "status": "COMPLETED"},
-        {"stage": 2, "name": "Survey Analysis", "completed_at": "2025-12-09T00:40:00Z", "status": "COMPLETED_PARTIAL"},
+        {"stage": 2, "name": "Survey Analysis", "completed_at": "2025-12-09T01:30:00Z", "status": "COMPLETED"},
         {"stage": 3, "name": "Zoning Analysis", "completed_at": "2025-12-09T00:55:00Z", "status": "COMPLETED_PARTIAL"},
-        {"stage": 4, "name": "Site Constraints", "completed_at": "2025-12-09T01:15:00Z", "status": "COMPLETED"}
+        {"stage": 4, "name": "Site Constraints", "completed_at": "2025-12-09T01:15:00Z", "status": "COMPLETED"},
+        {"stage": 5, "name": "Parking Analysis", "completed_at": "2025-12-09T01:45:00Z", "status": "COMPLETED"}
       ],
       "created_at": "2025-12-09T00:00:00Z"
     }
   ],
   "pipeline_stages": [
     {"id": 1, "name": "Discovery", "status": "COMPLETED"},
-    {"id": 2, "name": "Survey Analysis", "status": "COMPLETED_PARTIAL"},
+    {"id": 2, "name": "Survey Analysis", "status": "COMPLETED"},
     {"id": 3, "name": "Zoning Analysis", "status": "COMPLETED_PARTIAL"},
     {"id": 4, "name": "Site Constraints", "status": "COMPLETED"},
-    {"id": 5, "name": "Parking Analysis", "status": "IN_PROGRESS"},
-    {"id": 6, "name": "Traffic Impact", "status": "PENDING"},
+    {"id": 5, "name": "Parking Analysis", "status": "COMPLETED"},
+    {"id": 6, "name": "Traffic Impact", "status": "IN_PROGRESS"},
     {"id": 7, "name": "Utilities Assessment", "status": "PENDING"},
     {"id": 8, "name": "Stormwater Analysis", "status": "PENDING"},
     {"id": 9, "name": "Site Layout", "status": "PENDING"},
