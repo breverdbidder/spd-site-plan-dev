@@ -1,0 +1,133 @@
+{
+  "project_id": "SPD-2025-001",
+  "project_name": "Bliss Palm Bay",
+  "stage": 6,
+  "stage_name": "Traffic Impact",
+  "completed_at": "2025-12-09T02:00:00Z",
+  "status": "COMPLETED",
+  
+  "site_access": {
+    "street": "Sandy Pines Drive",
+    "classification": "Local residential collector",
+    "frontage_ft": 251.61,
+    "proposed_access": "Single driveway connection",
+    "access_width_ft": 24,
+    "turn_lanes": "Likely not required for <50 units"
+  },
+  
+  "ite_trip_generation": {
+    "reference": "ITE Trip Generation Manual, 11th Edition",
+    "land_use_code": 220,
+    "land_use_description": "Multifamily Housing (Low-Rise)",
+    "rates": {
+      "daily_trips_per_unit": 6.74,
+      "am_peak_per_unit": 0.46,
+      "pm_peak_per_unit": 0.56
+    }
+  },
+  
+  "trip_generation_scenarios": [
+    {
+      "scenario": "A - 12 Units",
+      "units": 12,
+      "daily_trips": 81,
+      "am_peak_trips": 6,
+      "pm_peak_trips": 7,
+      "traffic_study_required": "NO - well under threshold"
+    },
+    {
+      "scenario": "B - 20 Units",
+      "units": 20,
+      "daily_trips": 135,
+      "am_peak_trips": 9,
+      "pm_peak_trips": 11,
+      "traffic_study_required": "NO - under typical 100 peak hour threshold"
+    },
+    {
+      "scenario": "C - 30 Units",
+      "units": 30,
+      "daily_trips": 202,
+      "am_peak_trips": 14,
+      "pm_peak_trips": 17,
+      "traffic_study_required": "UNLIKELY - verify with Palm Bay"
+    },
+    {
+      "scenario": "D - 40 Units",
+      "units": 40,
+      "daily_trips": 270,
+      "am_peak_trips": 18,
+      "pm_peak_trips": 22,
+      "traffic_study_required": "POSSIBLE - depends on local thresholds"
+    }
+  ],
+  
+  "traffic_study_thresholds": {
+    "note": "Verify with Palm Bay - typical Florida thresholds",
+    "typical_thresholds": {
+      "daily_trips": 500,
+      "peak_hour_trips": 100
+    },
+    "assessment": "All scenarios well under typical thresholds",
+    "recommendation": "Traffic letter likely sufficient, full study unlikely needed"
+  },
+  
+  "intersection_considerations": {
+    "nearest_intersections": [
+      "Sandy Pines Drive / Redwood Circle",
+      "Sandy Pines Drive / Spring Creek Circle"
+    ],
+    "signal_warrant": "Unlikely to be warranted for any scenario",
+    "turn_lane_warrant": "Unlikely for <40 units"
+  },
+  
+  "site_circulation": {
+    "driveway_design": {
+      "width_ft": 24,
+      "type": "Two-way",
+      "throat_length_ft": 40,
+      "sight_distance": "Verify per FDOT standards"
+    },
+    "internal_circulation": {
+      "drive_aisle_width_ft": 24,
+      "parking_flow": "Counter-clockwise recommended",
+      "fire_access": "Must maintain fire lane - verify with Palm Bay Fire"
+    }
+  },
+  
+  "recommendations": [
+    {
+      "action": "Prepare traffic impact letter (not full study)",
+      "reason": "Trip generation under typical thresholds",
+      "cost_estimate": "$1,500 - $3,000"
+    },
+    {
+      "action": "Conduct sight distance analysis at driveway",
+      "reason": "Curved road may affect visibility"
+    },
+    {
+      "action": "Coordinate with Palm Bay Public Works",
+      "phone": "(321) 952-3400",
+      "reason": "Confirm traffic requirements for site plan"
+    }
+  ],
+  
+  "brevard_county_context": {
+    "road_impact_fees": "May apply - verify current rates",
+    "concurrency": "Brevard County has traffic concurrency requirements",
+    "note": "Palm Bay within city limits - city requirements apply"
+  },
+  
+  "next_stage": {
+    "id": 7,
+    "name": "Utilities Assessment",
+    "actions": [
+      "Verify water/sewer availability with Palm Bay Utilities",
+      "Check electric capacity with FPL",
+      "Confirm fire flow requirements",
+      "Assess utility connection points"
+    ]
+  },
+  
+  "creator": "Ariel Shapira, Solo Founder",
+  "organization": "Everest Capital USA"
+}
