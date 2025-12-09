@@ -1,0 +1,104 @@
+{
+  "project_id": "SPD-2025-001",
+  "project_name": "Bliss Palm Bay",
+  "stage": 1,
+  "stage_name": "Discovery",
+  "completed_at": "2025-12-09T00:30:00Z",
+  "status": "COMPLETED",
+  
+  "property_profile": {
+    "account_id": "2835546",
+    "address": "2165 Sandy Pines Dr NE",
+    "city": "Palm Bay",
+    "state": "FL",
+    "zip": "32907",
+    "county": "Brevard",
+    
+    "legal_description": {
+      "section": 27,
+      "township": "28S",
+      "range": "37E",
+      "subdivision": "Sandy Pines",
+      "narrative": "East 1/2 of South 1/2 of NE 1/4, Section 27, Township 28 South, Range 37 East"
+    },
+    
+    "parcel_geometry": {
+      "frontage_street": "Sandy Pines Drive",
+      "frontage_length_ft": 200.00,
+      "frontage_curve": {
+        "radius_ft": 1036.12,
+        "arc_length_ft": 251.61
+      },
+      "north_boundary_ft": 200.00,
+      "north_boundary_bearing": "S89°31'14\"E",
+      "east_boundary_ft": 277.15,
+      "east_boundary_note": "R&M line"
+    },
+    
+    "easements": [
+      {
+        "tract": "O",
+        "type": "Public Utility",
+        "beneficiary": "FPL/General Utilities",
+        "locations": "Multiple - per plat"
+      }
+    ],
+    
+    "proposed_development": {
+      "buildings": "1-2",
+      "stories": "3-4",
+      "parking_location": "West side of parcel",
+      "note": "PRELIMINARY - Hand drafted for initial Palm Bay dialogue only"
+    }
+  },
+  
+  "jurisdiction_contacts": {
+    "building_department": {
+      "address": "190 Malabar Road SW, Suite 105, Palm Bay, FL 32907",
+      "phone": "321-953-8924",
+      "email": "permitinfo@palmbayfl.gov"
+    },
+    "utilities": {
+      "phone": "321-952-3420",
+      "service": "Water and sewer availability"
+    },
+    "land_development": {
+      "phone": "321-953-8924 ext. 5322",
+      "service": "Floodplain permits"
+    },
+    "environmental_health": {
+      "phone": "321-633-2100",
+      "service": "Septic/well permits if needed"
+    },
+    "fwcc": {
+      "phone": "321-383-5535",
+      "service": "Endangered wildlife (indigo snake, scrub-jay, gopher tortoise)"
+    }
+  },
+  
+  "survey_source": {
+    "surveyor": "Smith & Associates",
+    "certificate": "L.B. 7436",
+    "scale": "1\" = 50'"
+  },
+  
+  "next_stage": {
+    "id": 2,
+    "name": "Survey Analysis",
+    "actions": [
+      "Extract exact parcel area from survey",
+      "Map all easements with dimensions",
+      "Identify buildable envelope",
+      "Calculate net developable area"
+    ]
+  },
+  
+  "data_quality": {
+    "bcpao_api_status": "OFFLINE - manual verification needed",
+    "survey_data": "EXTRACTED",
+    "jurisdiction_contacts": "VERIFIED"
+  },
+  
+  "creator": "Ariel Shapira, Solo Founder",
+  "organization": "Everest Capital USA"
+}
