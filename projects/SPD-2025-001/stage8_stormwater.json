@@ -1,0 +1,167 @@
+{
+  "project_id": "SPD-2025-001",
+  "project_name": "Bliss Palm Bay",
+  "stage": 8,
+  "stage_name": "Stormwater Analysis",
+  "completed_at": "2025-12-09T02:20:00Z",
+  "status": "COMPLETED",
+  
+  "site_data": {
+    "total_site_area_sf": 46394,
+    "total_site_acres": 1.065
+  },
+  
+  "regulatory_framework": {
+    "local": {
+      "authority": "City of Palm Bay",
+      "code_reference": "Chapter 174 - Floodplain and Stormwater Management",
+      "contact": "Land Development (321) 953-8924 ext. 5322"
+    },
+    "regional": {
+      "authority": "St. Johns River Water Management District (SJRWMD)",
+      "phone": "(386) 329-4500",
+      "permit_type": "Environmental Resource Permit (ERP)"
+    }
+  },
+  
+  "erp_threshold_analysis": {
+    "sjrwmd_thresholds": {
+      "new_impervious_trigger_sf": 4000,
+      "new_impervious_trigger_acres": 0.092,
+      "total_project_acres_trigger": 1.0,
+      "wetland_impact_trigger": "Any impact"
+    },
+    "site_assessment": {
+      "project_size_acres": 1.065,
+      "exceeds_1_acre_threshold": true,
+      "erp_likely_required": "YES - project exceeds 1 acre"
+    }
+  },
+  
+  "impervious_area_estimate": {
+    "scenario_20_units": {
+      "building_footprint_sf": 8000,
+      "parking_area_sf": 10000,
+      "sidewalks_drives_sf": 3000,
+      "total_impervious_sf": 21000,
+      "impervious_percentage": 45.3,
+      "pervious_remaining_sf": 25394
+    },
+    "scenario_30_units": {
+      "building_footprint_sf": 12000,
+      "parking_area_sf": 15000,
+      "sidewalks_drives_sf": 4000,
+      "total_impervious_sf": 31000,
+      "impervious_percentage": 66.8,
+      "pervious_remaining_sf": 15394
+    }
+  },
+  
+  "stormwater_design_criteria": {
+    "design_storm": "25-year, 24-hour event",
+    "rainfall_depth_inches": 8.0,
+    "retention_requirement": {
+      "method": "First 1 inch of runoff retained on-site",
+      "volume_per_impervious_acre_cf": 3630
+    },
+    "water_quality_treatment": {
+      "method": "Dry detention or wet pond",
+      "treatment_volume": "First 0.5 - 1.0 inch of runoff"
+    }
+  },
+  
+  "pond_sizing_estimate": {
+    "scenario_20_units": {
+      "impervious_area_sf": 21000,
+      "retention_volume_cf": 1750,
+      "pond_area_at_4ft_depth_sf": 440,
+      "pond_area_with_slopes_sf": 1500,
+      "note": "Small pond feasible"
+    },
+    "scenario_30_units": {
+      "impervious_area_sf": 31000,
+      "retention_volume_cf": 2583,
+      "pond_area_at_4ft_depth_sf": 646,
+      "pond_area_with_slopes_sf": 2200,
+      "note": "Moderate pond size required"
+    }
+  },
+  
+  "pond_location_options": [
+    {
+      "option": "Southeast corner",
+      "pros": "Away from building area, natural low point likely",
+      "cons": "May reduce building footprint area"
+    },
+    {
+      "option": "Underground vault system",
+      "pros": "Maximizes developable area",
+      "cons": "Higher construction cost ($50-100K+)"
+    },
+    {
+      "option": "Dry detention with swales",
+      "pros": "Lower cost, integrates with landscaping",
+      "cons": "Uses more surface area"
+    }
+  ],
+  
+  "permit_requirements": {
+    "sjrwmd_erp": {
+      "likely_required": true,
+      "application_type": "General or Individual ERP",
+      "estimated_timeline": "60-90 days",
+      "estimated_cost": "$2,000 - $5,000 (permit fees)",
+      "engineering_cost": "$5,000 - $15,000"
+    },
+    "city_requirements": {
+      "floodplain_permit": "If in flood zone - verify on GIS",
+      "stormwater_plan": "Required with site plan submission"
+    }
+  },
+  
+  "drainage_considerations": {
+    "existing_conditions": "Sandy Pines has existing drainage infrastructure",
+    "outfall": "Likely to existing stormwater system in Sandy Pines Drive ROW",
+    "coordination": "Coordinate with Palm Bay Public Works"
+  },
+  
+  "action_items": [
+    {
+      "priority": "HIGH",
+      "action": "Engage civil engineer for stormwater design",
+      "reason": "ERP permit requires professional engineer seal"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Order topographic survey if not already available",
+      "reason": "Required for drainage design"
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Pre-application meeting with SJRWMD",
+      "reason": "Confirm permit type and requirements"
+    }
+  ],
+  
+  "cost_estimates": {
+    "erp_permit_fee": "$2,000 - $5,000",
+    "stormwater_engineering": "$5,000 - $15,000",
+    "pond_construction": "$15,000 - $40,000",
+    "underground_vault_if_needed": "$50,000 - $100,000",
+    "total_range": "$22,000 - $160,000"
+  },
+  
+  "next_stage": {
+    "id": 9,
+    "name": "Site Layout",
+    "actions": [
+      "Create conceptual site plan",
+      "Position buildings within setbacks",
+      "Layout parking with circulation",
+      "Integrate stormwater pond location"
+    ]
+  },
+  
+  "creator": "Ariel Shapira, Solo Founder",
+  "organization": "Everest Capital USA"
+}
