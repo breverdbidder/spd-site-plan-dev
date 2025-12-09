@@ -1,0 +1,185 @@
+{
+  "project_id": "SPD-2025-001",
+  "project_name": "Bliss Palm Bay",
+  "stage": 10,
+  "stage_name": "ML Feasibility Score",
+  "completed_at": "2025-12-09T02:40:00Z",
+  "status": "COMPLETED",
+  
+  "ml_model": {
+    "name": "SPD Feasibility Analyzer v1.0",
+    "creator": "Ariel Shapira, Solo Founder",
+    "methodology": "Weighted factor analysis with local market data"
+  },
+  
+  "scenario_analyzed": {
+    "name": "Optimal Development - 24 Units",
+    "building_type": "4-story multifamily",
+    "units": 24,
+    "unit_mix": {"1BR": 8, "2BR": 12, "3BR": 4},
+    "gross_sf": 24000
+  },
+  
+  "cost_analysis": {
+    "land_acquisition": {
+      "current_ownership": "OWNED",
+      "estimated_value": 150000,
+      "note": "Based on ~$140K/acre for Palm Bay"
+    },
+    "soft_costs": {
+      "architecture_engineering": 75000,
+      "permits_fees": 50000,
+      "impact_fees": 100000,
+      "legal_closing": 25000,
+      "contingency_10pct": 25000,
+      "subtotal": 275000
+    },
+    "hard_costs": {
+      "construction_per_sf": 175,
+      "total_sf": 24000,
+      "site_work": 150000,
+      "parking_lot": 75000,
+      "stormwater": 40000,
+      "landscaping": 30000,
+      "subtotal": 4495000
+    },
+    "total_development_cost": 4920000,
+    "cost_per_unit": 205000,
+    "cost_per_sf": 205
+  },
+  
+  "revenue_analysis": {
+    "market_rents_palm_bay": {
+      "1BR_monthly": 1400,
+      "2BR_monthly": 1650,
+      "3BR_monthly": 1900
+    },
+    "gross_potential_rent_monthly": {
+      "1BR_8_units": 11200,
+      "2BR_12_units": 19800,
+      "3BR_4_units": 7600,
+      "total": 38600
+    },
+    "gross_potential_rent_annual": 463200,
+    "vacancy_rate": 0.05,
+    "effective_gross_income": 440040,
+    "operating_expenses_35pct": 154014,
+    "net_operating_income": 286026
+  },
+  
+  "return_metrics": {
+    "cap_rate": 5.81,
+    "cash_on_cash_year_1": 5.81,
+    "stabilized_value_at_6_cap": 4767100,
+    "equity_created": -152900,
+    "note": "Marginal returns at current construction costs"
+  },
+  
+  "feasibility_factors": {
+    "market_demand": {
+      "score": 8,
+      "max": 10,
+      "rationale": "Palm Bay growing, rental demand strong"
+    },
+    "location_quality": {
+      "score": 7,
+      "max": 10,
+      "rationale": "Established subdivision, good access"
+    },
+    "regulatory_complexity": {
+      "score": 6,
+      "max": 10,
+      "rationale": "Multiple permits required, typical for multifamily"
+    },
+    "construction_cost_environment": {
+      "score": 4,
+      "max": 10,
+      "rationale": "High construction costs challenge returns"
+    },
+    "financing_availability": {
+      "score": 6,
+      "max": 10,
+      "rationale": "Moderate - multifamily lending available but scrutinized"
+    },
+    "timeline_risk": {
+      "score": 7,
+      "max": 10,
+      "rationale": "12-18 months entitlement + construction"
+    }
+  },
+  
+  "ml_feasibility_score": {
+    "raw_score": 63.3,
+    "max_score": 100,
+    "grade": "C+",
+    "recommendation": "PROCEED_WITH_CAUTION",
+    "interpretation": "Project is marginally feasible under current market conditions. Success depends on controlling costs and optimizing unit mix."
+  },
+  
+  "sensitivity_analysis": {
+    "if_rents_increase_10pct": {
+      "noi": 314629,
+      "cap_rate": 6.39,
+      "recommendation": "PROCEED"
+    },
+    "if_construction_costs_decrease_15pct": {
+      "total_cost": 4182000,
+      "cap_rate": 6.84,
+      "recommendation": "PROCEED"
+    },
+    "if_30_units_instead": {
+      "additional_revenue_annual": 115800,
+      "cap_rate_estimate": 6.8,
+      "recommendation": "PROCEED - if parking fits"
+    }
+  },
+  
+  "risk_factors": [
+    {
+      "risk": "Construction cost escalation",
+      "probability": "HIGH",
+      "impact": "HIGH",
+      "mitigation": "Lock in GC contract early, value engineering"
+    },
+    {
+      "risk": "Permitting delays",
+      "probability": "MEDIUM",
+      "impact": "MEDIUM",
+      "mitigation": "Early pre-application meetings"
+    },
+    {
+      "risk": "Gopher tortoise discovery",
+      "probability": "MEDIUM",
+      "impact": "LOW-MEDIUM",
+      "mitigation": "Survey before commitment"
+    },
+    {
+      "risk": "Zoning denial",
+      "probability": "LOW",
+      "impact": "HIGH",
+      "mitigation": "Pre-application with Land Development"
+    }
+  ],
+  
+  "recommendations": [
+    "Verify zoning allows 24+ units before proceeding",
+    "Get construction cost estimates from 2-3 GCs",
+    "Consider affordable housing incentives (LIHTC, bonds)",
+    "Optimize unit mix for market demand",
+    "Explore cost-saving design alternatives"
+  ],
+  
+  "next_stage": {
+    "id": 11,
+    "name": "Report Generation",
+    "actions": [
+      "Compile all stage outputs",
+      "Generate executive summary",
+      "Create DOCX report",
+      "Prepare for stakeholder presentation"
+    ]
+  },
+  
+  "creator": "Ariel Shapira, Solo Founder",
+  "organization": "Everest Capital USA"
+}
