@@ -1,97 +1,118 @@
-# SPD Site Plan Development - Agentic AI Pipeline
+# SPD - Site Plan Development
 
-> **Owner**: Ariel Shapira, Managing Member, Everest Capital of Brevard LLC
-> **AI Architect**: Claude (Anthropic)
-> **Stack**: GitHub Actions + Supabase + Cloudflare Pages
-
----
+> **Everest Capital USA** | Agentic AI 12-Stage Pipeline for Site Plan Approval
+> Same Stack as BidDeed.AI: GitHub + Supabase + Cloudflare + GitHub Actions
 
 ## Build & Test Commands
 
 ```bash
-# Core Pipeline
-python -m pytest tests/ -v                    # Run all tests
-python src/pipeline/orchestrator.py           # Run 12-stage pipeline
+# Python (agents, scrapers)
+python -m pytest tests/ -v              # Run all tests
+python -m black src/ --check            # Check formatting
+python -m flake8 src/                   # Lint code
 
-# Individual Stages
-python src/scrapers/county_scraper.py         # County records
-python src/scrapers/zoning_scraper.py         # Zoning data
-python src/analysis/setback_calculator.py     # Setback analysis
-python src/analysis/utility_checker.py        # Utility availability
-
-# GitHub Actions
-gh workflow run site_analysis.yml             # Full analysis
-gh workflow run permit_check.yml              # Permit status
-
-# Deployment
-gh workflow run deploy.yml                    # Deploy to Cloudflare
+# GitHub Actions (production)
+gh workflow run discovery.yml           # Trigger discovery stage
+gh workflow run insert_insight.yml      # Insert to Supabase
+gh run list --limit=5                   # Check workflow status
 ```
-
----
-
-## Architecture
-
-### 12-Stage Pipeline
-```
-Discovery → Parcel Data → Zoning → Setbacks → Utilities →
-Environmental → Survey → Engineering → Permit Prep → Submission → Review → Approval
-```
-
-### Key Directories
-```
-projects/
-├── bliss-palm-bay/     # First project (2835546)
-└── [future projects]/
-
-src/
-├── scrapers/           # County, zoning, utility scrapers
-├── pipeline/           # Orchestrator, stage handlers
-├── analysis/           # Setback, utility, environmental
-├── reports/            # PDF/DOCX generation
-└── api/                # Cloudflare Workers endpoints
-
-.github/workflows/      # GitHub Actions automation
-tests/                  # pytest test suite
-```
-
-### Data Sources
-| Source | Purpose | Rate Limits |
-|--------|---------|-------------|
-| BCPAO | Parcel data, ownership | 50 req/min |
-| Brevard County GIS | Zoning, setbacks | 30 req/min |
-| FPL/Utilities | Utility availability | Manual check |
-| SJRWMD | Environmental permits | 20 req/min |
-| Brevard County | Permit portal | 20 req/min |
-
-### Database (Supabase)
-- **Host**: mocerqjnksmhcjzxrewo.supabase.co
-- **Tables**: projects, parcels, zoning_data, permit_status, activities
-
----
 
 ## Code Style
 
 ### Python
-- **Formatter**: Black (line length 100)
-- **Linter**: Ruff
-- **Type hints**: Required on all functions
-- **Async**: Use httpx for all HTTP requests
-- **Error handling**: Always catch and log, never silent failures
+- **Version**: Python 3.11+
+- **Formatting**: Black (88 char lines)
+- **Type hints**: Required
+- **Docstrings**: Google style
 
----
+## Architecture
 
-## Current Project
+### SPD 12-Stage Pipeline (Mirrors BidDeed.AI)
 
-### Bliss Palm Bay
-- **Parcel**: 2835546
-- **Status**: In progress
-- **Stage**: Discovery
+```
+Stage 1:  Discovery      → Find parcels needing site plans
+Stage 2:  Scraping       → BCPAO property data extraction
+Stage 3:  Zoning         → Verify zoning compatibility
+Stage 4:  Setbacks       → Calculate required setbacks
+Stage 5:  Utilities      → Check utility availability
+Stage 6:  Environmental  → Wetlands, flood zones, protected
+Stage 7:  Traffic        → Impact analysis requirements
+Stage 8:  Permits        → Required permit identification
+Stage 9:  Cost Est       → Development cost estimation
+Stage 10: Timeline       → Approval timeline projection
+Stage 11: Report Gen     → Site plan feasibility report
+Stage 12: Archive        → Historical data storage
+```
 
----
+### Directory Structure
 
-## Critical Rules
+```
+spd-site-plan-dev/
+├── src/
+│   ├── scrapers/           # Data collection
+│   │   ├── bcpao_scraper.py     # Property appraiser
+│   │   ├── zoning_scraper.py    # Zoning data
+│   │   └── permits_scraper.py   # Permit requirements
+│   ├── agents/             # LangGraph agents
+│   │   ├── discovery/           # Parcel identification
+│   │   └── analysis/            # Feasibility analysis
+│   └── utils/              # Shared utilities
+├── .github/workflows/      # GitHub Actions
+│   └── insert_insight.yml
+├── tests/                  # pytest tests
+└── reports/                # Generated reports
+```
 
-1. **NEVER ask execution questions** - Execute autonomously
-2. **Update PROJECT_STATE.json** - After every decision
-3. **No local curl for Supabase** - Use GitHub Actions workflows
-4. **Same stack as BidDeed.AI** - GitHub + Supabase + Cloudflare
+### First Project
+
+| Field | Value |
+|-------|-------|
+| Project Name | Bliss Palm Bay |
+| Parcel ID | 2835546 |
+| Status | Discovery |
+
+### External Services
+
+| Service | Purpose | Config |
+|---------|---------|--------|
+| Supabase | Database (mocerqjnksmhcjzxrewo) | GitHub Secrets |
+| GitHub Actions | Compute | .github/workflows/ |
+| BCPAO | Property data | Public API |
+
+## Supabase Tables
+
+| Table | Purpose |
+|-------|---------|
+| `spd_projects` | Active site plan projects |
+| `spd_parcels` | Parcel analysis data |
+| `spd_permits` | Permit requirements |
+| `insights` | Pipeline logging |
+
+## Project Rules
+
+### NEVER
+- Store API keys in code
+- Guess zoning requirements
+- Skip environmental checks
+- Assume permit requirements
+
+### ALWAYS
+- Verify with official county sources
+- Log all decisions to Supabase
+- Update PROJECT_STATE.json
+- Document assumptions
+
+## Brevard County Resources
+
+| Resource | URL | Purpose |
+|----------|-----|---------|
+| BCPAO | bcpao.us | Property data |
+| Brevard County | brevardfl.gov | Permits, zoning |
+| GIS | gis.brevardfl.gov | Maps, boundaries |
+
+## Integration with BidDeed.AI
+
+- Shares Supabase database
+- Same GitHub Actions patterns
+- Compatible scraper architecture
+- Reuses BCPAO integration
