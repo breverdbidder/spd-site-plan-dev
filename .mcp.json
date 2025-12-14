@@ -1,0 +1,57 @@
+{
+  "name": "spd-site-plan-mcp",
+  "version": "1.0.0",
+  "description": "SPD Site Plan Development - Agentic AI Pipeline MCP Tools",
+  "server": {
+    "module": "src.mcp.spd_mcp",
+    "class": "mcp"
+  },
+  "tools": {
+    "count": 12,
+    "list": [
+      "analyze_parcel",
+      "get_zoning",
+      "calculate_setbacks",
+      "check_utilities",
+      "check_environmental",
+      "get_project_status",
+      "advance_stage",
+      "generate_report",
+      "submit_permit",
+      "track_review",
+      "log_activity",
+      "get_pipeline_status"
+    ]
+  },
+  "environment": {
+    "required": [
+      "GITHUB_TOKEN",
+      "SUPABASE_URL",
+      "SUPABASE_KEY"
+    ],
+    "optional": [
+      "GOOGLE_API_KEY",
+      "ANTHROPIC_API_KEY"
+    ]
+  },
+  "integrations": {
+    "supabase": {
+      "host": "mocerqjnksmhcjzxrewo.supabase.co",
+      "tables": [
+        "projects",
+        "parcels",
+        "zoning_data",
+        "permit_status",
+        "activities"
+      ]
+    },
+    "bcpao": {
+      "base_url": "https://www.bcpao.us",
+      "rate_limit": "50/min"
+    },
+    "brevard_county": {
+      "gis": "https://gis.brevardfl.gov",
+      "permits": "https://permits.brevardfl.gov"
+    }
+  }
+}
