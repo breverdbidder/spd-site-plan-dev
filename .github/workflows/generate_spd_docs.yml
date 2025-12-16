@@ -1,0 +1,130 @@
+name: Generate SPD Documents
+
+on:
+  workflow_dispatch:
+    inputs:
+      project_id:
+        description: 'SPD Project ID (e.g., SPD-2025-001)'
+        required: true
+        type: string
+      address:
+        description: 'Property Address'
+        required: true
+        type: string
+      parcel_id:
+        description: 'Parcel ID'
+        required: true
+        type: string
+      current_zoning:
+        description: 'Current Zoning'
+        required: true
+        type: string
+      requested_zoning:
+        description: 'Requested Zoning'
+        required: true
+        type: string
+      proposed_units:
+        description: 'Proposed Units'
+        required: true
+        type: number
+      document_type:
+        description: 'Document type to generate'
+        required: true
+        type: choice
+        options:
+          - all
+          - pre_app_analysis
+          - meeting_agenda_attorney
+
+jobs:
+  generate-documents:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Install dependencies
+        run: npm install docx
+        
+      - name: Create output directory
+        run: mkdir -p outputs
+        
+      - name: Generate project data JSON
+        run: |
+          cat << 'JSONEOF' > project_data.json
+          {
+            "projectId": "${{ github.event.inputs.project_id }}",
+            "address": "${{ github.event.inputs.address }}",
+            "parcelId": "${{ github.event.inputs.parcel_id }}",
+            "currentZoning": "${{ github.event.inputs.current_zoning }}",
+            "requestedZoning": "${{ github.event.inputs.requested_zoning }}",
+            "proposedUnits": ${{ github.event.inputs.proposed_units }},
+            "developer": {
+              "name": "Mariam Shapira",
+              "title": "Developer & Licensed GC"
+            }
+          }
+          JSONEOF
+          
+      - name: Generate Pre-App Analysis
+        if: ${{ github.event.inputs.document_type == 'all' || github.event.inputs.document_type == 'pre_app_analysis' }}
+        run: |
+          node -e "
+          const { generatePreAppAnalysis } = require('./skills/spd_docx/templates/pre_app_analysis.js');
+          const project = require('./project_data.json');
+          generatePreAppAnalysis(project, './outputs/${project.projectId}_PreApp_Analysis.docx');
+          "
+          
+      - name: Generate Attorney Meeting Agenda
+        if: ${{ github.event.inputs.document_type == 'all' || github.event.inputs.document_type == 'meeting_agenda_attorney' }}
+        run: |
+          node -e "
+          const { generateMeetingAgendaAttorney } = require('./skills/spd_docx/templates/meeting_agenda_attorney.js');
+          const project = require('./project_data.json');
+          generateMeetingAgendaAttorney(project, './outputs/${project.projectId}_Meeting_Agenda_Attorney.docx');
+          "
+          
+      - name: Upload documents as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: spd-documents-${{ github.event.inputs.project_id }}
+          path: outputs/*.docx
+          retention-days: 30
+          
+      - name: Commit documents to repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          mkdir -p projects/${{ github.event.inputs.project_id }}/documents
+          cp outputs/*.docx projects/${{ github.event.inputs.project_id }}/documents/
+          git add projects/
+          git commit -m "Generated documents for ${{ github.event.inputs.project_id }}" || echo "No changes to commit"
+          git push
+          
+      - name: Log to Supabase
+        if: success()
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          curl -s -X POST "$SUPABASE_URL/rest/v1/insights" \
+            -H "apikey: $SUPABASE_KEY" \
+            -H "Authorization: Bearer $SUPABASE_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "category": "spd_documents",
+              "content": "Generated SPD documents for ${{ github.event.inputs.project_id }}",
+              "source": "github-actions",
+              "metadata": {
+                "project_id": "${{ github.event.inputs.project_id }}",
+                "address": "${{ github.event.inputs.address }}",
+                "document_type": "${{ github.event.inputs.document_type }}",
+                "generated_at": "'$(date -u +%Y-%m-%dT%H:%M:%SZ)'"
+              }
+            }'
