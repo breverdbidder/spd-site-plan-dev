@@ -1,0 +1,125 @@
+{
+  "project_id": "SPD-2025-002",
+  "project_name": "Sandy Pines Multifamily",
+  "stage": 2,
+  "stage_name": "Survey Analysis",
+  "completed_at": "2025-12-16T14:25:00Z",
+  "status": "COMPLETED",
+  
+  "survey_source": {
+    "file": "Survey_Sandy_Pines_MultiFamily_251216_091543.pdf",
+    "surveyor": "Kevin A. Smith, PSM #7436",
+    "date": "2024-08-26",
+    "scale": "1 inch = 30 feet"
+  },
+  
+  "boundary_analysis": {
+    "north_boundary": {
+      "bearing": "N00°28'46\"E",
+      "distance": "200.00 ft (Record)",
+      "notes": "Along Sandy Pines Drive NE"
+    },
+    "east_boundary": {
+      "bearing": "S89°31'14\"E",
+      "distance": "200.00 ft (Record)",
+      "notes": "Tax Parcel 47 adjacent"
+    },
+    "south_boundary": {
+      "bearing": "S00°28'46\"W",
+      "distance": "277.15 ft (R&M)",
+      "notes": "Irregular - follows radial easement"
+    },
+    "west_boundary": {
+      "notes": "Sandy Pines Drive NE frontage"
+    }
+  },
+  
+  "easement_analysis": {
+    "wellhead_protection_easement": {
+      "type": "Radial/Circular",
+      "radius_ft": 200,
+      "center": "City of Palm Bay supply well",
+      "area_of_circle_sf": 125664,
+      "estimated_overlap_with_parcel_sf": 22000,
+      "estimated_overlap_percentage": 47,
+      "legal_basis": "Florida DEP Chapter 62-521 FAC - Wellhead Protection",
+      "restrictions": [
+        "No new impervious surfaces within 200 ft",
+        "No new construction within 200 ft",
+        "No regulated substances storage",
+        "Open space and recreation permitted",
+        "Existing SFR uses grandfathered"
+      ]
+    },
+    "other_easements": {
+      "utility_easements": "Standard utility easements along road frontage",
+      "drainage": "Check for stormwater easements"
+    }
+  },
+  
+  "buildable_area_calculation": {
+    "total_parcel_sf": 46394,
+    "easement_encumbered_sf": 22000,
+    "remaining_buildable_sf": 24394,
+    "remaining_buildable_acres": 0.56,
+    "setback_deductions": {
+      "front_25ft": 5000,
+      "side_15ft_each": 4000,
+      "rear_25ft": 5000,
+      "total_setback_area": 14000
+    },
+    "net_buildable_envelope_sf": 10394,
+    "net_buildable_envelope_note": "Approximate - exact calculation requires CAD analysis"
+  },
+  
+  "topography": {
+    "elevation_range": "Relatively flat",
+    "drainage_direction": "TBD - site visit recommended",
+    "flood_zone": "VERIFY on Palm Bay GIS"
+  },
+  
+  "existing_conditions": {
+    "improvements": "Vacant land",
+    "vegetation": "Natural/undeveloped",
+    "utilities_available": {
+      "water": "City of Palm Bay (well on adjacent/easement area)",
+      "sewer": "City of Palm Bay",
+      "electric": "FPL",
+      "gas": "Not available"
+    }
+  },
+  
+  "survey_findings_for_development": {
+    "critical_issues": [
+      "Wellhead easement eliminates ~47% of parcel from development",
+      "Irregular southern boundary due to radial easement",
+      "Buildable area concentrated in northern portion near road"
+    ],
+    "opportunities": [
+      "Easement area can potentially serve as open space/parking",
+      "Road frontage preserved for building access",
+      "Utilities available from city"
+    ]
+  },
+  
+  "action_items": [
+    {
+      "priority": "CRITICAL",
+      "action": "Get exact easement boundary coordinates from city",
+      "contact": "Tim Roberts, Palm Bay Utilities"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Confirm permitted uses within easement zone",
+      "verify": "Parking, landscaping, stormwater retention"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Verify flood zone on Palm Bay GIS",
+      "url": "https://gis.palmbayflorida.org"
+    }
+  ],
+  
+  "creator": "Ariel Shapira, Solo Founder",
+  "organization": "Everest Capital USA"
+}
