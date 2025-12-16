@@ -1,0 +1,107 @@
+{
+  "project_id": "SPD-2025-002",
+  "project_name": "Sandy Pines Multifamily",
+  "stage": 6,
+  "stage_name": "Traffic Impact Analysis",
+  "completed_at": "2025-12-16T14:55:00Z",
+  "status": "COMPLETED",
+  
+  "ite_trip_generation": {
+    "source": "ITE Trip Generation Manual, 11th Edition",
+    "land_use_code": "220 - Multifamily Housing (Low-Rise)",
+    "trip_rates": {
+      "weekday_daily": 7.32,
+      "am_peak_hour": 0.46,
+      "pm_peak_hour": 0.56
+    }
+  },
+  
+  "trip_generation_scenarios": {
+    "scenario_A_6_units": {
+      "units": 6,
+      "daily_trips": 44,
+      "am_peak_trips": 3,
+      "pm_peak_trips": 4,
+      "traffic_study_required": false,
+      "rationale": "Below typical 100 peak hour trip threshold"
+    },
+    "scenario_B_8_units": {
+      "units": 8,
+      "daily_trips": 59,
+      "am_peak_trips": 4,
+      "pm_peak_trips": 5,
+      "traffic_study_required": false,
+      "rationale": "Below typical 100 peak hour trip threshold"
+    },
+    "scenario_C_11_units": {
+      "units": 11,
+      "daily_trips": 81,
+      "am_peak_trips": 5,
+      "pm_peak_trips": 6,
+      "traffic_study_required": false,
+      "rationale": "Below typical 100 peak hour trip threshold"
+    },
+    "scenario_D_full_buildout_20_units": {
+      "units": 20,
+      "daily_trips": 146,
+      "am_peak_trips": 9,
+      "pm_peak_trips": 11,
+      "traffic_study_required": "VERIFY - may require traffic letter",
+      "rationale": "Still below 100 peak hour but city may request analysis"
+    }
+  },
+  
+  "palm_bay_requirements": {
+    "traffic_study_threshold": "100+ peak hour trips typically",
+    "traffic_letter_threshold": "50-100 peak hour trips - letter may suffice",
+    "contact": {
+      "department": "Palm Bay Public Works",
+      "phone": "(321) 952-3420"
+    },
+    "concurrency_requirement": "Must demonstrate adequate roadway capacity"
+  },
+  
+  "site_access_analysis": {
+    "frontage_road": "Sandy Pines Dr NE",
+    "road_classification": "Local residential street",
+    "access_point": "Single driveway from Sandy Pines Dr NE",
+    "sight_distance": "Adequate - flat terrain, straight road segment",
+    "turn_lanes": "Not required for this scale",
+    "sidewalk": "Required connection to public sidewalk system"
+  },
+  
+  "fire_access": {
+    "requirement": "20-foot wide fire lane minimum",
+    "turnaround": "Required if dead-end exceeds 150 feet",
+    "hydrant_access": "Verify nearest hydrant location",
+    "contact": {
+      "department": "Palm Bay Fire Marshal",
+      "phone": "(321) 952-3440"
+    }
+  },
+  
+  "phase_1_traffic_summary": {
+    "units": "6-8",
+    "daily_trips": "44-59",
+    "peak_hour_trips": "4-5",
+    "impact": "MINIMAL",
+    "study_required": "NO - traffic letter at most",
+    "conclusion": "No significant traffic concerns for Phase 1"
+  },
+  
+  "action_items": [
+    {
+      "priority": "LOW",
+      "action": "Confirm traffic study threshold with Palm Bay at pre-app",
+      "expected": "No study required for 6-8 units"
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Verify fire access requirements with Fire Marshal",
+      "for": "Site plan design"
+    }
+  ],
+  
+  "creator": "Ariel Shapira, Solo Founder",
+  "organization": "Everest Capital USA"
+}
