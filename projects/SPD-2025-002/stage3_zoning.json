@@ -1,0 +1,132 @@
+{
+  "project_id": "SPD-2025-002",
+  "project_name": "Sandy Pines Multifamily",
+  "stage": 3,
+  "stage_name": "Zoning Analysis - CONSTRAINED SCENARIO",
+  "completed_at": "2025-12-16T14:30:00Z",
+  "status": "COMPLETED",
+  
+  "current_zoning_verification": {
+    "status": "REQUIRES_CONFIRMATION",
+    "likely_current_zoning": "RM-10 or RM-15",
+    "note": "October 2024 citywide rezoning converted 361 acres from RM-10 to RM-15 - verify if this parcel was included",
+    "verification_url": "https://gis.palmbayflorida.org",
+    "contact": {
+      "department": "Palm Bay Land Development",
+      "phone": "(321) 733-3042",
+      "email": "landdevelopmentweb@pbfl.org"
+    }
+  },
+  
+  "zoning_scenarios": {
+    "scenario_A_RM10_full_parcel": {
+      "density": "10 units/acre",
+      "parcel_acres": 1.065,
+      "max_units": 10,
+      "applicable": false,
+      "reason": "Does not account for easement constraint"
+    },
+    "scenario_B_RM10_constrained": {
+      "density": "10 units/acre",
+      "buildable_acres": 0.56,
+      "max_units": 5,
+      "height_limit_ft": 35,
+      "stories": 3,
+      "applicable": true,
+      "assessment": "Very limited - barely viable for multifamily"
+    },
+    "scenario_C_RM15_constrained": {
+      "density": "15 units/acre",
+      "buildable_acres": 0.56,
+      "max_units": 8,
+      "height_limit_ft": 40,
+      "stories": "3-4",
+      "applicable": true,
+      "assessment": "Marginal - may support 8-plex"
+    },
+    "scenario_D_RM20_constrained": {
+      "density": "20 units/acre",
+      "buildable_acres": 0.56,
+      "max_units": 11,
+      "height_limit_note": "Controlled by setback-height rule",
+      "stories": "3-4",
+      "applicable": true,
+      "assessment": "Best case for multifamily - requires rezoning"
+    }
+  },
+  
+  "dimensional_standards_RM20": {
+    "min_lot_area_sf": 10000,
+    "setbacks": {
+      "front_ft": 25,
+      "side_interior_ft": 15,
+      "side_corner_ft": 25,
+      "rear_ft": 25,
+      "height_rule": "Setback OR building height, whichever is greater"
+    },
+    "building_separation_ft": 30,
+    "parking_setback_ft": 10,
+    "lot_coverage_max_pct": 35
+  },
+  
+  "rezoning_analysis": {
+    "current_zoning": "RM-10 (verify)",
+    "target_zoning": "RM-20",
+    "rezoning_required": true,
+    "feasibility_with_easement": "QUESTIONABLE",
+    "rationale": "Even with RM-20, only ~11 units achievable - may not justify rezoning effort",
+    "alternative": "Develop under RM-10/RM-15 without rezoning"
+  },
+  
+  "development_scenarios_comparison": {
+    "option_1_current_zoning_now": {
+      "zoning": "RM-10",
+      "units": 5,
+      "building_type": "Duplex + triplex OR 5-unit building",
+      "pros": ["No rezoning needed", "Faster to market"],
+      "cons": ["Limited units", "Lower total value"]
+    },
+    "option_2_rezone_to_RM20_now": {
+      "zoning": "RM-20",
+      "units": 11,
+      "building_type": "11-unit apartment",
+      "pros": ["More units than current zoning"],
+      "cons": ["Rezoning costs $3-7K", "4-6 month delay", "Still constrained by easement"]
+    },
+    "option_3_wait_10_years": {
+      "zoning": "RM-20 (after easement vacated)",
+      "units": 21,
+      "building_type": "20+ unit apartment complex",
+      "pros": ["Full density potential"],
+      "cons": ["10 year wait", "Carrying costs", "Market uncertainty"]
+    },
+    "option_4_phased_development": {
+      "phase_1_now": {
+        "zoning": "RM-10 or RM-15",
+        "units": "5-8",
+        "building_type": "Small multifamily"
+      },
+      "phase_2_10_years": {
+        "zoning": "RM-20",
+        "additional_units": "8-12",
+        "building_type": "Additional building on freed easement area"
+      },
+      "total_units": "13-20",
+      "pros": ["Cash flow now", "Preserves upside", "Lower risk"],
+      "cons": ["Requires Development Agreement", "Complex planning"]
+    }
+  },
+  
+  "recommended_scenario": "option_4_phased_development",
+  
+  "pre_app_questions_zoning": [
+    "Is this parcel currently RM-10 or RM-15?",
+    "Was it included in October 2024 citywide rezoning?",
+    "What is city's appetite for RM-20 rezoning given constraints?",
+    "Will city support phased site plan approval?",
+    "Can Development Agreement guarantee future expansion rights?"
+  ],
+  
+  "creator": "Ariel Shapira, Solo Founder",
+  "organization": "Everest Capital USA"
+}
