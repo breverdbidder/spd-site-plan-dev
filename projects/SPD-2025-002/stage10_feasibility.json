@@ -1,0 +1,250 @@
+{
+  "project_id": "SPD-2025-002",
+  "project_name": "Sandy Pines Multifamily",
+  "stage": 10,
+  "stage_name": "Feasibility & Highest Best Use Analysis",
+  "completed_at": "2025-12-16T14:35:00Z",
+  "status": "COMPLETED",
+  
+  "constraint_summary": {
+    "primary_constraint": "200-foot wellhead protection easement",
+    "constraint_duration": "~10 years until well abandonment",
+    "buildable_area_reduction": "47% of parcel encumbered",
+    "effective_buildable_acres": 0.56
+  },
+  
+  "highest_best_use_analysis": {
+    "methodology": "Four-test HBU analysis (Legally Permissible, Physically Possible, Financially Feasible, Maximally Productive)",
+    
+    "test_1_legally_permissible": {
+      "current_zoning": "RM-10 (verify - may be RM-15)",
+      "permitted_uses": [
+        "Single-family residential",
+        "Two-family (duplex)",
+        "Multi-family (with conditions)",
+        "Open space"
+      ],
+      "easement_restrictions": "No new construction within 200-ft wellhead zone",
+      "conclusion": "Multifamily legally permissible OUTSIDE easement zone"
+    },
+    
+    "test_2_physically_possible": {
+      "buildable_area_sf": 24394,
+      "net_after_setbacks_sf": 10394,
+      "building_footprint_achievable": "3,000-4,000 SF",
+      "parking_location": "May use easement area (VERIFY)",
+      "access": "Direct from Sandy Pines Dr NE",
+      "utilities": "Available from city",
+      "conclusion": "5-8 unit building physically possible"
+    },
+    
+    "test_3_financially_feasible": {
+      "scenarios_analyzed": [
+        {
+          "name": "5-Unit RM-10 Now",
+          "units": 5,
+          "unit_mix": {"2BR": 3, "3BR": 2},
+          "gross_sf": 5000,
+          "construction_cost": 875000,
+          "soft_costs": 125000,
+          "total_development_cost": 1000000,
+          "monthly_rent_2BR": 1650,
+          "monthly_rent_3BR": 1900,
+          "gross_annual_rent": 100800,
+          "vacancy_5pct": 5040,
+          "effective_gross": 95760,
+          "expenses_35pct": 33516,
+          "noi": 62244,
+          "cap_rate": 6.22,
+          "feasibility": "MARGINAL"
+        },
+        {
+          "name": "8-Unit RM-15 Now",
+          "units": 8,
+          "unit_mix": {"1BR": 2, "2BR": 4, "3BR": 2},
+          "gross_sf": 7200,
+          "construction_cost": 1260000,
+          "soft_costs": 175000,
+          "total_development_cost": 1435000,
+          "monthly_rent_1BR": 1400,
+          "monthly_rent_2BR": 1650,
+          "monthly_rent_3BR": 1900,
+          "gross_annual_rent": 157200,
+          "vacancy_5pct": 7860,
+          "effective_gross": 149340,
+          "expenses_35pct": 52269,
+          "noi": 97071,
+          "cap_rate": 6.77,
+          "feasibility": "FEASIBLE"
+        },
+        {
+          "name": "11-Unit RM-20 Rezoned",
+          "units": 11,
+          "unit_mix": {"1BR": 3, "2BR": 6, "3BR": 2},
+          "gross_sf": 9900,
+          "construction_cost": 1732500,
+          "soft_costs": 225000,
+          "rezoning_cost": 5000,
+          "total_development_cost": 1962500,
+          "gross_annual_rent": 216000,
+          "vacancy_5pct": 10800,
+          "effective_gross": 205200,
+          "expenses_35pct": 71820,
+          "noi": 133380,
+          "cap_rate": 6.80,
+          "feasibility": "FEASIBLE - if rezoning approved"
+        },
+        {
+          "name": "Phased: 6 Now + 10 Later",
+          "phase_1_units": 6,
+          "phase_1_cost": 1100000,
+          "phase_1_noi": 75000,
+          "phase_1_cap_rate": 6.82,
+          "phase_2_units": 10,
+          "phase_2_cost": 1800000,
+          "phase_2_noi": 125000,
+          "phase_2_cap_rate": 6.94,
+          "total_units": 16,
+          "total_investment": 2900000,
+          "total_noi": 200000,
+          "blended_cap_rate": 6.90,
+          "feasibility": "BEST RISK-ADJUSTED RETURN"
+        }
+      ],
+      "conclusion": "8-unit RM-15 or Phased development most feasible"
+    },
+    
+    "test_4_maximally_productive": {
+      "options_ranked": [
+        {
+          "rank": 1,
+          "option": "Phased Development (6 now + 10 later)",
+          "total_value_at_6_cap": 3333333,
+          "total_investment": 2900000,
+          "equity_created": 433333,
+          "irr_estimate": "12-15%",
+          "notes": "Best balance of current income and future upside"
+        },
+        {
+          "rank": 2,
+          "option": "Wait 10 Years for Full Development",
+          "total_value_at_6_cap": 4700000,
+          "total_investment_pv": 4200000,
+          "equity_created": 500000,
+          "irr_estimate": "8-10%",
+          "notes": "Higher absolute value but 10-year wait erodes IRR"
+        },
+        {
+          "rank": 3,
+          "option": "11-Unit RM-20 Now (rezoned)",
+          "total_value_at_6_cap": 2223000,
+          "total_investment": 1962500,
+          "equity_created": 260500,
+          "irr_estimate": "10-12%",
+          "notes": "Good if rezoning approved quickly"
+        },
+        {
+          "rank": 4,
+          "option": "8-Unit RM-15 Now",
+          "total_value_at_6_cap": 1617850,
+          "total_investment": 1435000,
+          "equity_created": 182850,
+          "irr_estimate": "9-11%",
+          "notes": "Lower risk, faster execution"
+        },
+        {
+          "rank": 5,
+          "option": "5-Unit RM-10 Now",
+          "total_value_at_6_cap": 1037400,
+          "total_investment": 1000000,
+          "equity_created": 37400,
+          "irr_estimate": "6-8%",
+          "notes": "Marginal returns - not recommended"
+        },
+        {
+          "rank": 6,
+          "option": "Single-Family Development",
+          "total_value": 800000,
+          "total_investment": 700000,
+          "equity_created": 100000,
+          "notes": "Lowest and best use for residential lot"
+        }
+      ]
+    }
+  },
+  
+  "highest_best_use_conclusion": {
+    "determination": "PHASED MULTIFAMILY DEVELOPMENT",
+    "phase_1": "6-8 unit building on buildable area (current zoning or RM-15)",
+    "phase_2": "Additional 8-12 units when easement vacated (~10 years)",
+    "total_units": "14-20 units at full buildout",
+    "rationale": [
+      "Generates immediate cash flow vs. 10-year hold",
+      "Preserves future development rights",
+      "Lower execution risk than waiting",
+      "Better IRR than single development approaches"
+    ],
+    "key_requirement": "Development Agreement with City guaranteeing Phase 2 rights"
+  },
+  
+  "risk_factors": [
+    {
+      "risk": "City denies Development Agreement",
+      "probability": "MEDIUM",
+      "impact": "HIGH",
+      "mitigation": "Negotiate at pre-app, engage land use attorney"
+    },
+    {
+      "risk": "Well abandonment delayed beyond 10 years",
+      "probability": "MEDIUM",
+      "impact": "MEDIUM",
+      "mitigation": "Get timeline in writing, monitor RO plant progress"
+    },
+    {
+      "risk": "Construction costs escalate",
+      "probability": "HIGH",
+      "impact": "MEDIUM",
+      "mitigation": "Lock GC contract early, value engineering"
+    },
+    {
+      "risk": "Rezoning denied (if pursuing RM-20)",
+      "probability": "LOW-MEDIUM",
+      "impact": "MEDIUM",
+      "mitigation": "Develop under current zoning if denied"
+    }
+  ],
+  
+  "ml_feasibility_score": {
+    "raw_score": 58.5,
+    "max_score": 100,
+    "grade": "C",
+    "recommendation": "PROCEED_WITH_PHASED_APPROACH",
+    "comparison_to_unconstrained": "Original SPD-2025-001 scored 63.3 without easement consideration. Actual constrained score is 58.5 - an 8% reduction."
+  },
+  
+  "action_items": [
+    {
+      "priority": "CRITICAL",
+      "action": "Confirm city appetite for Development Agreement at pre-app meeting",
+      "deadline": "December 16, 2025"
+    },
+    {
+      "priority": "CRITICAL",
+      "action": "Verify permitted uses in easement (parking, landscaping)",
+      "deadline": "December 16, 2025"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Get construction cost estimates for 6-8 unit building",
+      "deadline": "January 2026"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Engage land use attorney for Development Agreement",
+      "deadline": "January 2026"
+    }
+  ],
+  
+  "creator": "Ariel Shapira, Solo Founder",
+  "organization": "Everest Capital USA"
+}
