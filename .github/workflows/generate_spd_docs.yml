@@ -36,6 +36,9 @@ on:
           - pre_app_analysis
           - meeting_agenda_attorney
 
+permissions:
+  contents: write
+
 jobs:
   generate-documents:
     runs-on: ubuntu-latest
@@ -43,6 +46,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT || github.token }}
         
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -109,11 +114,11 @@ jobs:
           mkdir -p projects/${{ github.event.inputs.project_id }}/documents
           cp outputs/*.docx projects/${{ github.event.inputs.project_id }}/documents/
           git add projects/
-          git commit -m "Generated documents for ${{ github.event.inputs.project_id }}" || echo "No changes to commit"
-          git push
+          git diff --staged --quiet || git commit -m "Generated documents for ${{ github.event.inputs.project_id }}"
+          git push || echo "Push failed - documents available as artifacts"
           
       - name: Log to Supabase
-        if: success()
+        if: always()
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
@@ -130,5 +135,5 @@ jobs:
               "priority": "Medium",
               "status": "Active",
               "source": "github-actions-spd",
-              "action_taken": "Documents saved to projects/${{ github.event.inputs.project_id }}/documents/"
-            }'
+              "action_taken": "Documents available as artifacts and in projects/${{ github.event.inputs.project_id }}/documents/"
+            }' || echo "Supabase logging failed"
