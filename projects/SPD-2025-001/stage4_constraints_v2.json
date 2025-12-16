@@ -1,0 +1,162 @@
+{
+  "project_id": "SPD-2025-001",
+  "project_name": "Bliss Palm Bay (Sandy Pines)",
+  "stage": 4,
+  "stage_name": "Site Constraints - REVISED",
+  "completed_at": "2025-12-16T14:00:00Z",
+  "status": "CRITICAL_UPDATE",
+  "version": "2.0",
+  "revision_reason": "Wellhead protection easement discovered post-initial analysis",
+  
+  "CRITICAL_CONSTRAINT": {
+    "type": "Wellhead Protection Zone",
+    "source": "Tim Roberts, Palm Bay Utilities (September 11, 2025)",
+    "regulation": "Florida DEP Chapter 62-521 F.A.C.",
+    "description": "200-foot radius wellhead protection easement around City of Palm Bay supply well",
+    "status": "CANNOT BE VACATED",
+    "timeline_to_remove": "Approximately 10 years",
+    "reason": "City designing new RO water treatment plant using Floridan Aquifer wells",
+    "impact_assessment": "SEVERE - reduces buildable area by approximately 50%"
+  },
+  
+  "wellhead_protection_details": {
+    "well_type": "Public water supply well (surficial aquifer)",
+    "well_owner": "City of Palm Bay Utilities",
+    "protection_radius_ft": 200,
+    "protection_area_sf": 125664,
+    "overlap_with_parcel_sf_estimated": 22000,
+    "overlap_percentage": 47,
+    
+    "restrictions_per_fl_dep": {
+      "inner_zone_200ft": {
+        "permitted_uses": [
+          "Well-associated activities",
+          "Existing single-family residential",
+          "Open space",
+          "Recreation facilities (non-impervious)"
+        ],
+        "prohibited_uses": [
+          "New construction (buildings)",
+          "New impervious surfaces",
+          "Regulated substance storage",
+          "Underground storage tanks",
+          "Septic systems"
+        ]
+      },
+      "outer_zone_500ft": {
+        "additional_restrictions": "Performance standards for certain activities",
+        "note": "Most of parcel likely within outer zone as well"
+      }
+    },
+    
+    "city_response_summary": {
+      "contact": "Tim Roberts, Palm Bay Utilities",
+      "date": "2025-09-11",
+      "key_points": [
+        "Radial easement required for wellhead protection",
+        "Cannot vacate until well abandonment",
+        "New RO plant under design/construction",
+        "Uses Floridan Aquifer wells (deeper)",
+        "Timeline: approximately 10 years"
+      ],
+      "original_request": "Mariam requested easement vacation or land swap",
+      "city_position": "Cannot accommodate - regulatory requirement"
+    }
+  },
+  
+  "buildable_area_analysis": {
+    "total_parcel_sf": 46394,
+    "total_parcel_acres": 1.065,
+    
+    "deductions": {
+      "wellhead_easement_sf": 22000,
+      "setbacks_estimated_sf": 3000,
+      "fpl_easement_sf": 1500,
+      "tract_o_easement_sf": 1000,
+      "total_deductions_sf": 27500
+    },
+    
+    "net_buildable_sf": 18894,
+    "net_buildable_acres": 0.434,
+    "buildable_percentage": 40.7,
+    
+    "uses_permitted_in_easement": {
+      "parking": "VERIFY - likely yes (non-regulated use)",
+      "landscaping": "Yes",
+      "stormwater_pond": "VERIFY - may be permitted",
+      "access_drive": "VERIFY - depends on surface type"
+    }
+  },
+  
+  "comparison_before_after": {
+    "without_easement_constraint": {
+      "buildable_area_sf": 40000,
+      "buildable_area_acres": 0.92,
+      "max_units_rm20": 21,
+      "building_footprint_possible_sf": 7000,
+      "parking_spaces_possible": 45
+    },
+    "with_easement_constraint": {
+      "buildable_area_sf": 18894,
+      "buildable_area_acres": 0.434,
+      "max_units_rm20": 10,
+      "building_footprint_possible_sf": 3500,
+      "parking_spaces_possible": 25,
+      "note": "Parking may be placed in easement if permitted"
+    }
+  },
+  
+  "flood_zone_analysis": {
+    "status": "REQUIRES_VERIFICATION",
+    "verification_method": "Palm Bay GIS Flood Zone Map",
+    "url": "https://gis.palmbayflorida.org/portal/apps/webappviewer/index.html?id=90776cdea7fc4de7be8d436f4df9b28c",
+    "crs_rating": 7,
+    "insurance_discount": "15%"
+  },
+  
+  "endangered_species": {
+    "florida_scrub_jay": {
+      "status": "Federally Threatened",
+      "palm_bay_coverage": "30-year ITP",
+      "verification_required": "Check scrub-jay polygon"
+    },
+    "gopher_tortoise": {
+      "status": "State Threatened",
+      "survey_required": "Before any land clearing",
+      "not_covered_by_city_itp": true
+    }
+  },
+  
+  "action_items": [
+    {
+      "priority": "CRITICAL",
+      "action": "Confirm exact easement boundaries at pre-app meeting",
+      "deadline": "2025-12-16",
+      "status": "SCHEDULED"
+    },
+    {
+      "priority": "CRITICAL", 
+      "action": "Ask what uses ARE permitted in 200-ft zone (parking, stormwater)",
+      "deadline": "2025-12-16"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Request well abandonment timeline in writing from Utilities",
+      "deadline": "2025-12-20"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Ask about Development Agreement for future expansion rights",
+      "deadline": "2025-12-16"
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Contact Florida DEP about variance possibilities",
+      "contact": "FDEP Source & Drinking Water Program"
+    }
+  ],
+  
+  "creator": "Ariel Shapira, Solo Founder",
+  "organization": "Everest Capital USA",
+  "ai_architect": "Claude Opus 4.5"
+}
