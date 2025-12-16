@@ -57,7 +57,7 @@ jobs:
         
       - name: Generate project data JSON
         run: |
-          cat << 'JSONEOF' > project_data.json
+          cat > project_data.json << 'JSONEOF'
           {
             "projectId": "${{ github.event.inputs.project_id }}",
             "address": "${{ github.event.inputs.address }}",
@@ -65,12 +65,14 @@ jobs:
             "currentZoning": "${{ github.event.inputs.current_zoning }}",
             "requestedZoning": "${{ github.event.inputs.requested_zoning }}",
             "proposedUnits": ${{ github.event.inputs.proposed_units }},
+            "city": "Palm Bay",
             "developer": {
               "name": "Mariam Shapira",
               "title": "Developer & Licensed GC"
             }
           }
           JSONEOF
+          cat project_data.json
           
       - name: Generate Pre-App Analysis
         if: ${{ github.event.inputs.document_type == 'all' || github.event.inputs.document_type == 'pre_app_analysis' }}
@@ -78,7 +80,7 @@ jobs:
           node -e "
           const { generatePreAppAnalysis } = require('./skills/spd_docx/templates/pre_app_analysis.js');
           const project = require('./project_data.json');
-          generatePreAppAnalysis(project, './outputs/${project.projectId}_PreApp_Analysis.docx');
+          generatePreAppAnalysis(project, './outputs/' + project.projectId + '_PreApp_Analysis.docx');
           "
           
       - name: Generate Attorney Meeting Agenda
@@ -87,8 +89,11 @@ jobs:
           node -e "
           const { generateMeetingAgendaAttorney } = require('./skills/spd_docx/templates/meeting_agenda_attorney.js');
           const project = require('./project_data.json');
-          generateMeetingAgendaAttorney(project, './outputs/${project.projectId}_Meeting_Agenda_Attorney.docx');
+          generateMeetingAgendaAttorney(project, './outputs/' + project.projectId + '_Meeting_Agenda_Attorney.docx');
           "
+          
+      - name: List generated files
+        run: ls -la outputs/
           
       - name: Upload documents as artifacts
         uses: actions/upload-artifact@v4
@@ -113,18 +118,17 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         run: |
-          curl -s -X POST "$SUPABASE_URL/rest/v1/insights" \
+          curl -sk -X POST "$SUPABASE_URL/rest/v1/insights" \
             -H "apikey: $SUPABASE_KEY" \
             -H "Authorization: Bearer $SUPABASE_KEY" \
             -H "Content-Type: application/json" \
             -d '{
-              "category": "spd_documents",
-              "content": "Generated SPD documents for ${{ github.event.inputs.project_id }}",
-              "source": "github-actions",
-              "metadata": {
-                "project_id": "${{ github.event.inputs.project_id }}",
-                "address": "${{ github.event.inputs.address }}",
-                "document_type": "${{ github.event.inputs.document_type }}",
-                "generated_at": "'$(date -u +%Y-%m-%dT%H:%M:%SZ)'"
-              }
+              "user_id": 1,
+              "insight_type": "SPD_DOCUMENT_GENERATED",
+              "title": "SPD Documents Generated: ${{ github.event.inputs.project_id }}",
+              "description": "Generated ${{ github.event.inputs.document_type }} for ${{ github.event.inputs.address }}",
+              "priority": "Medium",
+              "status": "Active",
+              "source": "github-actions-spd",
+              "action_taken": "Documents saved to projects/${{ github.event.inputs.project_id }}/documents/"
             }'
