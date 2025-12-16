@@ -1,0 +1,146 @@
+{
+  "project_id": "SPD-2025-002",
+  "project_name": "Sandy Pines Multifamily",
+  "stage": 9,
+  "stage_name": "Site Layout - CONCEPTUAL",
+  "completed_at": "2025-12-16T15:10:00Z",
+  "status": "COMPLETED",
+  
+  "layout_constraints": {
+    "total_parcel_sf": 46394,
+    "easement_encumbered_sf": 22000,
+    "buildable_area_sf": 24394,
+    "setbacks": {
+      "front_ft": 25,
+      "side_ft": 15,
+      "rear_ft": 25
+    },
+    "parking_setback_ft": 10,
+    "building_height_limit_ft": 35
+  },
+  
+  "conceptual_layouts": {
+    "layout_A_conservative": {
+      "name": "All Development Outside Easement",
+      "building_location": "Northern portion of site near road",
+      "building_footprint_sf": 3000,
+      "stories": 2,
+      "units": 6,
+      "unit_types": {"2BR": 4, "3BR": 2},
+      "parking_location": "Between building and easement line",
+      "parking_spaces": 13,
+      "stormwater": "Eastern portion of buildable area",
+      "pros": ["No easement complications", "Simpler approval"],
+      "cons": ["Limited units", "Parking takes buildable area"]
+    },
+    "layout_B_optimized": {
+      "name": "Building Outside, Parking/Stormwater in Easement",
+      "building_location": "Northern portion, maximized footprint",
+      "building_footprint_sf": 4000,
+      "stories": 2,
+      "units": 8,
+      "unit_types": {"1BR": 2, "2BR": 4, "3BR": 2},
+      "parking_location": "Within easement area (REQUIRES APPROVAL)",
+      "parking_spaces": 17,
+      "stormwater": "Within easement area (REQUIRES APPROVAL)",
+      "pros": ["More units", "Better use of constrained land"],
+      "cons": ["Requires city approval for easement use"],
+      "status": "PREFERRED - pending pre-app confirmation"
+    },
+    "layout_C_phased": {
+      "name": "Phase 1 Now + Phase 2 Reserved",
+      "phase_1": {
+        "building_location": "Northern portion",
+        "building_footprint_sf": 3000,
+        "stories": 2,
+        "units": 6,
+        "parking": "13 spaces adjacent to building"
+      },
+      "phase_2_reserved": {
+        "location": "Southern portion (currently in easement)",
+        "potential_units": "8-10 additional",
+        "timing": "When well abandoned (~10 years)",
+        "parking_expansion": "Additional 16-20 spaces"
+      },
+      "total_buildout_units": "14-16",
+      "pros": ["Income now", "Preserves future value", "Development Agreement protection"],
+      "cons": ["Requires negotiation with city"],
+      "status": "RECOMMENDED APPROACH"
+    }
+  },
+  
+  "building_design_parameters": {
+    "recommended_building_type": "2-story garden-style apartments",
+    "rationale": [
+      "2 stories keeps height under setback-height rule",
+      "More efficient than 3-story for small unit count",
+      "Lower construction cost per SF",
+      "Better market acceptance in suburban Palm Bay"
+    ],
+    "unit_sizes": {
+      "1BR": "650-750 SF",
+      "2BR": "900-1000 SF",
+      "3BR": "1100-1200 SF"
+    },
+    "building_features": [
+      "Covered walkways/breezeways",
+      "Individual unit entries",
+      "Covered parking option",
+      "Central mailbox/package area"
+    ]
+  },
+  
+  "site_amenities_possible": {
+    "within_easement_if_approved": [
+      "Guest parking",
+      "Dog park/green space",
+      "Walking path",
+      "Community garden",
+      "Stormwater retention as amenity (dry pond with landscaping)"
+    ],
+    "outside_easement": [
+      "Building",
+      "Primary parking",
+      "Dumpster enclosure",
+      "Utility connections"
+    ]
+  },
+  
+  "access_and_circulation": {
+    "primary_access": "Single driveway from Sandy Pines Dr NE",
+    "driveway_width": "24 feet (two-way)",
+    "fire_lane": "20-foot minimum around building",
+    "pedestrian": "Sidewalk connection to public sidewalk",
+    "well_maintenance_access": "Preserve access route to city well"
+  },
+  
+  "landscaping_requirements": {
+    "multifamily_perimeter": "6-foot fence/wall required",
+    "fence_landscaping": "1 tree per 50 linear feet + 2-foot shrub row",
+    "interior_parking": "1 tree per 10 spaces",
+    "building_foundation": "Landscaping around building perimeter"
+  },
+  
+  "pre_app_site_plan_discussion_points": [
+    "Confirm easement boundary for layout purposes",
+    "Verify permitted uses in easement (parking, stormwater, green space)",
+    "Discuss phased development concept",
+    "Get feedback on preferred building orientation",
+    "Confirm setback measurements from easement vs. property line"
+  ],
+  
+  "next_steps": [
+    {
+      "action": "Prepare two conceptual site sketches for pre-app",
+      "version_1": "Layout A - conservative (all outside easement)",
+      "version_2": "Layout B - optimized (uses easement for parking)"
+    },
+    {
+      "action": "After pre-app: Engage architect for preliminary site plan",
+      "deliverable": "Scaled site plan showing building, parking, utilities, stormwater"
+    }
+  ],
+  
+  "creator": "Ariel Shapira, Solo Founder",
+  "organization": "Everest Capital USA"
+}
