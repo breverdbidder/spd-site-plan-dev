@@ -1,10 +1,10 @@
 {
-  "version": "1.0.12",
-  "last_updated": "2025-12-09T03:00:00Z",
+  "version": "1.0.13",
+  "last_updated": "2025-12-16T14:45:00Z",
   "projects": [
     {
       "id": "SPD-2025-001",
-      "name": "Bliss Palm Bay",
+      "name": "Bliss Palm Bay (SUPERSEDED)",
       "address": "2165 Sandy Pines Dr NE",
       "city": "Palm Bay",
       "state": "FL",
@@ -14,10 +14,11 @@
       "parcel_acres": 1.065,
       "current_stage": 12,
       "stage_name": "ARCHIVED",
-      "status": "COMPLETED",
+      "status": "SUPERSEDED",
       "ml_score": 63.3,
       "ml_grade": "C+",
-      "recommendation": "PROCEED_WITH_CAUTION",
+      "recommendation": "SUPERSEDED_BY_SPD-2025-002",
+      "notes": "This analysis did NOT account for 200-ft wellhead protection easement. See SPD-2025-002 for updated constrained analysis.",
       "stages_completed": [
         {"stage": 1, "name": "Discovery", "status": "COMPLETED"},
         {"stage": 2, "name": "Survey Analysis", "status": "COMPLETED"},
@@ -34,20 +35,80 @@
       ],
       "created_at": "2025-12-09T00:00:00Z",
       "completed_at": "2025-12-09T03:00:00Z"
+    },
+    {
+      "id": "SPD-2025-002",
+      "name": "Sandy Pines Multifamily (CONSTRAINED)",
+      "address": "2165 Sandy Pines Dr NE",
+      "city": "Palm Bay",
+      "state": "FL",
+      "account_id": "2835546",
+      "legal": "S½ of NE¼, Section 17, T28S, R37E",
+      "parcel_area_sf": 46394,
+      "parcel_acres": 1.065,
+      "buildable_area_sf": 24394,
+      "buildable_acres": 0.56,
+      "current_stage": 10,
+      "stage_name": "ML Feasibility Score",
+      "status": "IN_PROGRESS",
+      "ml_score": 58.5,
+      "ml_grade": "C",
+      "recommendation": "PROCEED_WITH_PHASED_APPROACH",
+      "critical_constraint": {
+        "type": "Wellhead Protection Easement",
+        "radius_ft": 200,
+        "impact": "47% of parcel encumbered",
+        "resolution_timeline": "~10 years",
+        "source": "Tim Roberts, Palm Bay Utilities, Sept 11 2025"
+      },
+      "highest_best_use": "Phased Multifamily Development (6-8 units now, 8-12 units in 10 years)",
+      "stages_completed": [
+        {"stage": 1, "name": "Discovery", "status": "COMPLETED"},
+        {"stage": 2, "name": "Survey Analysis", "status": "COMPLETED"},
+        {"stage": 3, "name": "Zoning Analysis", "status": "COMPLETED"},
+        {"stage": 4, "name": "Site Constraints", "status": "COMPLETED"},
+        {"stage": 10, "name": "ML Feasibility Score", "status": "COMPLETED"}
+      ],
+      "stages_pending": [
+        {"stage": 5, "name": "Parking Analysis", "status": "PENDING", "notes": "Pending confirmation of parking in easement"},
+        {"stage": 6, "name": "Traffic Impact", "status": "PENDING"},
+        {"stage": 7, "name": "Utilities Assessment", "status": "PENDING"},
+        {"stage": 8, "name": "Stormwater Analysis", "status": "PENDING"},
+        {"stage": 9, "name": "Site Layout", "status": "PENDING", "notes": "Depends on pre-app meeting results"},
+        {"stage": 11, "name": "Report Generation", "status": "IN_PROGRESS"},
+        {"stage": 12, "name": "Archive", "status": "PENDING"}
+      ],
+      "next_action": "Pre-Application Meeting December 16, 2025",
+      "created_at": "2025-12-16T14:00:00Z",
+      "updated_at": "2025-12-16T14:45:00Z"
     }
   ],
   "pipeline_stages": [
-    {"id": 1, "name": "Discovery", "status": "COMPLETED"},
-    {"id": 2, "name": "Survey Analysis", "status": "COMPLETED"},
-    {"id": 3, "name": "Zoning Analysis", "status": "COMPLETED"},
-    {"id": 4, "name": "Site Constraints", "status": "COMPLETED"},
-    {"id": 5, "name": "Parking Analysis", "status": "COMPLETED"},
-    {"id": 6, "name": "Traffic Impact", "status": "COMPLETED"},
-    {"id": 7, "name": "Utilities Assessment", "status": "COMPLETED"},
-    {"id": 8, "name": "Stormwater Analysis", "status": "COMPLETED"},
-    {"id": 9, "name": "Site Layout", "status": "COMPLETED"},
-    {"id": 10, "name": "ML Feasibility Score", "status": "COMPLETED"},
-    {"id": 11, "name": "Report Generation", "status": "COMPLETED"},
-    {"id": 12, "name": "Archive", "status": "COMPLETED"}
+    {"id": 1, "name": "Discovery", "description": "Find parcels, initial assessment"},
+    {"id": 2, "name": "Survey Analysis", "description": "Boundary, easements, buildable area"},
+    {"id": 3, "name": "Zoning Analysis", "description": "Current zoning, rezoning needs"},
+    {"id": 4, "name": "Site Constraints", "description": "Environmental, flood, endangered species"},
+    {"id": 5, "name": "Parking Analysis", "description": "Required spaces, layout options"},
+    {"id": 6, "name": "Traffic Impact", "description": "Traffic study requirements"},
+    {"id": 7, "name": "Utilities Assessment", "description": "Water, sewer, electric availability"},
+    {"id": 8, "name": "Stormwater Analysis", "description": "Retention, drainage requirements"},
+    {"id": 9, "name": "Site Layout", "description": "Building placement, circulation"},
+    {"id": 10, "name": "ML Feasibility Score", "description": "Financial feasibility, HBU analysis"},
+    {"id": 11, "name": "Report Generation", "description": "Final report creation"},
+    {"id": 12, "name": "Archive", "description": "Historical storage"}
+  ],
+  "recent_decisions": [
+    {
+      "date": "2025-12-16",
+      "project": "SPD-2025-002",
+      "decision": "Created updated analysis accounting for 200-ft wellhead easement constraint",
+      "rationale": "Original SPD-2025-001 analysis did not factor in easement discovered via Tim Roberts email"
+    },
+    {
+      "date": "2025-12-16",
+      "project": "SPD-2025-002",
+      "decision": "Recommended phased development approach",
+      "rationale": "Best risk-adjusted return: 6-8 units now + 8-12 units when easement vacated in ~10 years"
+    }
   ]
 }
