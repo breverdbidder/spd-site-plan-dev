@@ -1,0 +1,315 @@
+{
+  "project_id": "SPD-2025-001",
+  "project_name": "Bliss Palm Bay (Sandy Pines)",
+  "stage": 10,
+  "stage_name": "ML Feasibility Score - REVISED",
+  "completed_at": "2025-12-16T14:15:00Z",
+  "status": "CRITICAL_UPDATE",
+  "version": "2.0",
+  "revision_reason": "Wellhead protection easement reduces buildable area by ~50%",
+  
+  "constraint_summary": {
+    "wellhead_easement": "200-foot radius, cannot be vacated for ~10 years",
+    "buildable_area_before": "46,394 SF (1.065 acres)",
+    "buildable_area_after": "~18,900 SF (0.434 acres)",
+    "reduction_percentage": 59
+  },
+  
+  "HIGHEST_AND_BEST_USE_ANALYSIS": {
+    "methodology": "Four-test analysis: Legal, Physical, Financial, Maximum Productivity",
+    
+    "test_1_legally_permissible": {
+      "current_zoning": "RM-10 (likely - verify)",
+      "permitted_uses": [
+        "Single-family residential",
+        "Two-family residential (duplex)",
+        "Multifamily (with conditions)",
+        "Public parks/playgrounds"
+      ],
+      "density_limit_current": "10 units/acre",
+      "density_limit_if_rezoned_rm20": "20 units/acre",
+      "height_limit": "35 ft / 3 stories",
+      "conclusion": "Multifamily permitted but constrained by easement"
+    },
+    
+    "test_2_physically_possible": {
+      "total_parcel_sf": 46394,
+      "buildable_area_sf": 18894,
+      "easement_area_sf": 27500,
+      "shape": "Irregular due to easement",
+      "access": "Sandy Pines Dr NE (adequate)",
+      "utilities": "Available (city water/sewer)",
+      "topography": "Generally flat",
+      "conclusion": "Limited but possible - easement significantly constrains envelope"
+    },
+    
+    "test_3_financially_feasible": {
+      "analysis_by_scenario": "See scenarios below",
+      "key_finding": "Only phased development achieves acceptable returns",
+      "conclusion": "Marginally feasible under current constraints"
+    },
+    
+    "test_4_maximally_productive": {
+      "optimal_use_now": "6-8 unit multifamily + future expansion rights",
+      "optimal_use_10_years": "20-unit multifamily (full parcel)",
+      "conclusion": "Phased development maximizes long-term value"
+    },
+    
+    "final_highest_best_use": "Phased multifamily development with Development Agreement"
+  },
+  
+  "scenario_analysis": {
+    "scenario_A_wait_10_years": {
+      "name": "Hold for Full Development",
+      "strategy": "Wait for well abandonment, then develop full parcel",
+      "timeline_years": 10,
+      "max_units": 21,
+      "development_cost": 4920000,
+      "projected_noi": 286026,
+      "cap_rate": 5.81,
+      "npv_at_8pct_discount": 1850000,
+      "pros": ["Maximum density", "Full parcel utilization"],
+      "cons": ["10-year hold", "Carrying costs", "Market uncertainty", "Opportunity cost"],
+      "carrying_costs_10_years": {
+        "property_taxes_annual": 3500,
+        "insurance_annual": 1200,
+        "maintenance_annual": 500,
+        "total_10_years": 52000
+      },
+      "risk_assessment": "HIGH - market conditions in 10 years unknown",
+      "recommendation": "NOT RECOMMENDED as primary strategy"
+    },
+    
+    "scenario_B_develop_now_constrained": {
+      "name": "Immediate Development (Constrained)",
+      "strategy": "Build maximum possible on buildable area now",
+      "timeline_years": 2,
+      "max_units": 8,
+      "building_type": "2-story, 8-unit building",
+      "gross_sf": 7200,
+      "unit_mix": {"1BR": 4, "2BR": 4},
+      
+      "cost_analysis": {
+        "soft_costs": 85000,
+        "hard_costs": {
+          "construction_175_psf": 1260000,
+          "site_work": 75000,
+          "parking": 40000,
+          "stormwater": 25000,
+          "landscaping": 15000,
+          "subtotal": 1415000
+        },
+        "total_development_cost": 1500000,
+        "cost_per_unit": 187500
+      },
+      
+      "revenue_analysis": {
+        "rent_1br_monthly": 1400,
+        "rent_2br_monthly": 1650,
+        "gross_potential_monthly": 12200,
+        "gross_potential_annual": 146400,
+        "vacancy_5pct": 7320,
+        "egi": 139080,
+        "opex_35pct": 48678,
+        "noi": 90402
+      },
+      
+      "return_metrics": {
+        "cap_rate": 6.03,
+        "stabilized_value_6cap": 1506700,
+        "equity_created": 6700,
+        "cash_on_cash": 6.03
+      },
+      
+      "pros": ["Immediate cash flow", "Lower capital requirement", "Reduces hold risk"],
+      "cons": ["Suboptimal use", "May limit future expansion", "Lower total returns"],
+      "recommendation": "ACCEPTABLE if future rights not secured"
+    },
+    
+    "scenario_C_phased_development": {
+      "name": "Phased Development with Future Rights",
+      "strategy": "Phase 1 now + Phase 2 when easement vacated",
+      "requires": "Development Agreement with City",
+      
+      "phase_1": {
+        "timeline": "2025-2027",
+        "units": 8,
+        "building_sf": 7200,
+        "development_cost": 1500000,
+        "noi_annual": 90402,
+        "cap_rate": 6.03,
+        "uses_easement_for": ["Parking overflow", "Landscaping", "Future stormwater"]
+      },
+      
+      "phase_2": {
+        "timeline": "2035-2037 (after well abandonment)",
+        "additional_units": 12,
+        "building_sf": 10800,
+        "development_cost_2035_dollars": 2400000,
+        "additional_noi": 135000,
+        "combined_noi": 225402
+      },
+      
+      "combined_analysis": {
+        "total_units": 20,
+        "total_development_cost": 3900000,
+        "total_noi_stabilized": 225402,
+        "cap_rate": 5.78,
+        "stabilized_value_6cap": 3756700,
+        "npv_combined_at_8pct": 2100000
+      },
+      
+      "development_agreement_terms_to_request": [
+        "Guaranteed right to expand when easement vacated",
+        "Density locked at RM-20 (20 units/acre)",
+        "Height allowance locked at 35 ft",
+        "Site plan approval for Phase 2 concept",
+        "Impact fee credits for early infrastructure",
+        "Timeline trigger: within 2 years of well abandonment"
+      ],
+      
+      "pros": [
+        "Immediate income generation",
+        "Preserves full upside",
+        "Legal protection via Development Agreement",
+        "Reduces 10-year holding risk"
+      ],
+      "cons": [
+        "Requires city cooperation",
+        "Phase 2 timing uncertain",
+        "Construction cost escalation risk"
+      ],
+      "recommendation": "STRONGLY RECOMMENDED"
+    },
+    
+    "scenario_D_single_family": {
+      "name": "Single-Family Development",
+      "strategy": "Build 2-3 single-family homes",
+      "units": 3,
+      "development_cost": 900000,
+      "sale_value": 1050000,
+      "profit": 150000,
+      "roi": 16.7,
+      "timeline_months": 18,
+      "pros": ["Simple entitlement", "Lower risk", "Quick exit"],
+      "cons": ["Lowest return", "Doesn't maximize land value"],
+      "recommendation": "FALLBACK OPTION"
+    },
+    
+    "scenario_E_sell_property": {
+      "name": "Dispose of Property",
+      "current_value_constrained": 175000,
+      "value_if_unconstrained": 350000,
+      "discount_due_to_easement": 50,
+      "buyer_profile": "Patient capital willing to hold 10 years",
+      "recommendation": "LAST RESORT"
+    }
+  },
+  
+  "ml_feasibility_scores": {
+    "scenario_A_wait": {
+      "score": 42,
+      "grade": "D+",
+      "recommendation": "DEFER"
+    },
+    "scenario_B_constrained": {
+      "score": 58,
+      "grade": "C",
+      "recommendation": "ACCEPTABLE"
+    },
+    "scenario_C_phased": {
+      "score": 71,
+      "grade": "B-",
+      "recommendation": "PROCEED"
+    },
+    "scenario_D_sfr": {
+      "score": 65,
+      "grade": "C+",
+      "recommendation": "ACCEPTABLE"
+    },
+    "scenario_E_sell": {
+      "score": 35,
+      "grade": "D",
+      "recommendation": "AVOID"
+    }
+  },
+  
+  "rezoning_analysis": {
+    "current_zoning_likely": "RM-10",
+    "citywide_rezoning_oct_2024": {
+      "description": "361 acres citywide rezoned from RM-10 to RM-15",
+      "verify_if_parcel_included": true
+    },
+    "rezoning_recommendation": {
+      "target_zoning": "RM-20",
+      "reason": "Maximize future density when easement vacated",
+      "process": "Standard rezoning via Planning & Zoning Board → City Council",
+      "timeline_months": 4,
+      "cost_estimate": 5000,
+      "approval_likelihood": "MODERATE-HIGH"
+    },
+    "note": "Rezoning value is limited until easement removed, but locks in future rights"
+  },
+  
+  "risk_matrix": {
+    "wellhead_timeline_extension": {
+      "probability": "MEDIUM",
+      "impact": "HIGH",
+      "mitigation": "Get timeline in writing, Development Agreement"
+    },
+    "construction_cost_escalation": {
+      "probability": "HIGH",
+      "impact": "MEDIUM",
+      "mitigation": "Lock GC contract, value engineering"
+    },
+    "zoning_denial": {
+      "probability": "LOW",
+      "impact": "HIGH",
+      "mitigation": "Pre-application meeting, neighbor outreach"
+    },
+    "development_agreement_rejection": {
+      "probability": "MEDIUM",
+      "impact": "MEDIUM",
+      "mitigation": "Alternative: proceed with Phase 1 only"
+    },
+    "market_downturn": {
+      "probability": "MEDIUM",
+      "impact": "MEDIUM",
+      "mitigation": "Conservative underwriting, cash reserves"
+    }
+  },
+  
+  "final_recommendation": {
+    "primary_strategy": "Scenario C - Phased Development with Development Agreement",
+    "fallback_strategy": "Scenario B - Develop Now (constrained) without future rights",
+    "avoid": "Scenario A (10-year hold) and Scenario E (sell at discount)",
+    
+    "immediate_actions": [
+      "Confirm buildable area at pre-app meeting",
+      "Ask about Development Agreement appetite",
+      "Get written well abandonment timeline",
+      "Verify if parking permitted in easement",
+      "Check if parcel was in Oct 2024 rezoning"
+    ],
+    
+    "decision_criteria": {
+      "proceed_with_scenario_C_if": [
+        "City receptive to Development Agreement",
+        "Parking permitted in easement",
+        "Well abandonment timeline confirmed in writing"
+      ],
+      "fall_back_to_scenario_B_if": [
+        "City won't do Development Agreement",
+        "Still need immediate income"
+      ],
+      "consider_scenario_D_if": [
+        "All else fails",
+        "Want quick exit"
+      ]
+    }
+  },
+  
+  "creator": "Ariel Shapira, Solo Founder",
+  "organization": "Everest Capital USA",
+  "ai_architect": "Claude Opus 4.5"
+}
