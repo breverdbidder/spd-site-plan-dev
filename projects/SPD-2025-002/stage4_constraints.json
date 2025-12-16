@@ -1,0 +1,122 @@
+{
+  "project_id": "SPD-2025-002",
+  "project_name": "Sandy Pines Multifamily",
+  "stage": 4,
+  "stage_name": "Site Constraints - WELLHEAD FOCUS",
+  "completed_at": "2025-12-16T14:40:00Z",
+  "status": "COMPLETED",
+  
+  "primary_constraint": {
+    "type": "Wellhead Protection Easement",
+    "regulatory_basis": "Florida Administrative Code Chapter 62-521",
+    "radius_ft": 200,
+    "area_impacted_sf": 22000,
+    "percentage_of_parcel": 47,
+    
+    "florida_dep_requirements": {
+      "rule": "62-521.400 FAC",
+      "standard_protection_radius": "500 feet for community water systems",
+      "inner_zone_200ft": {
+        "prohibited_activities": [
+          "New construction of any kind",
+          "New impervious surfaces",
+          "Storage of regulated substances",
+          "Underground storage tanks",
+          "Septic systems",
+          "Stormwater injection wells"
+        ],
+        "permitted_activities": [
+          "Well-associated operations",
+          "Existing single-family residential (grandfathered)",
+          "Open space and passive recreation",
+          "Landscaping without regulated chemicals"
+        ]
+      }
+    },
+    
+    "city_response": {
+      "contact": "Tim Roberts, Palm Bay Utilities",
+      "date": "September 11, 2025",
+      "key_points": [
+        "Radial easement required for wellhead protection",
+        "Cannot vacate until well abandonment",
+        "City constructing new RO water treatment plant",
+        "New plant will use Floridan Aquifer wells (deeper)",
+        "Timeline: Approximately 10 years"
+      ],
+      "email_thread": "Mariam Shapira to Tim Roberts, September 11, 2025"
+    },
+    
+    "resolution_path": {
+      "trigger": "Abandonment of surficial supply well",
+      "depends_on": "Completion of new RO water treatment plant",
+      "timeline_estimate_years": 10,
+      "city_commitment_level": "Verbal estimate - no formal commitment"
+    }
+  },
+  
+  "secondary_constraints": {
+    "flood_zone": {
+      "status": "REQUIRES_VERIFICATION",
+      "action": "Check Palm Bay GIS flood zone map",
+      "url": "https://gis.palmbayflorida.org/portal/apps/webappviewer/index.html?id=90776cdea7fc4de7be8d436f4df9b28c"
+    },
+    
+    "endangered_species": {
+      "florida_scrub_jay": {
+        "status": "REQUIRES_VERIFICATION",
+        "action": "Check if parcel in scrub-jay polygon",
+        "if_applicable": "$500/acre mitigation fee, no clearing March-June"
+      },
+      "gopher_tortoise": {
+        "status": "LIKELY",
+        "rationale": "Sandy soils common in Palm Bay area",
+        "action": "Survey before any land clearing",
+        "if_present": "FWC relocation permit required"
+      }
+    },
+    
+    "wetlands": {
+      "status": "UNLIKELY",
+      "rationale": "Established subdivision, upland location",
+      "action": "Visual inspection, formal delineation if suspected"
+    }
+  },
+  
+  "easement_use_questions_for_preapp": [
+    "Can parking be located within the 200-foot zone?",
+    "Can stormwater retention be located within the zone?",
+    "Can landscaping (without fertilizers) be located within the zone?",
+    "Can pedestrian walkways/sidewalks be located within the zone?",
+    "Are there any access requirements we must preserve for city well maintenance?"
+  ],
+  
+  "constraint_impact_summary": {
+    "buildable_land_remaining": "0.56 acres (24,394 SF)",
+    "developable_units_current_zoning": "5-8 units",
+    "developable_units_if_rezoned": "10-11 units",
+    "parking_solution": "Likely can use easement area (VERIFY)",
+    "overall_impact": "SIGNIFICANT - requires redesigned development approach"
+  },
+  
+  "next_steps": [
+    {
+      "priority": "CRITICAL",
+      "action": "At pre-app meeting: Confirm permitted uses in easement",
+      "specific_questions": "Parking? Stormwater? Landscaping?"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Request written confirmation of 10-year timeline",
+      "from": "Palm Bay Utilities or City Manager"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Site visit for gopher tortoise burrow survey",
+      "before": "Any land clearing or formal application"
+    }
+  ],
+  
+  "creator": "Ariel Shapira, Solo Founder",
+  "organization": "Everest Capital USA"
+}
