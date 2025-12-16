@@ -1,0 +1,115 @@
+{
+  "project_id": "SPD-2025-002",
+  "project_name": "Sandy Pines Multifamily",
+  "stage": 7,
+  "stage_name": "Utilities Assessment",
+  "completed_at": "2025-12-16T15:00:00Z",
+  "status": "COMPLETED",
+  
+  "water_service": {
+    "provider": "City of Palm Bay Utilities",
+    "availability": "AVAILABLE",
+    "notes": "Ironic - city well ON the property but serves broader system",
+    "connection_point": "Sandy Pines Dr NE water main",
+    "meter_size_estimate": "2-inch for 6-11 unit building",
+    "contact": {
+      "department": "Palm Bay Utilities",
+      "phone": "(321) 952-3420",
+      "contact_person": "Tim Roberts (already engaged)"
+    },
+    "capacity_letter_required": true
+  },
+  
+  "sewer_service": {
+    "provider": "City of Palm Bay Utilities",
+    "availability": "AVAILABLE",
+    "system_type": "Municipal sanitary sewer",
+    "connection_point": "Sandy Pines Dr NE sewer main",
+    "capacity_letter_required": true,
+    "notes": "Established subdivision - infrastructure in place"
+  },
+  
+  "electric_service": {
+    "provider": "Florida Power & Light (FPL)",
+    "availability": "AVAILABLE",
+    "service_type": "Underground preferred for multifamily",
+    "transformer": "May need new pad-mounted transformer",
+    "contact": {
+      "phone": "1-800-468-8243",
+      "website": "fpl.com/business"
+    }
+  },
+  
+  "gas_service": {
+    "provider": "Not available in area",
+    "alternative": "All-electric design recommended",
+    "notes": "Common for Florida coastal areas"
+  },
+  
+  "telecommunications": {
+    "providers": ["Spectrum", "AT&T"],
+    "availability": "Available - established subdivision",
+    "fiber": "Verify availability"
+  },
+  
+  "utility_capacity_for_scenarios": {
+    "scenario_6_units": {
+      "water_demand_gpd": 1500,
+      "sewer_flow_gpd": 1350,
+      "electric_demand_kw": 60,
+      "capacity_concern": "NONE"
+    },
+    "scenario_8_units": {
+      "water_demand_gpd": 2000,
+      "sewer_flow_gpd": 1800,
+      "electric_demand_kw": 80,
+      "capacity_concern": "NONE"
+    },
+    "scenario_11_units": {
+      "water_demand_gpd": 2750,
+      "sewer_flow_gpd": 2475,
+      "electric_demand_kw": 110,
+      "capacity_concern": "NONE"
+    }
+  },
+  
+  "impact_fees_estimate": {
+    "water_per_unit": 2500,
+    "sewer_per_unit": 3000,
+    "transportation_per_unit": 1500,
+    "parks_per_unit": 500,
+    "total_per_unit": 7500,
+    "scenario_6_units": 45000,
+    "scenario_8_units": 60000,
+    "scenario_11_units": 82500,
+    "note": "Verify current fee schedule with city"
+  },
+  
+  "utility_coordination_with_well": {
+    "concern": "City well on property - coordinate utility connections",
+    "action": "Ensure utility work doesn't impact well operations",
+    "contact": "Tim Roberts for coordination requirements"
+  },
+  
+  "action_items": [
+    {
+      "priority": "HIGH",
+      "action": "Request utility availability letters (water/sewer)",
+      "from": "Palm Bay Utilities",
+      "deadline": "Before site plan submission"
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Confirm current impact fee schedule",
+      "from": "Palm Bay Building Department"
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Contact FPL for service requirements",
+      "for": "Transformer sizing and location"
+    }
+  ],
+  
+  "creator": "Ariel Shapira, Solo Founder",
+  "organization": "Everest Capital USA"
+}
