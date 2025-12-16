@@ -1,0 +1,121 @@
+{
+  "project_id": "SPD-2025-002",
+  "project_name": "Sandy Pines Multifamily",
+  "stage": 5,
+  "stage_name": "Parking Analysis - CONSTRAINED",
+  "completed_at": "2025-12-16T14:50:00Z",
+  "status": "COMPLETED",
+  
+  "palm_bay_parking_requirements": {
+    "code_reference": "Palm Bay Code § 185.081",
+    "multifamily_requirement": "2 spaces per dwelling unit",
+    "visitor_parking": "Not explicitly required but recommended",
+    "accessible_parking": {
+      "1_to_25_spaces": 1,
+      "26_to_50_spaces": 2,
+      "51_to_75_spaces": 3
+    }
+  },
+  
+  "parking_scenarios": {
+    "scenario_A_6_units": {
+      "units": 6,
+      "required_spaces": 12,
+      "accessible_spaces": 1,
+      "total_spaces": 13,
+      "space_dimensions": "9 ft x 18 ft",
+      "drive_aisle": "24 ft (two-way)",
+      "parking_area_sf": 3900,
+      "notes": "Compact layout possible"
+    },
+    "scenario_B_8_units": {
+      "units": 8,
+      "required_spaces": 16,
+      "accessible_spaces": 1,
+      "total_spaces": 17,
+      "parking_area_sf": 5100,
+      "notes": "Requires efficient layout"
+    },
+    "scenario_C_11_units_RM20": {
+      "units": 11,
+      "required_spaces": 22,
+      "accessible_spaces": 1,
+      "total_spaces": 23,
+      "parking_area_sf": 6900,
+      "notes": "May require parking in easement area"
+    }
+  },
+  
+  "critical_question_easement_parking": {
+    "question": "Can parking be located within the 200-foot wellhead protection easement?",
+    "status": "PENDING_CONFIRMATION",
+    "florida_dep_guidance": {
+      "general_rule": "200-ft inner zone prohibits new impervious surfaces",
+      "exception_possibility": "Surface parking MAY be allowed with specific conditions",
+      "conditions_to_verify": [
+        "No underground fuel storage",
+        "No hazardous materials storage",
+        "Proper stormwater management",
+        "No impact to well operations"
+      ]
+    },
+    "pre_app_action": "Ask city if parking lot is permitted use in easement zone"
+  },
+  
+  "parking_layout_options": {
+    "option_1_all_outside_easement": {
+      "description": "All parking on buildable land",
+      "pros": ["No easement complications", "Faster approval"],
+      "cons": ["Reduces building footprint", "May limit unit count"],
+      "building_area_remaining_sf": 7000
+    },
+    "option_2_parking_in_easement": {
+      "description": "Parking in easement, building outside",
+      "pros": ["Maximizes building footprint", "More units possible"],
+      "cons": ["Requires city approval", "May need special conditions"],
+      "building_area_remaining_sf": 10400,
+      "status": "PREFERRED IF APPROVED"
+    },
+    "option_3_hybrid": {
+      "description": "Some parking in easement, some outside",
+      "pros": ["Balanced approach", "Flexibility"],
+      "cons": ["Complex layout"],
+      "building_area_remaining_sf": 8500
+    }
+  },
+  
+  "phased_parking_strategy": {
+    "phase_1_now": {
+      "units": 6,
+      "parking_spaces": 13,
+      "location": "TBD based on pre-app meeting",
+      "notes": "Design to accommodate Phase 2 expansion"
+    },
+    "phase_2_future": {
+      "additional_units": 10,
+      "additional_parking": 20,
+      "location": "On freed easement land when well abandoned",
+      "total_parking_at_buildout": 33
+    }
+  },
+  
+  "action_items": [
+    {
+      "priority": "CRITICAL",
+      "action": "At pre-app: Confirm if surface parking allowed in easement zone",
+      "ask": "Can we put a parking lot within the 200-foot wellhead protection area?"
+    },
+    {
+      "priority": "HIGH",
+      "action": "If parking allowed in easement, get conditions in writing",
+      "conditions": "Stormwater requirements, prohibited materials, maintenance access"
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Prepare two site plan concepts - with and without easement parking"
+    }
+  ],
+  
+  "creator": "Ariel Shapira, Solo Founder",
+  "organization": "Everest Capital USA"
+}
