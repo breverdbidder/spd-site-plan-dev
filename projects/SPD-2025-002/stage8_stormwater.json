@@ -1,0 +1,118 @@
+{
+  "project_id": "SPD-2025-002",
+  "project_name": "Sandy Pines Multifamily",
+  "stage": 8,
+  "stage_name": "Stormwater Analysis",
+  "completed_at": "2025-12-16T15:05:00Z",
+  "status": "COMPLETED",
+  
+  "regulatory_framework": {
+    "state_agency": "St. Johns River Water Management District (SJRWMD)",
+    "local_agency": "City of Palm Bay",
+    "permit_type": "Environmental Resource Permit (ERP)",
+    "threshold": "Projects creating > 4,000 SF impervious OR > 9,000 SF total disturbance"
+  },
+  
+  "sjrwmd_requirements": {
+    "water_quality": {
+      "treatment_volume": "1 inch of runoff from impervious area",
+      "methods": ["Dry retention", "Wet detention", "Swales", "Pervious pavement"]
+    },
+    "water_quantity": {
+      "pre_vs_post": "Post-development peak discharge ≤ pre-development",
+      "design_storm": "25-year, 24-hour event",
+      "discharge_point": "Must identify legal positive outfall"
+    },
+    "permit_timeline": "30-60 days for standard ERP"
+  },
+  
+  "stormwater_scenarios": {
+    "scenario_6_units": {
+      "building_footprint_sf": 3000,
+      "parking_area_sf": 3900,
+      "total_impervious_sf": 6900,
+      "treatment_volume_cf": 575,
+      "retention_area_needed_sf": 1150,
+      "notes": "Retention can fit on site"
+    },
+    "scenario_8_units": {
+      "building_footprint_sf": 4000,
+      "parking_area_sf": 5100,
+      "total_impervious_sf": 9100,
+      "treatment_volume_cf": 758,
+      "retention_area_needed_sf": 1520,
+      "notes": "Retention can fit on site"
+    },
+    "scenario_11_units": {
+      "building_footprint_sf": 5500,
+      "parking_area_sf": 6900,
+      "total_impervious_sf": 12400,
+      "treatment_volume_cf": 1033,
+      "retention_area_needed_sf": 2070,
+      "notes": "May need to use easement area for retention"
+    }
+  },
+  
+  "critical_question_stormwater_in_easement": {
+    "question": "Can stormwater retention be located in wellhead protection easement?",
+    "status": "PENDING_CONFIRMATION",
+    "likely_answer": "YES - passive drainage typically allowed",
+    "conditions": [
+      "No injection wells",
+      "Surface retention only",
+      "No direct connection to groundwater",
+      "May actually BENEFIT wellhead by filtering runoff"
+    ],
+    "pre_app_action": "Confirm stormwater retention permitted in easement"
+  },
+  
+  "flood_zone_verification": {
+    "status": "PENDING",
+    "action": "Verify on Palm Bay GIS flood zone map",
+    "url": "https://gis.palmbayflorida.org",
+    "if_in_flood_zone": {
+      "requirement": "Floodplain permit before building permit",
+      "elevation": "Finish floor 1 ft above BFE",
+      "contact": "Palm Bay Floodplain Administrator (321) 952-3400"
+    }
+  },
+  
+  "drainage_design_concept": {
+    "recommended_approach": "Dry retention basin",
+    "location_options": [
+      "Eastern portion of site (check grades)",
+      "Within easement area (if permitted)",
+      "Undersized on-site with off-site agreement"
+    ],
+    "alternative": "Underground retention system (higher cost)"
+  },
+  
+  "cost_estimates": {
+    "erp_permit_fee": "500-2000",
+    "engineering_design": "5000-10000",
+    "retention_basin_construction": "15000-30000",
+    "underground_system_if_needed": "40000-60000"
+  },
+  
+  "action_items": [
+    {
+      "priority": "CRITICAL",
+      "action": "Verify flood zone status on Palm Bay GIS",
+      "url": "https://gis.palmbayflorida.org",
+      "deadline": "Before pre-app meeting"
+    },
+    {
+      "priority": "HIGH",
+      "action": "At pre-app: Confirm stormwater retention allowed in easement",
+      "expected": "Likely yes - passive drainage typically allowed"
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Get civil engineer cost estimate for stormwater design",
+      "for": "Project budgeting"
+    }
+  ],
+  
+  "creator": "Ariel Shapira, Solo Founder",
+  "organization": "Everest Capital USA"
+}
