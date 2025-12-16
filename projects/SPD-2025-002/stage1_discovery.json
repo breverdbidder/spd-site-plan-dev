@@ -1,0 +1,71 @@
+{
+  "project_id": "SPD-2025-002",
+  "project_name": "Sandy Pines Multifamily",
+  "stage": 1,
+  "stage_name": "Discovery",
+  "completed_at": "2025-12-16T14:20:00Z",
+  "status": "COMPLETED",
+  
+  "property_info": {
+    "address": "2165 Sandy Pines Dr NE",
+    "city": "Palm Bay",
+    "state": "FL",
+    "zip": "32905",
+    "account_id": "2835546",
+    "legal_description": "S½ of NE¼, Section 17, T28S, R37E, Brevard County, FL (per Plat Book 37, Page 200)",
+    "jurisdiction": "City of Palm Bay",
+    "county": "Brevard"
+  },
+  
+  "parcel_metrics": {
+    "total_area_sf": 46394,
+    "total_area_acres": 1.065,
+    "frontage_sandy_pines_dr": "200.00 ft (Record)",
+    "depth_approximate": "277.15 ft (R&M)"
+  },
+  
+  "survey_info": {
+    "surveyor": "Kevin A. Smith, PSM",
+    "company": "Smith Survey Company",
+    "license": "LS 7436",
+    "survey_date": "2024-08-26",
+    "job_number": "S-3812",
+    "certified_to": "The Property Squad, Inc.",
+    "digital_signature_date": "2025-09-04"
+  },
+  
+  "critical_constraint_discovered": {
+    "type": "Wellhead Protection Easement",
+    "description": "200-foot radius circular easement around City of Palm Bay supply well",
+    "recorded": "See survey annotation - radial easement for wellhead protection",
+    "impact": "SIGNIFICANT - reduces buildable area by approximately 50%",
+    "resolution_timeline": "~10 years (per Tim Roberts, Palm Bay Utilities)",
+    "source": "Email from Tim Roberts to Mariam Shapira, September 11, 2025"
+  },
+  
+  "ownership": {
+    "current_owner": "Property Squad, Inc. (affiliated)",
+    "acquisition_status": "OWNED",
+    "title_status": "Subject to wellhead easement"
+  },
+  
+  "initial_assessment": {
+    "development_potential": "CONSTRAINED",
+    "constraint_severity": "HIGH",
+    "recommended_approach": "Phased development with future rights agreement",
+    "notes": "Original multifamily concept must be redesigned around easement"
+  },
+  
+  "next_stage": {
+    "id": 2,
+    "name": "Survey Analysis",
+    "priority_actions": [
+      "Calculate exact easement overlap area",
+      "Determine buildable envelope",
+      "Identify permitted uses within easement"
+    ]
+  },
+  
+  "creator": "Ariel Shapira, Solo Founder",
+  "organization": "Everest Capital USA"
+}
