@@ -1,0 +1,257 @@
+name: SPD Pipeline - Site Plan Due Diligence
+
+on:
+  workflow_dispatch:
+    inputs:
+      property_id:
+        description: 'BCPAO Account Number'
+        required: true
+        default: '2835546'
+      address:
+        description: 'Property Address'
+        required: true
+        default: '2165 Sandy Pines Dr NE, Palm Bay, FL 32905'
+      parking_available:
+        description: 'Parking Spaces Available'
+        required: true
+        default: '42'
+      run_full_pipeline:
+        description: 'Run full 12-stage pipeline'
+        required: true
+        default: 'false'
+        type: boolean
+
+  # Schedule for monitoring active projects
+  schedule:
+    - cron: '0 12 * * 1'  # Every Monday at noon UTC
+
+env:
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+  
+jobs:
+  parking-unit-analysis:
+    name: Stage 4 - Parking & Unit Configuration
+    runs-on: ubuntu-latest
+    
+    outputs:
+      scenario_a_noi: ${{ steps.analysis.outputs.scenario_a_noi }}
+      scenario_b_noi: ${{ steps.analysis.outputs.scenario_b_noi }}
+      recommended: ${{ steps.analysis.outputs.recommended }}
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
+        run: |
+          pip install --break-system-packages langgraph supabase
+          
+      - name: Run Parking/Unit Analysis
+        id: analysis
+        run: |
+          python3 << 'EOF'
+          import json
+          import os
+          
+          # Import calculator
+          import sys
+          sys.path.insert(0, '.')
+          from src.calculators.parking_unit_config import (
+              ParkingUnitCalculator,
+              SiteConstraints,
+              ZoningDistrict
+          )
+          
+          # Get inputs
+          property_id = "${{ github.event.inputs.property_id }}"
+          parking = int("${{ github.event.inputs.parking_available }}")
+          
+          # Bliss Palm Bay site constraints
+          site = SiteConstraints(
+              lot_sf=46394,
+              lot_width=167.5,
+              lot_depth=277.0,
+              wellhead_sf=22000,
+              front_setback=25,
+              rear_setback=25,
+              side_setback=15,
+              max_lot_coverage=0.60,
+              max_height_no_variance=25
+          )
+          
+          # Calculate scenarios
+          calculator = ParkingUnitCalculator(
+              site=site,
+              zoning=ZoningDistrict.RM_20,
+              parking_available=parking
+          )
+          
+          scenarios = calculator.calculate_all_scenarios()
+          
+          # Output results
+          a, b = scenarios
+          
+          print(f"::set-output name=scenario_a_noi::{a.financials.noi}")
+          print(f"::set-output name=scenario_b_noi::{b.financials.noi}")
+          
+          # Recommend based on risk
+          if a.risk_level == "HIGH":
+              print("::set-output name=recommended::Scenario B")
+          else:
+              print("::set-output name=recommended::Scenario A")
+          
+          # Print summary
+          print("\n" + "="*60)
+          print(f"PROPERTY: {property_id}")
+          print("="*60)
+          print(f"\nScenario A: {a.total_tenants} tenants, ${a.financials.noi:,.0f} NOI, {a.risk_level} risk")
+          print(f"Scenario B: {b.total_tenants} tenants, ${b.financials.noi:,.0f} NOI, {b.risk_level} risk")
+          
+          # Save to JSON for next stages
+          results = {
+              "property_id": property_id,
+              "scenarios": [calculator.to_dict(s) for s in scenarios]
+          }
+          
+          with open("parking_analysis.json", "w") as f:
+              json.dump(results, f, indent=2)
+          
+          EOF
+          
+      - name: Upload analysis results
+        uses: actions/upload-artifact@v4
+        with:
+          name: parking-analysis
+          path: parking_analysis.json
+          
+  financial-analysis:
+    name: Stage 6 - Financial Pro Forma
+    runs-on: ubuntu-latest
+    needs: parking-unit-analysis
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Download parking analysis
+        uses: actions/download-artifact@v4
+        with:
+          name: parking-analysis
+          
+      - name: Generate Pro Forma
+        run: |
+          python3 << 'EOF'
+          import json
+          
+          with open("parking_analysis.json") as f:
+              data = json.load(f)
+          
+          recommended = "${{ needs.parking-unit-analysis.outputs.recommended }}"
+          
+          print("="*60)
+          print(f"FINANCIAL PRO FORMA - {recommended}")
+          print("="*60)
+          
+          for scenario in data["scenarios"]:
+              if recommended in scenario["name"]:
+                  fin = scenario["financials"]
+                  print(f"\nMonthly Gross:    ${fin['monthly_gross']:,}")
+                  print(f"Annual GPR:       ${fin['annual_gpr']:,}")
+                  print(f"NOI:              ${fin['noi']:,}")
+                  print(f"Value @ 6%:       ${fin['value_at_cap']:,}")
+                  print(f"Construction:     ${fin['construction_cost']:,}")
+                  print(f"Cash-on-Cash:     {fin['cash_on_cash']:.1f}%")
+          
+          EOF
+          
+  decision:
+    name: Stage 9 - BID/REVIEW/SKIP Decision
+    runs-on: ubuntu-latest
+    needs: [parking-unit-analysis, financial-analysis]
+    
+    steps:
+      - name: Make Decision
+        run: |
+          SCENARIO_A_NOI=${{ needs.parking-unit-analysis.outputs.scenario_a_noi }}
+          SCENARIO_B_NOI=${{ needs.parking-unit-analysis.outputs.scenario_b_noi }}
+          RECOMMENDED="${{ needs.parking-unit-analysis.outputs.recommended }}"
+          
+          echo "="*60
+          echo "SPD DECISION"
+          echo "="*60
+          echo ""
+          echo "Recommended Scenario: $RECOMMENDED"
+          echo "Scenario A NOI: $SCENARIO_A_NOI"
+          echo "Scenario B NOI: $SCENARIO_B_NOI"
+          echo ""
+          
+          # Decision logic
+          if [ "$RECOMMENDED" == "Scenario B" ]; then
+            NOI=$SCENARIO_B_NOI
+          else
+            NOI=$SCENARIO_A_NOI
+          fi
+          
+          # NOI threshold for BID
+          if (( $(echo "$NOI > 300000" | bc -l) )); then
+            echo "✅ DECISION: BID"
+            echo "NOI exceeds $300K threshold"
+          elif (( $(echo "$NOI > 200000" | bc -l) )); then
+            echo "🔍 DECISION: REVIEW"
+            echo "NOI between $200K-$300K"
+          else
+            echo "❌ DECISION: SKIP"
+            echo "NOI below $200K threshold"
+          fi
+          
+  save-to-supabase:
+    name: Stage 12 - Archive to Supabase
+    runs-on: ubuntu-latest
+    needs: [parking-unit-analysis, decision]
+    if: ${{ github.event.inputs.run_full_pipeline == 'true' }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Download parking analysis
+        uses: actions/download-artifact@v4
+        with:
+          name: parking-analysis
+          
+      - name: Save to Supabase
+        run: |
+          python3 << 'EOF'
+          import json
+          import os
+          from datetime import datetime
+          
+          # Would use supabase client here
+          # from supabase import create_client
+          
+          with open("parking_analysis.json") as f:
+              data = json.load(f)
+          
+          # Prepare insight record
+          insight = {
+              "category": "spd_analysis",
+              "title": f"SPD Analysis: {data['property_id']}",
+              "content": json.dumps(data),
+              "source": "spd_pipeline",
+              "created_at": datetime.utcnow().isoformat()
+          }
+          
+          print(f"Would save to Supabase: {insight['title']}")
+          print(f"Scenarios analyzed: {len(data['scenarios'])}")
+          
+          # In production:
+          # supabase = create_client(os.environ['SUPABASE_URL'], os.environ['SUPABASE_KEY'])
+          # supabase.table('insights').insert(insight).execute()
+          
+          EOF
