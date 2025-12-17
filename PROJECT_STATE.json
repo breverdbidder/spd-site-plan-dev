@@ -1,22 +1,16 @@
 {
   "version": "1.1.0",
-  "last_updated": "2025-12-16T16:00:00Z",
-  "orchestration": {
-    "opportunity_discovery": {
+  "last_updated": "2025-12-16T17:30:00Z",
+  "modules": {
+    "spd_pipeline": {
+      "version": "1.0.13",
+      "description": "12-stage site plan development pipeline"
+    },
+    "zod": {
       "version": "1.0.0",
-      "status": "ACTIVE",
-      "agents": [
-        "data_acquisition",
-        "zoning_analysis", 
-        "flu_analysis",
-        "constraint_mapping",
-        "opportunity_scoring",
-        "market_validation",
-        "regulatory_pathway"
-      ],
-      "workflow_file": ".github/workflows/opportunity_discovery.yml",
-      "last_run": null,
-      "description": "7-Agent LangGraph orchestration for identifying rezoning opportunities"
+      "description": "Zoning Opportunity Discovery - 8-agent LangGraph orchestration",
+      "added": "2025-12-16",
+      "path": "src/zod/"
     }
   },
   "projects": [
@@ -37,6 +31,7 @@
       "ml_grade": "C+",
       "recommendation": "SUPERSEDED_BY_SPD-2025-002",
       "notes": "This analysis did NOT account for 200-ft wellhead protection easement. See SPD-2025-002 for updated constrained analysis.",
+      "zod_reference": true,
       "stages_completed": [
         {"stage": 1, "name": "Discovery", "status": "COMPLETED"},
         {"stage": 2, "name": "Survey Analysis", "status": "COMPLETED"},
@@ -80,6 +75,7 @@
         "source": "Tim Roberts, Palm Bay Utilities, Sept 11 2025"
       },
       "highest_best_use": "Phased Multifamily Development (6-8 units now, 8-12 units in 10 years)",
+      "zod_reference": true,
       "stages_completed": [
         {"stage": 1, "name": "Discovery", "status": "COMPLETED"},
         {"stage": 2, "name": "Survey Analysis", "status": "COMPLETED"},
@@ -115,12 +111,22 @@
     {"id": 11, "name": "Report Generation", "description": "Final report creation"},
     {"id": 12, "name": "Archive", "description": "Historical storage"}
   ],
+  "zod_pipeline_stages": [
+    {"id": 1, "name": "Data Acquisition", "description": "GIS + BCPAO data collection"},
+    {"id": 2, "name": "Zoning Analysis", "description": "Parse zoning district rules"},
+    {"id": 3, "name": "FLU Analysis", "description": "Calculate density gap opportunity"},
+    {"id": 4, "name": "Constraint Mapping", "description": "Overlay environmental/physical constraints"},
+    {"id": 5, "name": "Opportunity Scoring", "description": "Weighted scoring (0-100 scale)"},
+    {"id": 6, "name": "Market Validation", "description": "Rezoning history analysis (top 20%)"},
+    {"id": 7, "name": "Regulatory Pathway", "description": "Approval roadmap (top 10%)"},
+    {"id": 8, "name": "Report Generation", "description": "JSON/DOCX reports"}
+  ],
   "recent_decisions": [
     {
       "date": "2025-12-16",
-      "project": "ORCHESTRATION",
-      "decision": "Added 7-Agent Opportunity Discovery LangGraph orchestration",
-      "rationale": "Automates identification of zoning-FLU mismatches to find hidden development opportunities before competitors"
+      "module": "ZOD",
+      "decision": "Deployed ZOD (Zoning Opportunity Discovery) module",
+      "rationale": "8-agent LangGraph orchestration for identifying zoning-to-FLU mismatch opportunities based on Bliss Palm Bay reference case"
     },
     {
       "date": "2025-12-16",
