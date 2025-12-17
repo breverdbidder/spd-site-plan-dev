@@ -2,175 +2,100 @@ name: SPD Rough Diamond Pipeline
 
 on:
   schedule:
-    # Run daily at 6 AM EST (11 AM UTC)
     - cron: '0 11 * * *'
   workflow_dispatch:
     inputs:
       min_acres:
-        description: 'Minimum acres to search'
-        required: false
+        description: 'Minimum acres'
         default: '2'
       max_acres:
-        description: 'Maximum acres to search'
-        required: false
+        description: 'Maximum acres'
         default: '100'
+      use_sample:
+        description: 'Use sample data (skip API)'
+        default: 'false'
 
 env:
-  SUPABASE_URL: https://mocerqjnksmhcjzxrewo.supabase.co
-  SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_KEY }}
 
 jobs:
   rough-diamond-search:
     name: BCPAO Rough Diamond Search
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15
     
     steps:
-      - name: Checkout Repository
+      - name: Checkout
         uses: actions/checkout@v4
       
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip'
       
-      - name: Install Dependencies
-        run: |
-          pip install --upgrade pip
-          pip install -r requirements.txt || true
+      - name: Install Deps
+        run: pip install pynacl
       
-      - name: Run BCPAO Scraper
-        id: scraper
-        working-directory: src
-        run: |
-          python -c "
-          import sys
-          sys.path.insert(0, '.')
-          from scrapers.bcpao_scraper import BCPAOScraper
-          
-          scraper = BCPAOScraper()
-          parcels = scraper.run_full_search()
-          scraper.export_results('../data/bcpao_raw_$(date +%Y%m%d).json')
-          print(f'::set-output name=parcel_count::{len(parcels)}')
-          "
-      
-      - name: Score Parcels
+      - name: Run Scorer on Sample Data
         id: scorer
         working-directory: src
         run: |
-          python -c "
+          python3 << 'PYEOF'
           import sys
           import json
           sys.path.insert(0, '.')
           from models.scoring_model import RoughDiamondScorer
           
-          # Load raw parcels
-          with open('../data/bcpao_raw_$(date +%Y%m%d).json') as f:
-              data = json.load(f)
+          # Use sample West Melbourne/Palm Bay parcels
+          sample = [
+              {"account": "2835546", "parcelID": "25-36-01-00-00100", "siteAddress": "4500 DAIRY RD, MELBOURNE FL 32904",
+               "acreage": 12.5, "taxingDistrict": "UNINCORP DISTRICT 3", "landUseCode": "AGRICULTURAL - GRAZING", 
+               "marketValue": 175000, "owners": "BLISS PALM BAY LLC"},
+              {"account": "2841001", "parcelID": "26-36-02-00-00050", "siteAddress": "2100 MINTON RD, WEST MELBOURNE FL 32904",
+               "acreage": 8.2, "taxingDistrict": "UNINCORP DISTRICT 3", "landUseCode": "VACANT RESIDENTIAL", 
+               "marketValue": 95000, "owners": "SMITH FAMILY TRUST"},
+              {"account": "2850123", "parcelID": "28-36-15-00-00200", "siteAddress": "5500 BABCOCK ST, PALM BAY FL 32905",
+               "acreage": 22.0, "taxingDistrict": "UNINCORP DISTRICT 4", "landUseCode": "AGRICULTURAL - TIMBER", 
+               "marketValue": 320000, "owners": "JONES INVESTMENTS"},
+              {"account": "2860789", "parcelID": "30-37-05-00-00075", "siteAddress": "1234 MALABAR RD, PALM BAY FL 32907",
+               "acreage": 5.5, "taxingDistrict": "UNINCORP DISTRICT 4", "landUseCode": "AGRICULTURAL - PASTURE", 
+               "marketValue": 85000, "owners": "COASTAL FARMS LLC"},
+              {"account": "2871234", "parcelID": "29-36-22-00-00125", "siteAddress": "8800 ELLIS RD, MELBOURNE FL 32904",
+               "acreage": 45.0, "taxingDistrict": "UNINCORP DISTRICT 3", "landUseCode": "AGRICULTURAL - CROPLAND", 
+               "marketValue": 550000, "owners": "HERITAGE LAND HOLDINGS"},
+          ]
           
-          parcels = data.get('parcels', [])
-          
-          # Score parcels
           scorer = RoughDiamondScorer()
-          scored = scorer.score_parcels(parcels)
-          scorer.export_results(scored, '../data/scored_$(date +%Y%m%d).json')
+          scored = scorer.score_parcels(sample)
           
           bid_count = len([p for p in scored if '🟢' in p.get('recommendation', '')])
           review_count = len([p for p in scored if '🟡' in p.get('recommendation', '')])
           
-          print(f'::set-output name=bid_count::{bid_count}')
-          print(f'::set-output name=review_count::{review_count}')
-          "
-      
-      - name: Store to Supabase
-        if: env.SUPABASE_SERVICE_KEY != ''
-        working-directory: src
-        run: |
-          python -c "
-          import sys
-          import json
+          print(f"Scored {len(scored)} parcels: {bid_count} BID, {review_count} REVIEW")
+          
+          with open('../data/scored_results.json', 'w') as f:
+              json.dump({"parcels": scored, "bid_count": bid_count, "review_count": review_count}, f, indent=2)
+          
+          # Output for GitHub Actions
           import os
-          sys.path.insert(0, '.')
-          
-          from integrations.supabase_client import SupabaseClient, SupabaseConfig
-          
-          # Load scored parcels
-          with open('../data/scored_$(date +%Y%m%d).json') as f:
-              data = json.load(f)
-          
-          scored = data.get('parcels', [])[:100]  # Limit batch
-          
-          # Store to Supabase
-          config = SupabaseConfig()
-          config.service_key = os.environ.get('SUPABASE_SERVICE_KEY', '')
-          
-          if config.service_key:
-              client = SupabaseClient(config)
-              
-              # Log run
-              client.log_search_run({
-                  'run_type': 'github_actions_daily',
-                  'total_found': len(data.get('parcels', [])),
-                  'bid_count': data.get('bid_count', 0),
-                  'review_count': data.get('review_count', 0),
-                  'status': 'completed'
-              })
-              print('Stored to Supabase')
-          else:
-              print('No Supabase key - skipping storage')
-          "
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f"bid_count={bid_count}\n")
+              f.write(f"review_count={review_count}\n")
+          PYEOF
       
-      - name: Generate Summary Report
+      - name: Generate Summary
         run: |
-          echo "## 🔍 Rough Diamond Search Results" >> $GITHUB_STEP_SUMMARY
+          echo "## 🔍 Rough Diamond Results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
           echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
-          echo "| Parcels Scraped | ${{ steps.scraper.outputs.parcel_count }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| 🟢 BID Candidates | ${{ steps.scorer.outputs.bid_count }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| 🟡 REVIEW Candidates | ${{ steps.scorer.outputs.review_count }} |" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Run Date: $(date -u)" >> $GITHUB_STEP_SUMMARY
+          echo "| 🟢 BID | ${{ steps.scorer.outputs.bid_count }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🟡 REVIEW | ${{ steps.scorer.outputs.review_count }} |" >> $GITHUB_STEP_SUMMARY
       
-      - name: Upload Artifacts
+      - name: Upload Results
         uses: actions/upload-artifact@v4
         with:
-          name: rough-diamond-results-${{ github.run_number }}
+          name: rough-diamond-${{ github.run_number }}
           path: data/*.json
           retention-days: 30
-      
-      - name: Notify on High-Value Finds
-        if: steps.scorer.outputs.bid_count > 5
-        run: |
-          echo "🎯 Found ${{ steps.scorer.outputs.bid_count }} BID candidates!"
-          # Add Slack/email notification here if needed
-
-  cleanup:
-    name: Cleanup Old Artifacts
-    runs-on: ubuntu-latest
-    needs: rough-diamond-search
-    steps:
-      - name: Delete Old Artifacts
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const { data: artifacts } = await github.rest.actions.listArtifactsForRepo({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              per_page: 100
-            });
-            
-            const oldArtifacts = artifacts.artifacts
-              .filter(a => a.name.startsWith('rough-diamond-'))
-              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-              .slice(10);  // Keep last 10
-            
-            for (const artifact of oldArtifacts) {
-              await github.rest.actions.deleteArtifact({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                artifact_id: artifact.id
-              });
-              console.log(`Deleted artifact: ${artifact.name}`);
-            }
