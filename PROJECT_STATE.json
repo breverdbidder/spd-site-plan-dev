@@ -1,6 +1,24 @@
 {
-  "version": "1.0.13",
-  "last_updated": "2025-12-16T14:45:00Z",
+  "version": "1.1.0",
+  "last_updated": "2025-12-16T16:00:00Z",
+  "orchestration": {
+    "opportunity_discovery": {
+      "version": "1.0.0",
+      "status": "ACTIVE",
+      "agents": [
+        "data_acquisition",
+        "zoning_analysis", 
+        "flu_analysis",
+        "constraint_mapping",
+        "opportunity_scoring",
+        "market_validation",
+        "regulatory_pathway"
+      ],
+      "workflow_file": ".github/workflows/opportunity_discovery.yml",
+      "last_run": null,
+      "description": "7-Agent LangGraph orchestration for identifying rezoning opportunities"
+    }
+  },
   "projects": [
     {
       "id": "SPD-2025-001",
@@ -98,6 +116,12 @@
     {"id": 12, "name": "Archive", "description": "Historical storage"}
   ],
   "recent_decisions": [
+    {
+      "date": "2025-12-16",
+      "project": "ORCHESTRATION",
+      "decision": "Added 7-Agent Opportunity Discovery LangGraph orchestration",
+      "rationale": "Automates identification of zoning-FLU mismatches to find hidden development opportunities before competitors"
+    },
     {
       "date": "2025-12-16",
       "project": "SPD-2025-002",
