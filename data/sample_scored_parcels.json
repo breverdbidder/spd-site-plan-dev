@@ -1,0 +1,203 @@
+{
+  "generated": "2025-12-17T05:11:22.539934",
+  "model_version": "1.0.0",
+  "total_scored": 6,
+  "bid_count": 6,
+  "review_count": 0,
+  "weights": {
+    "jurisdiction": 0.28,
+    "zoning_match": 0.22,
+    "acreage": 0.18,
+    "opposition": 0.15,
+    "staff_rec": 0.12,
+    "comp_plan": 0.05
+  },
+  "parcels": [
+    {
+      "account": "2841001",
+      "parcel_id": "26-36-02-00-00050.0-0000.00",
+      "address": "2100 MINTON RD, WEST MELBOURNE FL 32904",
+      "acres": 8.2,
+      "district": "UNINCORP DISTRICT 3",
+      "land_use": "VACANT RESIDENTIAL - ACREAGE",
+      "market_value": 95000.0,
+      "value_per_acre": 11585.365853658537,
+      "owner": "SMITH FAMILY TRUST",
+      "score": 89,
+      "recommendation": "\ud83d\udfe2 BID",
+      "action": "Immediate acquisition candidate - high approval probability",
+      "timeline": "3-6 months",
+      "risk_level": "LOW",
+      "scoring_factors": [
+        "Jurisdiction match: UNINCORP (70/100)",
+        "Optimal size (8.2ac) - easy approval",
+        "Vacant - clean slate for development",
+        "Very low value ($11,585/ac) - major arbitrage",
+        "+15: West Melbourne annexation corridor"
+      ],
+      "component_scores": {
+        "jurisdiction": 70,
+        "land_use": 85,
+        "acreage": 95,
+        "value_arbitrage": 95,
+        "location_bonus": 15
+      },
+      "bcpao_url": "https://www.bcpao.us/PropertySearch/#/account/2841001"
+    },
+    {
+      "account": "2835546",
+      "parcel_id": "25-36-01-00-00100.0-0000.00",
+      "address": "4500 DAIRY RD, MELBOURNE FL 32904",
+      "acres": 12.5,
+      "district": "UNINCORP DISTRICT 3",
+      "land_use": "AGRICULTURAL - GRAZING LAND (SOIL CLASS I)",
+      "market_value": 175000.0,
+      "value_per_acre": 14000.0,
+      "owner": "BLISS PALM BAY LLC",
+      "score": 88,
+      "recommendation": "\ud83d\udfe2 BID",
+      "action": "Immediate acquisition candidate - high approval probability",
+      "timeline": "3-6 months",
+      "risk_level": "LOW",
+      "scoring_factors": [
+        "Jurisdiction match: UNINCORP (70/100)",
+        "Good size (12.5ac) - moderate complexity",
+        "Agricultural - high rezone potential",
+        "Very low value ($14,000/ac) - major arbitrage",
+        "+15: West Melbourne annexation corridor"
+      ],
+      "component_scores": {
+        "jurisdiction": 70,
+        "land_use": 90,
+        "acreage": 85,
+        "value_arbitrage": 95,
+        "location_bonus": 15
+      },
+      "bcpao_url": "https://www.bcpao.us/PropertySearch/#/account/2835546"
+    },
+    {
+      "account": "2860789",
+      "parcel_id": "30-37-05-00-00075.0-0000.00",
+      "address": "1234 MALABAR RD, PALM BAY FL 32907",
+      "acres": 5.5,
+      "district": "UNINCORP DISTRICT 4",
+      "land_use": "AGRICULTURAL - PASTURE LAND",
+      "market_value": 85000.0,
+      "value_per_acre": 15454.545454545454,
+      "owner": "COASTAL FARMS LLC",
+      "score": 87,
+      "recommendation": "\ud83d\udfe2 BID",
+      "action": "Immediate acquisition candidate - high approval probability",
+      "timeline": "3-6 months",
+      "risk_level": "LOW",
+      "scoring_factors": [
+        "Jurisdiction match: UNINCORP (70/100)",
+        "Optimal size (5.5ac) - easy approval",
+        "Agricultural - high rezone potential",
+        "Low value ($15,455/ac) - good arbitrage",
+        "+12: Palm Bay growth corridor"
+      ],
+      "component_scores": {
+        "jurisdiction": 70,
+        "land_use": 90,
+        "acreage": 95,
+        "value_arbitrage": 85,
+        "location_bonus": 12
+      },
+      "bcpao_url": "https://www.bcpao.us/PropertySearch/#/account/2860789"
+    },
+    {
+      "account": "2850123",
+      "parcel_id": "28-36-15-00-00200.0-0000.00",
+      "address": "5500 BABCOCK ST, PALM BAY FL 32905",
+      "acres": 22.0,
+      "district": "UNINCORP DISTRICT 4",
+      "land_use": "AGRICULTURAL - TIMBERLAND",
+      "market_value": 320000.0,
+      "value_per_acre": 14545.454545454546,
+      "owner": "JONES INVESTMENTS",
+      "score": 86,
+      "recommendation": "\ud83d\udfe2 BID",
+      "action": "Immediate acquisition candidate - high approval probability",
+      "timeline": "3-6 months",
+      "risk_level": "LOW",
+      "scoring_factors": [
+        "Jurisdiction match: UNINCORP (70/100)",
+        "Good size (22.0ac) - moderate complexity",
+        "Agricultural - high rezone potential",
+        "Very low value ($14,545/ac) - major arbitrage",
+        "+12: Palm Bay growth corridor"
+      ],
+      "component_scores": {
+        "jurisdiction": 70,
+        "land_use": 90,
+        "acreage": 85,
+        "value_arbitrage": 95,
+        "location_bonus": 12
+      },
+      "bcpao_url": "https://www.bcpao.us/PropertySearch/#/account/2850123"
+    },
+    {
+      "account": "2871234",
+      "parcel_id": "29-36-22-00-00125.0-0000.00",
+      "address": "8800 ELLIS RD, MELBOURNE FL 32904",
+      "acres": 45.0,
+      "district": "UNINCORP DISTRICT 3",
+      "land_use": "AGRICULTURAL - CROPLAND SOIL CLASS II",
+      "market_value": 550000.0,
+      "value_per_acre": 12222.222222222223,
+      "owner": "HERITAGE LAND HOLDINGS",
+      "score": 86,
+      "recommendation": "\ud83d\udfe2 BID",
+      "action": "Immediate acquisition candidate - high approval probability",
+      "timeline": "3-6 months",
+      "risk_level": "LOW",
+      "scoring_factors": [
+        "Jurisdiction match: UNINCORP (70/100)",
+        "Larger parcel (45.0ac) - more scrutiny",
+        "Agricultural - high rezone potential",
+        "Very low value ($12,222/ac) - major arbitrage",
+        "+15: West Melbourne annexation corridor"
+      ],
+      "component_scores": {
+        "jurisdiction": 70,
+        "land_use": 90,
+        "acreage": 75,
+        "value_arbitrage": 95,
+        "location_bonus": 15
+      },
+      "bcpao_url": "https://www.bcpao.us/PropertySearch/#/account/2871234"
+    },
+    {
+      "account": "2885555",
+      "parcel_id": "27-36-08-00-00300.0-0000.00",
+      "address": "6500 HERITAGE PKWY, MELBOURNE FL 32940",
+      "acres": 3.2,
+      "district": "WEST MELBOURNE",
+      "land_use": "VACANT COMMERCIAL",
+      "market_value": 420000.0,
+      "value_per_acre": 131250.0,
+      "owner": "VIERA DEVELOPMENT CO",
+      "score": 85,
+      "recommendation": "\ud83d\udfe2 BID",
+      "action": "Immediate acquisition candidate - high approval probability",
+      "timeline": "3-6 months",
+      "risk_level": "LOW",
+      "scoring_factors": [
+        "Jurisdiction match: WEST MELBOURNE (95/100)",
+        "Optimal size (3.2ac) - easy approval",
+        "Vacant - clean slate for development",
+        "Premium value ($131,250/ac) - minimal arbitrage",
+        "+10: Major corridor/infrastructure"
+      ],
+      "component_scores": {
+        "jurisdiction": 95,
+        "land_use": 85,
+        "acreage": 95,
+        "value_arbitrage": 40,
+        "location_bonus": 10
+      },
+      "bcpao_url": "https://www.bcpao.us/PropertySearch/#/account/2885555"
+    }
+  ]
+}
