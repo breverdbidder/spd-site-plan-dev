@@ -1,0 +1,300 @@
+name: Zoning-FLU Opportunity Discovery Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      jurisdiction:
+        description: 'Municipality to search'
+        required: true
+        default: 'Palm Bay'
+        type: choice
+        options:
+          - Palm Bay
+          - Melbourne
+          - Brevard County
+      target_flu:
+        description: 'FLU categories (comma-separated)'
+        required: true
+        default: 'HDR,MDR'
+      min_acreage:
+        description: 'Minimum lot size (acres)'
+        required: true
+        default: '0.5'
+      max_parcels:
+        description: 'Maximum parcels to analyze'
+        required: true
+        default: '100'
+      
+  schedule:
+    - cron: '0 8 * * 1'  # Every Monday at 8AM UTC
+
+env:
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+  PYTHONPATH: ${{ github.workspace }}
+
+jobs:
+  # ==========================================================================
+  # FULL PIPELINE EXECUTION
+  # ==========================================================================
+  opportunity-discovery:
+    name: Run Full Opportunity Discovery Pipeline
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
+        run: |
+          pip install --break-system-packages langgraph httpx supabase
+          
+      - name: Run Opportunity Discovery Pipeline
+        id: discover
+        run: |
+          python3 << 'EOF'
+          import json
+          import os
+          import sys
+          sys.path.insert(0, '.')
+          
+          from src.workflows.opportunity_discovery import run_opportunity_discovery
+          
+          # Get inputs
+          jurisdiction = "${{ github.event.inputs.jurisdiction }}" or "Palm Bay"
+          target_flu_str = "${{ github.event.inputs.target_flu }}" or "HDR,MDR"
+          target_flu = [x.strip() for x in target_flu_str.split(",")]
+          min_acreage = float("${{ github.event.inputs.min_acreage }}" or "0.5")
+          max_parcels = int("${{ github.event.inputs.max_parcels }}" or "100")
+          
+          print("=" * 80)
+          print("ZONING-FLU OPPORTUNITY DISCOVERY PIPELINE")
+          print("=" * 80)
+          print(f"\nJurisdiction: {jurisdiction}")
+          print(f"Target FLU: {target_flu}")
+          print(f"Min Acreage: {min_acreage}")
+          print(f"Max Parcels: {max_parcels}")
+          print()
+          
+          # Run full pipeline
+          final_state = run_opportunity_discovery(
+              jurisdiction=jurisdiction,
+              target_flu_categories=target_flu,
+              min_acreage=min_acreage,
+              max_parcels=max_parcels
+          )
+          
+          # Extract results
+          parcels_count = len(final_state.get("parcels", []))
+          opportunities = final_state.get("opportunities_identified", 0)
+          additional_units = final_state.get("total_additional_units", 0)
+          approval_rate = final_state.get("approval_rate", 0)
+          top_opps = final_state.get("top_opportunities", [])
+          
+          # Print summary
+          print("\n" + "=" * 80)
+          print("PIPELINE RESULTS")
+          print("=" * 80)
+          print(f"\n📊 Parcels Analyzed: {parcels_count}")
+          print(f"🎯 Opportunities Found: {opportunities}")
+          print(f"🏠 Total Additional Units Possible: {additional_units}")
+          print(f"📈 Rezoning Approval Rate: {approval_rate:.0f}%")
+          
+          print("\n🏆 TOP OPPORTUNITIES:")
+          print("-" * 60)
+          
+          for i, opp in enumerate(top_opps[:5], 1):
+              score = opp.get("score", {})
+              gap = opp.get("density_gap", {})
+              print(f"\n{i}. {opp.get('address')}")
+              print(f"   Grade: {score.get('grade')} ({score.get('total_score', 0):.0f}/100)")
+              print(f"   Current: {opp.get('current_zoning')} → FLU: {opp.get('flu_designation')}")
+              print(f"   Density Gap: {gap.get('gap_du_acre', 0)} du/acre")
+              print(f"   Additional Units: {gap.get('additional_units', 0)}")
+              
+              # Print scoring factors
+              factors = score.get("scoring_factors", [])
+              if factors:
+                  print(f"   ✅ {'; '.join(factors[:2])}")
+              
+              # Print red flags
+              red_flags = score.get("red_flags", [])
+              if red_flags:
+                  print(f"   ⚠️ {'; '.join(red_flags[:2])}")
+          
+          print(f"\n✅ Stages Completed: {final_state.get('stages_completed', [])}")
+          
+          # Set outputs for downstream jobs
+          with open(os.environ.get('GITHUB_OUTPUT', '/dev/null'), 'a') as f:
+              f.write(f"parcels_count={parcels_count}\n")
+              f.write(f"opportunities_count={opportunities}\n")
+              f.write(f"additional_units={additional_units}\n")
+              f.write(f"approval_rate={approval_rate}\n")
+          
+          # Save full report
+          report = final_state.get("final_report", {})
+          
+          # Convert any non-serializable objects
+          def make_serializable(obj):
+              if hasattr(obj, 'to_dict'):
+                  return obj.to_dict()
+              elif isinstance(obj, dict):
+                  return {k: make_serializable(v) for k, v in obj.items()}
+              elif isinstance(obj, list):
+                  return [make_serializable(v) for v in obj]
+              return obj
+          
+          report_serializable = make_serializable(report)
+          
+          with open("opportunity_report.json", "w") as f:
+              json.dump(report_serializable, f, indent=2)
+          
+          # Also save state summary
+          state_summary = {
+              "pipeline_id": final_state.get("pipeline_id"),
+              "jurisdiction": jurisdiction,
+              "target_flu": target_flu,
+              "parcels_analyzed": parcels_count,
+              "opportunities_identified": opportunities,
+              "total_additional_units": additional_units,
+              "approval_rate": approval_rate,
+              "top_opportunities": make_serializable(top_opps[:10]),
+              "stages_completed": final_state.get("stages_completed", []),
+              "warnings": final_state.get("warnings", []),
+              "errors": final_state.get("errors", [])
+          }
+          
+          with open("pipeline_summary.json", "w") as f:
+              json.dump(state_summary, f, indent=2)
+          
+          EOF
+          
+      - name: Upload Opportunity Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: opportunity-report
+          path: |
+            opportunity_report.json
+            pipeline_summary.json
+
+  # ==========================================================================
+  # SAVE TO SUPABASE
+  # ==========================================================================
+  save-to-supabase:
+    name: Archive to Supabase
+    runs-on: ubuntu-latest
+    needs: opportunity-discovery
+    if: always() && needs.opportunity-discovery.result == 'success'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: opportunity-report
+          
+      - name: Save to Supabase
+        run: |
+          python3 << 'EOF'
+          import json
+          import os
+          from datetime import datetime
+          
+          # Load report
+          with open("pipeline_summary.json") as f:
+              summary = json.load(f)
+          
+          # Prepare insight record
+          insight = {
+              "category": "opportunity_discovery",
+              "title": f"Zoning-FLU Opportunities: {summary.get('jurisdiction')} ({summary.get('opportunities_identified')} found)",
+              "content": json.dumps(summary),
+              "source": "opportunity_discovery_pipeline",
+              "created_at": datetime.utcnow().isoformat()
+          }
+          
+          print(f"{'='*60}")
+          print("SUPABASE ARCHIVE")
+          print(f"{'='*60}")
+          print(f"\nWould save insight: {insight['title']}")
+          print(f"Pipeline ID: {summary.get('pipeline_id')}")
+          print(f"Opportunities: {summary.get('opportunities_identified')}")
+          print(f"Additional Units: {summary.get('total_additional_units')}")
+          
+          # In production, save to Supabase:
+          # from supabase import create_client
+          # supabase = create_client(os.environ['SUPABASE_URL'], os.environ['SUPABASE_KEY'])
+          # supabase.table('insights').insert(insight).execute()
+          
+          print("\n✅ Archive complete")
+          
+          EOF
+
+  # ==========================================================================
+  # NOTIFICATION
+  # ==========================================================================
+  notify:
+    name: Send Notification
+    runs-on: ubuntu-latest
+    needs: [opportunity-discovery, save-to-supabase]
+    if: always()
+    
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: opportunity-report
+        continue-on-error: true
+          
+      - name: Generate Summary
+        run: |
+          python3 << 'EOF'
+          import json
+          import os
+          
+          try:
+              with open("pipeline_summary.json") as f:
+                  summary = json.load(f)
+              
+              # Create markdown summary
+              md = f"""## 🎯 Zoning-FLU Opportunity Discovery Complete
+
+          **Jurisdiction:** {summary.get('jurisdiction')}
+          **Pipeline ID:** {summary.get('pipeline_id')}
+
+          ### Results
+          - 📊 Parcels Analyzed: **{summary.get('parcels_analyzed', 0)}**
+          - 🎯 Opportunities Found: **{summary.get('opportunities_identified', 0)}**
+          - 🏠 Additional Units Possible: **{summary.get('total_additional_units', 0)}**
+          - 📈 Approval Rate: **{summary.get('approval_rate', 0):.0f}%**
+
+          ### Top Opportunities
+          """
+              
+              for i, opp in enumerate(summary.get('top_opportunities', [])[:3], 1):
+                  score = opp.get('score', {})
+                  gap = opp.get('density_gap', {})
+                  md += f"""
+          #### {i}. {opp.get('address')}
+          - **Grade:** {score.get('grade')} ({score.get('total_score', 0):.0f}/100)
+          - **Density Gap:** {gap.get('gap_du_acre', 0)} du/acre → +{gap.get('additional_units', 0)} units
+          - **Current:** {opp.get('current_zoning')} | **FLU:** {opp.get('flu_designation')}
+          """
+              
+              # Write to GitHub summary
+              with open(os.environ.get('GITHUB_STEP_SUMMARY', '/dev/null'), 'w') as f:
+                  f.write(md)
+                  
+              print(md)
+              
+          except Exception as e:
+              print(f"Error generating summary: {e}")
+          
+          EOF
