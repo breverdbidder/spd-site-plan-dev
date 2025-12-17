@@ -1,34 +1,37 @@
 """
-SPD/ZOD Machine Learning Models
+SPD/ZOD Machine Learning Module
 ===============================
-XGBoost-style models for zoning opportunity analysis.
+XGBoost models for real estate development predictions.
 
 Models:
-- RezoningApprovalPredictor: ~72% accuracy on Brevard County data
-- ValueUpliftEstimator: Land value change predictions
-- DevelopmentFeasibilityScorer: Comprehensive scoring (0-100)
+- ZOD XGBoost: Rezoning approval probability & value uplift
+- SPD Feasibility: Site development feasibility scoring
+
+Integrates with:
+- BidDeed.AI ML ecosystem (src/ml/xgboost_model.py)
+- LangGraph orchestration pipeline
+- Census API demographics
+- Zillow/Redfin valuations
 """
 
-from .xgboost_models import (
-    RezoningApprovalPredictor,
-    ValueUpliftEstimator,
-    DevelopmentFeasibilityScorer,
-    RezoningPrediction,
-    ValueUpliftPrediction,
-    FeasibilityScore,
-    predict_rezoning_approval,
-    estimate_value_uplift,
-    score_development_feasibility
+from .zod_xgboost_model import (
+    ZODXGBoostModel,
+    ZODPrediction,
+    TrainingMetrics,
+    train_zod_model,
+    integrate_ml_scoring,
+    REZONING_HISTORY,
+    VALUE_UPLIFT_PER_UNIT,
+    CONSTRAINT_IMPACT
 )
 
 __all__ = [
-    "RezoningApprovalPredictor",
-    "ValueUpliftEstimator", 
-    "DevelopmentFeasibilityScorer",
-    "RezoningPrediction",
-    "ValueUpliftPrediction",
-    "FeasibilityScore",
-    "predict_rezoning_approval",
-    "estimate_value_uplift",
-    "score_development_feasibility"
+    "ZODXGBoostModel",
+    "ZODPrediction",
+    "TrainingMetrics",
+    "train_zod_model",
+    "integrate_ml_scoring",
+    "REZONING_HISTORY",
+    "VALUE_UPLIFT_PER_UNIT",
+    "CONSTRAINT_IMPACT"
 ]
