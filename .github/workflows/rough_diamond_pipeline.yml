@@ -1,0 +1,176 @@
+name: SPD Rough Diamond Pipeline
+
+on:
+  schedule:
+    # Run daily at 6 AM EST (11 AM UTC)
+    - cron: '0 11 * * *'
+  workflow_dispatch:
+    inputs:
+      min_acres:
+        description: 'Minimum acres to search'
+        required: false
+        default: '2'
+      max_acres:
+        description: 'Maximum acres to search'
+        required: false
+        default: '100'
+
+env:
+  SUPABASE_URL: https://mocerqjnksmhcjzxrewo.supabase.co
+  SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+
+jobs:
+  rough-diamond-search:
+    name: BCPAO Rough Diamond Search
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Install Dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt || true
+      
+      - name: Run BCPAO Scraper
+        id: scraper
+        working-directory: src
+        run: |
+          python -c "
+          import sys
+          sys.path.insert(0, '.')
+          from scrapers.bcpao_scraper import BCPAOScraper
+          
+          scraper = BCPAOScraper()
+          parcels = scraper.run_full_search()
+          scraper.export_results('../data/bcpao_raw_$(date +%Y%m%d).json')
+          print(f'::set-output name=parcel_count::{len(parcels)}')
+          "
+      
+      - name: Score Parcels
+        id: scorer
+        working-directory: src
+        run: |
+          python -c "
+          import sys
+          import json
+          sys.path.insert(0, '.')
+          from models.scoring_model import RoughDiamondScorer
+          
+          # Load raw parcels
+          with open('../data/bcpao_raw_$(date +%Y%m%d).json') as f:
+              data = json.load(f)
+          
+          parcels = data.get('parcels', [])
+          
+          # Score parcels
+          scorer = RoughDiamondScorer()
+          scored = scorer.score_parcels(parcels)
+          scorer.export_results(scored, '../data/scored_$(date +%Y%m%d).json')
+          
+          bid_count = len([p for p in scored if '🟢' in p.get('recommendation', '')])
+          review_count = len([p for p in scored if '🟡' in p.get('recommendation', '')])
+          
+          print(f'::set-output name=bid_count::{bid_count}')
+          print(f'::set-output name=review_count::{review_count}')
+          "
+      
+      - name: Store to Supabase
+        if: env.SUPABASE_SERVICE_KEY != ''
+        working-directory: src
+        run: |
+          python -c "
+          import sys
+          import json
+          import os
+          sys.path.insert(0, '.')
+          
+          from integrations.supabase_client import SupabaseClient, SupabaseConfig
+          
+          # Load scored parcels
+          with open('../data/scored_$(date +%Y%m%d).json') as f:
+              data = json.load(f)
+          
+          scored = data.get('parcels', [])[:100]  # Limit batch
+          
+          # Store to Supabase
+          config = SupabaseConfig()
+          config.service_key = os.environ.get('SUPABASE_SERVICE_KEY', '')
+          
+          if config.service_key:
+              client = SupabaseClient(config)
+              
+              # Log run
+              client.log_search_run({
+                  'run_type': 'github_actions_daily',
+                  'total_found': len(data.get('parcels', [])),
+                  'bid_count': data.get('bid_count', 0),
+                  'review_count': data.get('review_count', 0),
+                  'status': 'completed'
+              })
+              print('Stored to Supabase')
+          else:
+              print('No Supabase key - skipping storage')
+          "
+      
+      - name: Generate Summary Report
+        run: |
+          echo "## 🔍 Rough Diamond Search Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Parcels Scraped | ${{ steps.scraper.outputs.parcel_count }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🟢 BID Candidates | ${{ steps.scorer.outputs.bid_count }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🟡 REVIEW Candidates | ${{ steps.scorer.outputs.review_count }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Run Date: $(date -u)" >> $GITHUB_STEP_SUMMARY
+      
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: rough-diamond-results-${{ github.run_number }}
+          path: data/*.json
+          retention-days: 30
+      
+      - name: Notify on High-Value Finds
+        if: steps.scorer.outputs.bid_count > 5
+        run: |
+          echo "🎯 Found ${{ steps.scorer.outputs.bid_count }} BID candidates!"
+          # Add Slack/email notification here if needed
+
+  cleanup:
+    name: Cleanup Old Artifacts
+    runs-on: ubuntu-latest
+    needs: rough-diamond-search
+    steps:
+      - name: Delete Old Artifacts
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: artifacts } = await github.rest.actions.listArtifactsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 100
+            });
+            
+            const oldArtifacts = artifacts.artifacts
+              .filter(a => a.name.startsWith('rough-diamond-'))
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+              .slice(10);  // Keep last 10
+            
+            for (const artifact of oldArtifacts) {
+              await github.rest.actions.deleteArtifact({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                artifact_id: artifact.id
+              });
+              console.log(`Deleted artifact: ${artifact.name}`);
+            }
