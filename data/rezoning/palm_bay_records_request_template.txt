@@ -1,0 +1,61 @@
+
+=============================================================================
+PUBLIC RECORDS REQUEST - REZONING CASE DATA
+City of Palm Bay, Florida
+=============================================================================
+
+TO: City of Palm Bay Land Development Division
+    landdevelopmentweb@palmbayfl.gov
+    (321) 733-3042
+
+FROM: [YOUR NAME]
+DATE: [DATE]
+
+RE: Public Records Request - Rezoning and Comprehensive Plan Amendment Cases
+
+Pursuant to Florida's Public Records Law (Chapter 119, Florida Statutes), 
+I hereby request the following records:
+
+REQUESTED RECORDS:
+-----------------
+All rezoning (CPZ, Z), comprehensive plan amendment (CP), and future land 
+use map amendment cases submitted to the City of Palm Bay Planning & Zoning 
+Board and/or City Council from January 1, 2019 through December 31, 2025.
+
+For each case, please provide:
+1. Case number (e.g., CPZ24-00008, Z23-00014, CP24-00012)
+2. Applicant name
+3. Property address or location description
+4. Parcel ID/Tax account number
+5. Acreage
+6. Current (from) zoning district
+7. Proposed (to) zoning district
+8. Current (from) future land use designation
+9. Proposed (to) future land use designation
+10. P&Z Board hearing date and vote
+11. City Council hearing date and vote
+12. Final outcome (APPROVED/DENIED/WITHDRAWN)
+13. Ordinance/Resolution number (if approved)
+
+PREFERRED FORMAT:
+----------------
+Excel spreadsheet (.xlsx) or CSV file if available. If not available in 
+electronic format, PDF copies of decision logs or case tracking reports 
+are acceptable.
+
+CONTACT INFORMATION:
+-------------------
+Name: [YOUR NAME]
+Email: [YOUR EMAIL]
+Phone: [YOUR PHONE]
+Address: [YOUR ADDRESS]
+
+I understand that charges may apply for copies and research time per 
+Section 119.07, Florida Statutes, and I agree to pay reasonable fees.
+
+Please contact me if you have any questions or need clarification.
+
+Thank you for your assistance.
+
+[YOUR NAME]
+=============================================================================
