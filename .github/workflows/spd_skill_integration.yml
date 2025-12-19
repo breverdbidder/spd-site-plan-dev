@@ -1,0 +1,119 @@
+name: SPD Skill Integration
+
+on:
+  workflow_dispatch:
+    inputs:
+      skill_action:
+        description: 'Skill action to perform'
+        required: true
+        type: choice
+        options:
+          - create_new_skill
+          - update_existing_skill
+          - package_skill
+      skill_name:
+        description: 'Name of skill (for new/existing skills)'
+        required: false
+        type: string
+      skill_description:
+        description: 'Brief description of skill (for new skills)'
+        required: false
+        type: string
+
+  # Auto-trigger when LangGraph orchestrator needs skill support
+  repository_dispatch:
+    types: [skill_needed]
+
+env:
+  ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+  SUPABASE_URL: https://mocerqjnksmhcjzxrewo.supabase.co
+  SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+
+jobs:
+  skill_integration:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout SPD repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
+        run: |
+          pip install anthropic langgraph langchain-anthropic supabase
+          
+      - name: Execute skill action
+        id: skill_action
+        run: |
+          cd skills/skill-creator/scripts
+          
+          case "${{ github.event.inputs.skill_action || github.event.client_payload.action }}" in
+            create_new_skill)
+              python init_skill.py \
+                --name "${{ github.event.inputs.skill_name || github.event.client_payload.skill_name }}" \
+                --description "${{ github.event.inputs.skill_description || github.event.client_payload.skill_description }}"
+              echo "status=created" >> $GITHUB_OUTPUT
+              ;;
+            update_existing_skill)
+              echo "Updating skill: ${{ github.event.inputs.skill_name }}"
+              # Claude will handle the actual updates via the skill-creator guidance
+              echo "status=updated" >> $GITHUB_OUTPUT
+              ;;
+            package_skill)
+              python package_skill.py \
+                --skill-dir "../${{ github.event.inputs.skill_name }}"
+              echo "status=packaged" >> $GITHUB_OUTPUT
+              ;;
+            *)
+              echo "Unknown action"
+              exit 1
+              ;;
+          esac
+          
+      - name: Commit changes
+        if: steps.skill_action.outputs.status != ''
+        run: |
+          git config user.name "SPD Bot"
+          git config user.email "spd-bot@everestcapitalusa.com"
+          git add skills/
+          git commit -m "Skill action: ${{ github.event.inputs.skill_action }} - ${{ github.event.inputs.skill_name || 'auto' }}" || echo "No changes to commit"
+          git push
+          
+      - name: Log to Supabase
+        if: always()
+        run: |
+          python3 << 'PYTHON_SCRIPT'
+          import os
+          import json
+          from datetime import datetime
+          from supabase import create_client
+
+          supabase = create_client(
+              os.environ['SUPABASE_URL'],
+              os.environ['SUPABASE_KEY']
+          )
+
+          insight = {
+              'timestamp': datetime.utcnow().isoformat(),
+              'category': 'spd_skill_integration',
+              'insight': f"Skill action executed: {os.environ.get('INPUT_SKILL_ACTION', 'auto')}",
+              'metadata': {
+                  'skill_name': os.environ.get('INPUT_SKILL_NAME', ''),
+                  'action': os.environ.get('INPUT_SKILL_ACTION', ''),
+                  'status': os.environ.get('SKILL_STATUS', 'pending'),
+                  'workflow_run': '${{ github.run_id }}'
+              }
+          }
+
+          supabase.table('insights').insert(insight).execute()
+          print("✅ Logged to Supabase insights table")
+          PYTHON_SCRIPT
+        env:
+          INPUT_SKILL_ACTION: ${{ github.event.inputs.skill_action }}
+          INPUT_SKILL_NAME: ${{ github.event.inputs.skill_name }}
+          SKILL_STATUS: ${{ steps.skill_action.outputs.status }}
