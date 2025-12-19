@@ -1,0 +1,144 @@
+name: SPD Skill Creator Orchestration
+
+on:
+  workflow_dispatch:
+    inputs:
+      skill_request:
+        description: 'Describe the skill to create'
+        required: true
+        type: string
+  
+  # Manual trigger via GitHub API or scheduled runs
+  repository_dispatch:
+    types: [create_skill]
+
+jobs:
+  create-skill:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout SPD repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install anthropic langgraph requests
+      
+      - name: Download Anthropic skill-creator guide
+        run: |
+          curl -s https://raw.githubusercontent.com/anthropics/skills/main/skills/skill-creator/SKILL.md \
+            -o /tmp/skill_creator_full.md
+          echo "✅ Downloaded skill-creator guide"
+      
+      - name: Run Skill Creator Agent
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SKILL_REQUEST: ${{ github.event.inputs.skill_request || github.event.client_payload.skill_request }}
+        run: |
+          cat > run_skill_creator.py << 'EOFPYTHON'
+          import os
+          import sys
+          import json
+          from pathlib import Path
+          
+          # Import the skill creator agent
+          sys.path.insert(0, '/tmp')
+          
+          # Get skill request from environment
+          skill_request = os.environ.get('SKILL_REQUEST', '')
+          
+          if not skill_request:
+              print("❌ No skill request provided")
+              sys.exit(1)
+          
+          print(f"🚀 Creating skill: {skill_request[:100]}...")
+          
+          # Import and run
+          from spd_skill_creator_agent import run_skill_creator
+          
+          result = run_skill_creator(skill_request)
+          
+          # Save result
+          with open('/tmp/skill_result.json', 'w') as f:
+              json.dump(result, f, indent=2)
+          
+          if result['deployment_status'] == 'SUCCESS':
+              print(f"✅ Skill created: {result['skill_name']}")
+              sys.exit(0)
+          else:
+              print(f"❌ Skill creation failed: {result.get('error', 'Unknown error')}")
+              sys.exit(1)
+          EOFPYTHON
+          
+          # Copy agent to /tmp
+          cp agents/orchestrator/spd_skill_creator_agent.py /tmp/
+          
+          # Run skill creator
+          python run_skill_creator.py
+      
+      - name: Deploy skill to repo
+        if: success()
+        run: |
+          # Read result
+          SKILL_NAME=$(python -c "import json; print(json.load(open('/tmp/skill_result.json'))['skill_name'])")
+          
+          # Copy skill directory to repo
+          mkdir -p skills/$SKILL_NAME
+          cp -r /tmp/spd_skills/$SKILL_NAME/* skills/$SKILL_NAME/
+          
+          # Git config
+          git config user.name "SPD Skill Creator Bot"
+          git config user.email "bot@everestcapitalusa.com"
+          
+          # Commit and push
+          git add skills/$SKILL_NAME
+          git commit -m "🎯 Auto-deployed skill: $SKILL_NAME
+          
+          Created via SPD Skill Creator orchestration
+          Timestamp: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+          
+          Skill type: $(python -c "import json; print(json.load(open('/tmp/skill_result.json'))['skill_type'])")
+          Freedom level: $(python -c "import json; print(json.load(open('/tmp/skill_result.json'))['freedom_level'])")
+          "
+          
+          git push origin main
+          
+          echo "✅ Skill deployed to GitHub: skills/$SKILL_NAME"
+      
+      - name: Log to Supabase
+        if: always()
+        env:
+          SUPABASE_URL: https://mocerqjnksmhcjzxrewo.supabase.co
+          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          RESULT_DATA=$(cat /tmp/skill_result.json 2>/dev/null || echo '{}')
+          
+          curl -X POST "${SUPABASE_URL}/rest/v1/insights" \
+            -H "apikey: ${SUPABASE_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_KEY}" \
+            -H "Content-Type: application/json" \
+            -H "Prefer: return=minimal" \
+            -d "{
+              \"category\": \"spd_skill_creation\",
+              \"insight_type\": \"orchestration\",
+              \"insight_data\": ${RESULT_DATA}
+            }"
+          
+          echo "✅ Logged to Supabase insights"
+      
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: skill-creation-artifacts
+          path: |
+            /tmp/skill_result.json
+            /tmp/spd_skills/
+          retention-days: 30
