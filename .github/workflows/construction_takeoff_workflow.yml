@@ -1,0 +1,177 @@
+name: SPD Construction Takeoff Orchestration
+
+on:
+  workflow_dispatch:
+    inputs:
+      pdf_url:
+        description: 'URL to construction plan PDF or path in repo'
+        required: true
+        type: string
+      project_name:
+        description: 'Project name for the takeoff'
+        required: true
+        type: string
+      project_id:
+        description: 'Project ID (optional - auto-generated if not provided)'
+        required: false
+        type: string
+  
+  repository_dispatch:
+    types: [construction_takeoff]
+
+jobs:
+  run-takeoff:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout SPD repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install anthropic langgraph requests openpyxl pdfplumber PyPDF2
+          echo "✅ Dependencies installed"
+      
+      - name: Download construction plan PDF
+        env:
+          PDF_URL: ${{ github.event.inputs.pdf_url || github.event.client_payload.pdf_url }}
+        run: |
+          if [[ "$PDF_URL" == http* ]]; then
+            curl -L "$PDF_URL" -o /tmp/construction_plan.pdf
+            echo "✅ PDF downloaded from URL"
+          else
+            cp "$PDF_URL" /tmp/construction_plan.pdf
+            echo "✅ PDF copied from repo"
+          fi
+          
+          ls -lh /tmp/construction_plan.pdf
+      
+      - name: Run Construction Takeoff Agent
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          PROJECT_NAME: ${{ github.event.inputs.project_name || github.event.client_payload.project_name }}
+          PROJECT_ID: ${{ github.event.inputs.project_id || github.event.client_payload.project_id }}
+        run: |
+          # Copy agent to working directory
+          cp agents/orchestrator/construction_takeoff_agent.py /tmp/
+          
+          # Run takeoff agent
+          cd /tmp
+          python construction_takeoff_agent.py \
+            /tmp/construction_plan.pdf \
+            "$PROJECT_NAME" \
+            "$PROJECT_ID"
+          
+          # Check if report was generated
+          if [ -f /tmp/spd_takeoff_reports/*.xlsx ]; then
+            echo "✅ Takeoff report generated successfully"
+            ls -lh /tmp/spd_takeoff_reports/
+          else
+            echo "❌ Report generation failed"
+            exit 1
+          fi
+      
+      - name: Upload takeoff report to repo
+        run: |
+          # Create reports directory if it doesn't exist
+          mkdir -p reports/takeoff_reports
+          
+          # Copy Excel report
+          cp /tmp/spd_takeoff_reports/*.xlsx reports/takeoff_reports/
+          
+          # Git config
+          git config user.name "SPD Takeoff Bot"
+          git config user.email "bot@everestcapitalusa.com"
+          
+          # Commit and push
+          git add reports/takeoff_reports/
+          git commit -m "📊 Construction takeoff report: ${{ github.event.inputs.project_name }}
+          
+          Generated: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+          Project ID: ${{ github.event.inputs.project_id || 'auto-generated' }}
+          
+          Includes:
+          - Detailed quantity takeoff
+          - Materials list
+          - Cost estimates
+          - Competitor analysis insights
+          "
+          
+          git push origin main
+          
+          echo "✅ Report uploaded to GitHub"
+      
+      - name: Log to Supabase
+        if: always()
+        env:
+          SUPABASE_URL: https://mocerqjnksmhcjzxrewo.supabase.co
+          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          REPORT_FILE=$(ls /tmp/spd_takeoff_reports/*.xlsx 2>/dev/null | head -1)
+          
+          if [ -n "$REPORT_FILE" ]; then
+            STATUS="SUCCESS"
+            REPORT_NAME=$(basename "$REPORT_FILE")
+          else
+            STATUS="FAILED"
+            REPORT_NAME="none"
+          fi
+          
+          curl -X POST "${SUPABASE_URL}/rest/v1/insights" \
+            -H "apikey: ${SUPABASE_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_KEY}" \
+            -H "Content-Type: application/json" \
+            -H "Prefer: return=minimal" \
+            -d "{
+              \"category\": \"spd_construction_takeoff\",
+              \"insight_type\": \"workflow_execution\",
+              \"insight_data\": {
+                \"project_name\": \"${{ github.event.inputs.project_name }}\",
+                \"project_id\": \"${{ github.event.inputs.project_id }}\",
+                \"status\": \"${STATUS}\",
+                \"report_file\": \"${REPORT_NAME}\",
+                \"workflow_run\": \"${{ github.run_id }}\",
+                \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"
+              }
+            }"
+          
+          echo "✅ Logged to Supabase"
+      
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: takeoff-report-${{ github.run_id }}
+          path: |
+            /tmp/spd_takeoff_reports/*.xlsx
+            /tmp/construction_plan.pdf
+          retention-days: 90
+      
+      - name: Post summary
+        if: success()
+        run: |
+          echo "## 📊 Construction Takeoff Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Project:** ${{ github.event.inputs.project_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Project ID:** ${{ github.event.inputs.project_id || 'Auto-generated' }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** ✅ Success" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📁 Report Location" >> $GITHUB_STEP_SUMMARY
+          echo "Excel report saved to: \`reports/takeoff_reports/\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🔍 Features" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ PDF plan analysis using Claude Vision" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Automated quantity extraction" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Competitor analysis via Firecrawl" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Cost estimation (materials + labor)" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Excel workbook with multiple sheets" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Supabase insights logging" >> $GITHUB_STEP_SUMMARY
