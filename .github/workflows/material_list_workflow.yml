@@ -1,0 +1,141 @@
+name: Material List Agent
+
+on:
+  workflow_dispatch:
+    inputs:
+      takeoff_json_path:
+        description: 'Path to takeoff JSON file (in repo) or "sample" for test run'
+        required: false
+        default: 'sample'
+      project_name:
+        description: 'Project name'
+        required: false
+        default: 'SPD Project'
+      project_address:
+        description: 'Project address'
+        required: false
+        default: ''
+  
+  # Auto-trigger when takeoff completes
+  workflow_run:
+    workflows: ["Construction Takeoff Agent"]
+    types:
+      - completed
+
+env:
+  ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+  FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
+  SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_KEY }}
+
+jobs:
+  generate-material-list:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install anthropic requests openpyxl
+          # Optional: LangGraph for full orchestration
+          pip install langgraph || echo "LangGraph not required for basic operation"
+      
+      - name: Prepare takeoff data
+        id: prep_data
+        run: |
+          if [ "${{ github.event.inputs.takeoff_json_path }}" = "sample" ] || [ -z "${{ github.event.inputs.takeoff_json_path }}" ]; then
+            echo "Using sample takeoff data for Hester Duplex"
+            cat > /tmp/takeoff_input.json << 'EOF'
+          {
+            "project_name": "Hester Avenue Duplex",
+            "project_address": "2826 Hester Ave SE, Palm Bay, FL 32908",
+            "materials": [
+              {"item": "2x4 SPF No.2 @ 16\" O.C. (Interior Bearing)", "qty": 3200, "unit": "LF", "unit_cost": 0.85},
+              {"item": "2x4 PT SYP Bottom Plates", "qty": 480, "unit": "LF", "unit_cost": 1.45},
+              {"item": "2x6 SPF No.2 Studs", "qty": 1800, "unit": "LF", "unit_cost": 1.25},
+              {"item": "2x8 SPF No.2 Headers", "qty": 320, "unit": "LF", "unit_cost": 2.10},
+              {"item": "4x4 PT SYP No.2 Columns", "qty": 24, "unit": "EA", "unit_cost": 18.00},
+              {"item": "15/32\" CDX Sub-Sheathing", "qty": 8500, "unit": "SF", "unit_cost": 1.85},
+              {"item": "Simpson HETA20 Straps", "qty": 96, "unit": "EA", "unit_cost": 8.50},
+              {"item": "Simpson HTS20 Straps", "qty": 192, "unit": "EA", "unit_cost": 7.25},
+              {"item": "Simpson SP4 Anchors", "qty": 240, "unit": "EA", "unit_cost": 3.25},
+              {"item": "Simpson THD26 Hangers", "qty": 86, "unit": "EA", "unit_cost": 12.50},
+              {"item": "25 SH Window (2'5\" x 3'6\")", "qty": 24, "unit": "EA", "unit_cost": 425.00},
+              {"item": "35 SH Window (3'5\" x 4'6\")", "qty": 4, "unit": "EA", "unit_cost": 525.00},
+              {"item": "3/0 x 8/0 Exterior Door/Frame", "qty": 8, "unit": "EA", "unit_cost": 850.00},
+              {"item": "(2) 3/0 x 8/0 Exterior French Doors/Frame", "qty": 4, "unit": "EA", "unit_cost": 2100.00},
+              {"item": "16/0 x 8/0 Overhead Garage Door", "qty": 2, "unit": "EA", "unit_cost": 2800.00},
+              {"item": "2/8 x 6/8 Interior Door", "qty": 28, "unit": "EA", "unit_cost": 195.00},
+              {"item": "R-13 Batt Insulation (Walls)", "qty": 4200, "unit": "SF", "unit_cost": 0.95},
+              {"item": "R-38 Batt Insulation (Attic)", "qty": 3050, "unit": "SF", "unit_cost": 1.85},
+              {"item": "Galvanized Metal Roofing", "qty": 4800, "unit": "SF", "unit_cost": 8.50},
+              {"item": "1/2\" Drywall", "qty": 16500, "unit": "SF", "unit_cost": 1.85},
+              {"item": "5/8\" Type X Fire Rated Drywall", "qty": 960, "unit": "SF", "unit_cost": 3.25},
+              {"item": "GFCI Outlets", "qty": 24, "unit": "EA", "unit_cost": 45.00},
+              {"item": "AFCI/GFCI Combo Outlets", "qty": 48, "unit": "EA", "unit_cost": 55.00},
+              {"item": "200 AMP Main Service Panel", "qty": 2, "unit": "EA", "unit_cost": 1850.00},
+              {"item": "Water Closet", "qty": 6, "unit": "EA", "unit_cost": 385.00},
+              {"item": "Kitchen Sink", "qty": 2, "unit": "EA", "unit_cost": 425.00},
+              {"item": "Water Heater", "qty": 2, "unit": "EA", "unit_cost": 1200.00}
+            ]
+          }
+          EOF
+            echo "takeoff_file=/tmp/takeoff_input.json" >> $GITHUB_OUTPUT
+          else
+            echo "takeoff_file=${{ github.event.inputs.takeoff_json_path }}" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Run Material List Agent
+        run: |
+          python agents/orchestrator/material_list_agent.py \
+            reports/material_lists/Material_List_$(date +%Y%m%d_%H%M%S).xlsx
+        env:
+          TAKEOFF_JSON: ${{ steps.prep_data.outputs.takeoff_file }}
+      
+      - name: Upload material list artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: material-list-report
+          path: reports/material_lists/*.xlsx
+          retention-days: 30
+      
+      - name: Log to Supabase
+        if: env.SUPABASE_SERVICE_ROLE_KEY != ''
+        run: |
+          curl -X POST "${{ env.SUPABASE_URL }}/rest/v1/insights" \
+            -H "apikey: ${{ env.SUPABASE_SERVICE_ROLE_KEY }}" \
+            -H "Authorization: Bearer ${{ env.SUPABASE_SERVICE_ROLE_KEY }}" \
+            -H "Content-Type: application/json" \
+            -H "Prefer: return=minimal" \
+            -d '{
+              "insight_type": "material_list",
+              "title": "Material List: ${{ github.event.inputs.project_name || 'Hester Duplex' }}",
+              "description": "Generated by Material List Agent workflow",
+              "priority": 2,
+              "source": "github_actions"
+            }'
+        env:
+          SUPABASE_URL: https://mocerqjnksmhcjzxrewo.supabase.co
+      
+      - name: Summary
+        run: |
+          echo "## 🛒 Material List Agent Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Project:** ${{ github.event.inputs.project_name || 'Hester Avenue Duplex' }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Address:** ${{ github.event.inputs.project_address || '2826 Hester Ave SE, Palm Bay, FL 32908' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Features:" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Home Depot & Lowe's SKU lookup" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Best price comparison" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Florida Building Code 2023 rough openings" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Procurement-ready Excel report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📥 Download the material list from **Artifacts** above." >> $GITHUB_STEP_SUMMARY
