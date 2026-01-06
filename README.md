@@ -1,51 +1,179 @@
-# SPD Rough Diamond Pipeline
+# SPD.AI - Site Planning & Development Intelligence
 
-**Automated BCPAO parcel discovery for annexation arbitrage opportunities**
+> An AI-powered site planning feasibility platform by BidDeed.AI
 
-Part of the BidDeed.AI / Everest Capital USA property acquisition system.
+![SPD.AI](https://img.shields.io/badge/Version-1.0.0-blue)
+![BidDeed.AI](https://img.shields.io/badge/Powered%20by-BidDeed.AI-green)
+![License](https://img.shields.io/badge/License-Proprietary-red)
 
 ## Overview
 
-This pipeline identifies "rough diamond" properties in Brevard County, Florida - parcels with high rezoning/annexation potential based on XGBoost-derived scoring patterns from 109 historical rezoning cases (77% approval rate).
+SPD.AI is an **original** site planning and development feasibility platform designed for real estate developers, architects, and investors in Brevard County, Florida.
 
-### Target Properties
-- **County AU/GU parcels** within 1 mile of West Melbourne/Palm Bay city limits
-- **Agricultural/Vacant land** in unincorporated areas
-- **2-100 acres** optimal size range
-- **Low value per acre** indicating arbitrage potential
+**This is NOT a clone of any existing product.** SPD.AI was built from the ground up using:
+- React for the frontend
+- Mapbox GL JS for mapping
+- Turf.js for spatial calculations
+- Original algorithms for feasibility analysis
+- BidDeed.AI infrastructure for data
 
-## Scoring Model
+## Features
 
-Based on XGBoost analysis of 109 Brevard County rezoning cases:
+### 🗺️ Interactive Site Definition
+- Draw parcels directly on the map
+- Search by address or parcel ID
+- Import GIS data
+- Automatic zoning lookup for Brevard County
 
-| Feature | Weight | Description |
-|---------|--------|-------------|
-| Jurisdiction | 28% | West Melbourne (95) > Palm Bay (85) > Unincorp (70) |
-| Zoning Match | 22% | AG→Industrial (89) > AG→Residential (85) |
-| Acreage | 18% | Sweet spot: 2-10 acres (95), 10-25 acres (85) |
-| Opposition Risk | 15% | Value/acre proxy: <$15K (95), $15-30K (85) |
-| Staff Rec | 12% | Historical correlation with approval |
-| Comp Plan | 5% | Future land use alignment |
+### ⚡ Instant Feasibility Generation
+- AI-optimized unit mix
+- Parking ratio calculations
+- Building placement optimization
+- Real-time parameter adjustments
 
-### Recommendation Thresholds
-- **🟢 BID (80+)**: Immediate acquisition candidate
-- **🟡 REVIEW (65-79)**: Due diligence required
-- **🟠 WATCH (50-64)**: Monitor for changes
-- **🔴 SKIP (<50)**: Does not match criteria
+### 📊 Pro Forma Analysis
+- Land cost estimates
+- Hard/soft cost projections
+- NOI and yield-on-cost calculations
+- Profit margin analysis
 
-## Usage
+### 🏗️ Five Development Typologies
+1. **Multi-Family** - Apartments, condos, student housing
+2. **Single-Family** - Subdivisions, townhomes, BTR
+3. **Industrial** - Warehouses, logistics, flex
+4. **Retail** - Shopping centers, pad sites
+5. **Hotel** - Limited & full service
 
-```bash
-python main.py                              # Full pipeline
-python main.py --scrape-only -o data.json   # Scrape only
-python main.py --score-only data.json       # Score existing file
-python main.py --dry-run                    # No database storage
+## Tech Stack
+
+| Component | Technology |
+|-----------|------------|
+| Frontend | React 18 |
+| Mapping | Mapbox GL JS + Mapbox Draw |
+| Spatial | Turf.js |
+| Styling | CSS-in-JS (styled objects) |
+| State | React Hooks |
+| Hosting | Lovable / Cloudflare Pages |
+| Backend | BidDeed.AI API (Supabase) |
+
+## Project Structure
+
+```
+spd-ai/
+├── src/
+│   ├── components/
+│   │   ├── App.jsx           # Main application
+│   │   ├── MapView.jsx       # Mapbox integration
+│   │   ├── Sidebar.jsx       # Parameter controls
+│   │   ├── ResultsPanel.jsx  # Feasibility results
+│   │   └── ProForma.jsx      # Financial analysis
+│   ├── hooks/
+│   │   ├── useMap.js         # Map state management
+│   │   ├── useFeasibility.js # Calculation engine
+│   │   └── useZoning.js      # Zoning data
+│   ├── utils/
+│   │   ├── calculations.js   # Feasibility formulas
+│   │   ├── zoning.js         # Zoning lookup
+│   │   └── proforma.js       # Financial calculations
+│   └── data/
+│       └── brevard-zoning.json
+├── public/
+│   └── index.html
+├── package.json
+└── README.md
 ```
 
-## GitHub Actions
+## Deployment to Lovable
 
-Daily automated runs at 6 AM EST via `.github/workflows/rough_diamond_pipeline.yml`
+### Option 1: Direct Import
 
-## Author
+1. Go to [lovable.dev](https://lovable.dev)
+2. Click "New Project"
+3. Select "Import from GitHub"
+4. Connect to `breverdbidder/spd-site-plan-dev`
+5. Deploy
 
-BidDeed.AI / Everest Capital USA - December 2025
+### Option 2: Code Paste
+
+1. Go to Lovable
+2. Create new React project
+3. Paste contents of `SPD_AI_App.jsx` into App.jsx
+4. Deploy
+
+## Environment Variables
+
+```env
+# Required for map functionality
+VITE_MAPBOX_TOKEN=your_mapbox_token
+
+# Optional - BidDeed.AI integration
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_KEY=your_supabase_key
+```
+
+## Brevard County Zoning Codes
+
+| Code | Type | Max Density | Max Height |
+|------|------|-------------|------------|
+| R-1 | Single Family | 4 units/ac | 35 ft |
+| R-2 | Medium Density | 10 units/ac | 45 ft |
+| R-3 | High Density | 20 units/ac | 65 ft |
+| C-1 | Neighborhood Commercial | 0.5 FAR | 35 ft |
+| C-2 | General Commercial | 1.0 FAR | 50 ft |
+| I-1 | Light Industrial | 0.6 FAR | 45 ft |
+| PUD | Planned Unit Development | Varies | Varies |
+
+## API Endpoints (Future)
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/zoning` | GET | Lookup zoning by parcel |
+| `/api/feasibility` | POST | Generate feasibility analysis |
+| `/api/proforma` | POST | Calculate pro forma |
+| `/api/export` | POST | Generate PDF/Excel report |
+
+## Roadmap
+
+### Phase 1 (Current)
+- [x] Core feasibility engine
+- [x] Multi-family typology
+- [x] Industrial typology
+- [x] Single-family typology
+- [x] Basic pro forma
+
+### Phase 2 (Q1 2026)
+- [ ] Mapbox GL integration
+- [ ] Polygon drawing tools
+- [ ] Zoning API integration
+- [ ] BCPAO parcel lookup
+
+### Phase 3 (Q2 2026)
+- [ ] 3D visualization
+- [ ] PDF export
+- [ ] Team collaboration
+- [ ] Version history
+
+### Phase 4 (Q3 2026)
+- [ ] Multi-county expansion
+- [ ] AutoCAD export
+- [ ] Revit integration
+- [ ] ML optimization
+
+## Legal
+
+**© 2026 Everest Capital USA / BidDeed.AI**
+
+This software is proprietary and confidential. Unauthorized copying, distribution, or use is strictly prohibited.
+
+SPD.AI is an **original work** created by Ariel Shapira and Claude AI. It is not a copy, clone, or derivative of any third-party product.
+
+## Contact
+
+- **Developer:** Ariel Shapira
+- **Company:** Everest Capital USA
+- **Platform:** BidDeed.AI
+- **Location:** Brevard County, Florida
+
+---
+
+*Built with ❤️ by BidDeed.AI*
