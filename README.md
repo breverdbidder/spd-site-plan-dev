@@ -1,117 +1,175 @@
-# SPD.AI - Site Planning & Development Intelligence
+# SPD.AI V2 - Chat-Driven Site Planning Intelligence
 
-> An AI-powered site planning feasibility platform by BidDeed.AI
+> AI-powered site planning with conversational NLP interface
 
-![SPD.AI](https://img.shields.io/badge/Version-1.0.0-blue)
-![BidDeed.AI](https://img.shields.io/badge/Powered%20by-BidDeed.AI-green)
-![License](https://img.shields.io/badge/License-Proprietary-red)
+![Version](https://img.shields.io/badge/Version-2.0.0-blue)
+![Interface](https://img.shields.io/badge/Interface-Chat%20%2B%20Preview-green)
+![Powered by](https://img.shields.io/badge/Powered%20by-BidDeed.AI-purple)
 
-## Overview
+## 🚀 What's New in V2
 
-SPD.AI is an **original** site planning and development feasibility platform designed for real estate developers, architects, and investors in Brevard County, Florida.
+### Split-Screen Chat Interface
 
-**This is NOT a clone of any existing product.** SPD.AI was built from the ground up using:
-- React for the frontend
-- Mapbox GL JS for mapping
-- Turf.js for spatial calculations
-- Original algorithms for feasibility analysis
-- BidDeed.AI infrastructure for data
+SPD.AI V2 features a **Lovable/Claude/Manus-style** split-screen design:
 
-## Features
+| Left Panel | Right Panel |
+|------------|-------------|
+| 💬 **Chat Interface** | 📊 **Real-time Preview** |
+| Natural language input | Site visualization |
+| AI-powered responses | Metrics dashboard |
+| Markdown rendering | Pro forma display |
 
-### 🗺️ Interactive Site Definition
-- Draw parcels directly on the map
-- Search by address or parcel ID
-- Import GIS data
-- Automatic zoning lookup for Brevard County
+### NLP Capabilities
 
-### ⚡ Instant Feasibility Generation
-- AI-optimized unit mix
+Talk to SPD.AI naturally:
+
+```
+"I have a 5 acre site zoned R-2"
+"Build an apartment complex"
+"Target 120 units"
+"Show me the pro forma"
+"Change parking to 2.0 per unit"
+```
+
+### Intent Recognition
+
+| Intent | Example Phrases |
+|--------|-----------------|
+| **Analyze Site** | "5 acre site", "10 acre parcel" |
+| **Set Zoning** | "zoned R-2", "C-1 zoning" |
+| **Choose Typology** | "build apartments", "industrial warehouse" |
+| **Set Units** | "150 units", "target 200 units" |
+| **Parking Ratio** | "1.5 parking ratio", "2 spaces per unit" |
+| **Pro Forma** | "show pro forma", "what's the profit" |
+| **Export** | "export PDF", "download report" |
+
+## 📐 Development Typologies
+
+### Multi-Family
+- Unit mix optimization (Studio/1BR/2BR/3BR)
 - Parking ratio calculations
-- Building placement optimization
-- Real-time parameter adjustments
+- Density analysis (units/acre)
+- FAR calculations
+- Gross SF estimates
 
-### 📊 Pro Forma Analysis
-- Land cost estimates
-- Hard/soft cost projections
-- NOI and yield-on-cost calculations
-- Profit margin analysis
+### Industrial/Warehouse
+- Clear height specifications
+- Dock door calculations
+- Trailer parking allocation
+- Car parking requirements
+- Building efficiency metrics
 
-### 🏗️ Five Development Typologies
-1. **Multi-Family** - Apartments, condos, student housing
-2. **Single-Family** - Subdivisions, townhomes, BTR
-3. **Industrial** - Warehouses, logistics, flex
-4. **Retail** - Shopping centers, pad sites
-5. **Hotel** - Limited & full service
+### Single-Family
+- Lot count optimization
+- Lot size calculations
+- Infrastructure allocation (roads, open space)
+- Density analysis (lots/acre)
 
-## Tech Stack
+## 💰 Pro Forma Analysis
 
-| Component | Technology |
-|-----------|------------|
-| Frontend | React 18 |
-| Mapping | Mapbox GL JS + Mapbox Draw |
-| Spatial | Turf.js |
-| Styling | CSS-in-JS (styled objects) |
-| State | React Hooks |
-| Hosting | Lovable / Cloudflare Pages |
-| Backend | BidDeed.AI API (Supabase) |
+Every feasibility includes:
 
-## Project Structure
+| Metric | Description |
+|--------|-------------|
+| **Land Cost** | Based on Brevard County averages |
+| **Hard Costs** | $/SF by typology |
+| **Soft Costs** | % of hard costs |
+| **Total Cost** | Sum of all costs |
+| **Annual Revenue** | Rent or sales projections |
+| **NOI** | Net Operating Income |
+| **Yield on Cost** | NOI / Total Cost |
+| **Estimated Value** | Based on cap rate |
+| **Profit** | Value - Cost |
+| **Margin** | Profit / Cost |
+
+## 🎨 Design System
+
+### Theme (Dark Mode)
+
+```javascript
+const THEME = {
+  bg: {
+    primary: '#0A0A0B',
+    secondary: '#111113',
+    tertiary: '#18181B',
+    elevated: '#1F1F23',
+  },
+  accent: {
+    primary: '#3B82F6',   // Blue
+    success: '#10B981',   // Green
+    warning: '#F59E0B',   // Orange
+    danger: '#EF4444',    // Red
+    purple: '#8B5CF6',    // Purple
+  },
+};
+```
+
+### Inspired By (Not Cloned)
+
+| Platform | Borrowed Pattern |
+|----------|------------------|
+| **Lovable** | Split-screen layout |
+| **Claude AI** | Chat bubble design |
+| **Manus AI** | Real-time preview |
+| **Cursor** | Command palette feel |
+
+**All code is original** - patterns are industry-standard.
+
+## 🏗️ Architecture
 
 ```
-spd-ai/
-├── src/
-│   ├── components/
-│   │   ├── App.jsx           # Main application
-│   │   ├── MapView.jsx       # Mapbox integration
-│   │   ├── Sidebar.jsx       # Parameter controls
-│   │   ├── ResultsPanel.jsx  # Feasibility results
-│   │   └── ProForma.jsx      # Financial analysis
-│   ├── hooks/
-│   │   ├── useMap.js         # Map state management
-│   │   ├── useFeasibility.js # Calculation engine
-│   │   └── useZoning.js      # Zoning data
-│   ├── utils/
-│   │   ├── calculations.js   # Feasibility formulas
-│   │   ├── zoning.js         # Zoning lookup
-│   │   └── proforma.js       # Financial calculations
-│   └── data/
-│       └── brevard-zoning.json
-├── public/
-│   └── index.html
-├── package.json
-└── README.md
+src/
+├── App.jsx               # Main chat application
+├── components/
+│   ├── ChatPanel.jsx     # Left panel - messages
+│   ├── PreviewPanel.jsx  # Right panel - visualization
+│   ├── MessageContent.jsx # Markdown renderer
+│   └── MetricCard.jsx    # Metric display
+├── hooks/
+│   ├── useNLP.js         # Intent recognition
+│   ├── useFeasibility.js # Calculation engine
+│   └── useChat.js        # Chat state management
+└── utils/
+    ├── intents.js        # NLP patterns
+    ├── calculations.js   # Feasibility formulas
+    └── theme.js          # Design tokens
 ```
 
-## Deployment to Lovable
+## 🚀 Deployment
 
-### Option 1: Direct Import
+### Deploy to Lovable
 
 1. Go to [lovable.dev](https://lovable.dev)
-2. Click "New Project"
-3. Select "Import from GitHub"
-4. Connect to `breverdbidder/spd-site-plan-dev`
-5. Deploy
-
-### Option 2: Code Paste
-
-1. Go to Lovable
-2. Create new React project
-3. Paste contents of `SPD_AI_App.jsx` into App.jsx
+2. Create new project → Import from GitHub
+3. Select `breverdbidder/spd-site-plan-dev`
 4. Deploy
 
-## Environment Variables
+### Run Locally
 
-```env
-# Required for map functionality
-VITE_MAPBOX_TOKEN=your_mapbox_token
-
-# Optional - BidDeed.AI integration
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_KEY=your_supabase_key
+```bash
+git clone https://github.com/breverdbidder/spd-site-plan-dev.git
+cd spd-site-plan-dev
+npm install
+npm run dev
 ```
 
-## Brevard County Zoning Codes
+## 🔧 Configuration
+
+### Environment Variables
+
+```env
+# Optional - Mapbox for future map integration
+VITE_MAPBOX_TOKEN=your_token
+
+# Optional - BidDeed.AI backend
+VITE_SUPABASE_URL=your_url
+VITE_SUPABASE_KEY=your_key
+
+# Optional - Anthropic for enhanced NLP
+VITE_ANTHROPIC_KEY=your_key
+```
+
+## 📊 Brevard County Zoning
 
 | Code | Type | Max Density | Max Height |
 |------|------|-------------|------------|
@@ -123,56 +181,40 @@ VITE_SUPABASE_KEY=your_supabase_key
 | I-1 | Light Industrial | 0.6 FAR | 45 ft |
 | PUD | Planned Unit Development | Varies | Varies |
 
-## API Endpoints (Future)
+## 🔜 Roadmap
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/zoning` | GET | Lookup zoning by parcel |
-| `/api/feasibility` | POST | Generate feasibility analysis |
-| `/api/proforma` | POST | Calculate pro forma |
-| `/api/export` | POST | Generate PDF/Excel report |
+### V2.1 (Current Sprint)
+- [ ] Mapbox GL JS integration
+- [ ] Parcel drawing tools
+- [ ] BCPAO API connection
 
-## Roadmap
+### V2.2
+- [ ] 3D visualization (Three.js)
+- [ ] Unit mix slider controls
+- [ ] Multi-scenario comparison
 
-### Phase 1 (Current)
-- [x] Core feasibility engine
-- [x] Multi-family typology
-- [x] Industrial typology
-- [x] Single-family typology
-- [x] Basic pro forma
-
-### Phase 2 (Q1 2026)
-- [ ] Mapbox GL integration
-- [ ] Polygon drawing tools
-- [ ] Zoning API integration
-- [ ] BCPAO parcel lookup
-
-### Phase 3 (Q2 2026)
-- [ ] 3D visualization
-- [ ] PDF export
+### V2.3
+- [ ] Anthropic API for enhanced NLP
+- [ ] Voice input support
 - [ ] Team collaboration
-- [ ] Version history
 
-### Phase 4 (Q3 2026)
+### V3.0
 - [ ] Multi-county expansion
-- [ ] AutoCAD export
-- [ ] Revit integration
-- [ ] ML optimization
+- [ ] AutoCAD/Revit export
+- [ ] Pro forma editor
 
-## Legal
+## 📜 License
 
-**© 2026 Everest Capital USA / BidDeed.AI**
+**Proprietary** - © 2026 Everest Capital USA / BidDeed.AI
 
-This software is proprietary and confidential. Unauthorized copying, distribution, or use is strictly prohibited.
+This software is confidential. Unauthorized distribution prohibited.
 
-SPD.AI is an **original work** created by Ariel Shapira and Claude AI. It is not a copy, clone, or derivative of any third-party product.
+## 👤 Author
 
-## Contact
-
-- **Developer:** Ariel Shapira
+- **Ariel Shapira** - Solo Founder
 - **Company:** Everest Capital USA
 - **Platform:** BidDeed.AI
-- **Location:** Brevard County, Florida
+- **Location:** Brevard County, FL
 
 ---
 
