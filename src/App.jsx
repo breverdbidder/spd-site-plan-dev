@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 // ============================================================================
-// SPD.AI V2 - Chat-Driven Site Planning Intelligence
+// SPD.AI V2.1 - Chat-Driven Site Planning Intelligence
 // ============================================================================
 // Split-screen interface with NLP chatbot + real-time visualization
-// Inspired by: Lovable, Claude AI, Manus AI patterns
+// Now with: Self-Storage, Senior Living, Medical Office, Mixed-Use
 // © 2026 BidDeed.AI / Everest Capital USA - All Rights Reserved
 // ============================================================================
 
 // Design tokens
 const THEME = {
-  // Dark mode primary
   bg: {
     primary: '#0A0A0B',
     secondary: '#111113',
@@ -25,6 +24,8 @@ const THEME = {
     warning: '#F59E0B',
     danger: '#EF4444',
     purple: '#8B5CF6',
+    orange: '#F97316',
+    teal: '#14B8A6',
   },
   text: {
     primary: '#FAFAFA',
@@ -54,7 +55,17 @@ const BREVARD_ZONING = {
   'PUD': { name: 'Planned Unit Development', maxDensity: 'Varies', maxHeight: 'Varies' }
 };
 
-// NLP Intent patterns
+// Self-Storage Unit Mix (industry standard)
+const STORAGE_UNIT_MIX = {
+  '5x5': { sf: 25, pct: 10, rentPerSF: 2.00 },
+  '5x10': { sf: 50, pct: 25, rentPerSF: 1.75 },
+  '10x10': { sf: 100, pct: 30, rentPerSF: 1.50 },
+  '10x15': { sf: 150, pct: 15, rentPerSF: 1.35 },
+  '10x20': { sf: 200, pct: 12, rentPerSF: 1.25 },
+  '10x30': { sf: 300, pct: 8, rentPerSF: 1.15 },
+};
+
+// NLP Intent patterns - EXPANDED
 const INTENT_PATTERNS = {
   analyze_site: [
     /analyze\s+(?:a\s+)?(\d+(?:\.\d+)?)\s*(?:acre|ac)/i,
@@ -68,16 +79,28 @@ const INTENT_PATTERNS = {
     /zone(?:d)?\s+(?:as\s+)?([A-Z]-?\d|PUD)/i,
   ],
   typology: [
-    /(?:build|develop|want|planning)\s+(?:a\s+)?(?:an?\s+)?(multi-?family|apartment|industrial|warehouse|single.?family|retail|hotel)/i,
-    /(multi-?family|apartment|industrial|warehouse|single.?family|retail|hotel)\s+(?:development|project|building)/i,
+    /(?:build|develop|want|planning)\s+(?:a\s+)?(?:an?\s+)?(multi-?family|apartment|industrial|warehouse|single.?family|retail|hotel|self.?storage|storage|mini.?storage|senior|assisted|memory.?care|medical|office|mixed.?use|flex)/i,
+    /(multi-?family|apartment|industrial|warehouse|single.?family|retail|hotel|self.?storage|storage|mini.?storage|senior|assisted|memory.?care|medical|office|mixed.?use|flex)\s+(?:development|project|building|facility|center)/i,
   ],
   units: [
     /(\d+)\s+units?/i,
     /(?:want|need|target(?:ing)?)\s+(\d+)\s+units?/i,
   ],
+  beds: [
+    /(\d+)\s+beds?/i,
+    /(?:want|need|target(?:ing)?)\s+(\d+)\s+beds?/i,
+  ],
   parking: [
     /(\d+(?:\.\d+)?)\s+parking\s+(?:spaces?\s+)?(?:per\s+unit|ratio)/i,
     /parking\s+(?:ratio\s+(?:of\s+)?)?(\d+(?:\.\d+)?)/i,
+  ],
+  stories: [
+    /(\d+)\s+(?:story|stories|floors?)/i,
+    /(?:multi.?story|two.?story|three.?story|single.?story)/i,
+  ],
+  climate: [
+    /climate.?control(?:led)?/i,
+    /(\d+)%?\s+climate/i,
   ],
   proforma: [
     /pro\s*forma/i,
@@ -96,9 +119,22 @@ const INTENT_PATTERNS = {
 // Sample responses
 const GREETINGS = [
   "Hey! I'm SPD.AI, your site planning assistant. Tell me about your site - acreage, zoning, and what you want to build. I'll generate a feasibility analysis in seconds.",
-  "Hello! Ready to analyze a site? Just tell me the basics: **acreage**, **zoning**, and **development type** (apartments, industrial, single-family, etc.)",
+  "Hello! Ready to analyze a site? Just tell me the basics: **acreage**, **zoning**, and **development type** (apartments, self-storage, industrial, senior living, etc.)",
   "Hi there! I help developers analyze site feasibility instantly. What's your site look like? Give me acreage and zoning to start.",
 ];
+
+// Typology configurations
+const TYPOLOGY_INFO = {
+  multifamily: { label: 'Multi-Family', icon: '🏢', color: '#3B82F6' },
+  industrial: { label: 'Industrial/Warehouse', icon: '🏭', color: '#6366F1' },
+  'single-family': { label: 'Single-Family', icon: '🏠', color: '#10B981' },
+  retail: { label: 'Retail', icon: '🛒', color: '#F59E0B' },
+  hotel: { label: 'Hotel', icon: '🏨', color: '#EC4899' },
+  'self-storage': { label: 'Self-Storage', icon: '📦', color: '#F97316' },
+  senior: { label: 'Senior Living', icon: '🏥', color: '#14B8A6' },
+  medical: { label: 'Medical Office', icon: '⚕️', color: '#EF4444' },
+  'mixed-use': { label: 'Mixed-Use', icon: '🏙️', color: '#8B5CF6' },
+};
 
 // ============================================================================
 // MAIN APP COMPONENT
@@ -123,10 +159,13 @@ export default function SPDAIChatApp() {
     zoning: null,
     typology: null,
     units: null,
+    beds: null,
     parkingRatio: 1.5,
+    stories: null,
+    climateControlled: 50, // percentage for self-storage
   });
   const [feasibility, setFeasibility] = useState(null);
-  const [activeTab, setActiveTab] = useState('preview'); // preview, proforma, 3d
+  const [activeTab, setActiveTab] = useState('preview');
   
   const chatEndRef = useRef(null);
   const inputRef = useRef(null);
@@ -141,7 +180,6 @@ export default function SPDAIChatApp() {
     const intents = [];
     const params = {};
 
-    // Check each intent pattern
     for (const [intent, patterns] of Object.entries(INTENT_PATTERNS)) {
       for (const pattern of patterns) {
         const match = text.match(pattern);
@@ -158,22 +196,106 @@ export default function SPDAIChatApp() {
     return { intents, params };
   }, []);
 
-  // Generate feasibility based on config
+  // ============================================================================
+  // FEASIBILITY CALCULATIONS
+  // ============================================================================
+
   const generateFeasibility = useCallback((config) => {
     if (!config.acreage || !config.typology) return null;
 
     const acreage = parseFloat(config.acreage);
     const siteSquareFeet = acreage * 43560;
-    const zoning = BREVARD_ZONING[config.zoning] || BREVARD_ZONING['R-2'];
+    const zoning = BREVARD_ZONING[config.zoning] || BREVARD_ZONING['C-2'];
     
     let results = {
       acreage,
       siteSquareFeet,
-      zoning: config.zoning || 'R-2',
+      zoning: config.zoning || 'C-2',
       typology: config.typology,
     };
 
-    if (config.typology === 'multifamily' || config.typology === 'apartment') {
+    // =========================================
+    // SELF-STORAGE CALCULATIONS
+    // =========================================
+    if (config.typology === 'self-storage' || config.typology === 'storage') {
+      const stories = config.stories || 1;
+      const lotCoverage = stories === 1 ? 0.40 : 0.35; // Single-story spreads out more
+      const buildingFootprint = siteSquareFeet * lotCoverage;
+      const grossBuildingSF = buildingFootprint * stories;
+      const netRentableSF = Math.round(grossBuildingSF * 0.85); // 85% efficiency
+      const climateControlledPct = config.climateControlled || 50;
+      const climateSF = Math.round(netRentableSF * (climateControlledPct / 100));
+      const nonClimateSF = netRentableSF - climateSF;
+      
+      // Calculate unit count and mix
+      let totalUnits = 0;
+      const unitBreakdown = {};
+      for (const [size, data] of Object.entries(STORAGE_UNIT_MIX)) {
+        const unitCount = Math.round((netRentableSF * data.pct / 100) / data.sf);
+        unitBreakdown[size] = unitCount;
+        totalUnits += unitCount;
+      }
+
+      // Calculate monthly revenue
+      let monthlyRevenue = 0;
+      for (const [size, data] of Object.entries(STORAGE_UNIT_MIX)) {
+        const climateUnits = Math.round(unitBreakdown[size] * (climateControlledPct / 100));
+        const nonClimateUnits = unitBreakdown[size] - climateUnits;
+        // Climate controlled gets 30% premium
+        monthlyRevenue += climateUnits * data.sf * data.rentPerSF * 1.30;
+        monthlyRevenue += nonClimateUnits * data.sf * data.rentPerSF;
+      }
+      const annualRevenue = monthlyRevenue * 12;
+      const occupancy = 0.88; // Industry average 88%
+      const effectiveRevenue = annualRevenue * occupancy;
+      
+      // Pro forma
+      const landCost = acreage * 125000;
+      const hardCostPerSF = stories === 1 ? 55 : 85; // Multi-story costs more
+      const hardCosts = grossBuildingSF * hardCostPerSF;
+      const softCosts = hardCosts * 0.18;
+      const totalCost = landCost + hardCosts + softCosts;
+      const noi = effectiveRevenue * 0.60; // 60% NOI margin (self-storage is efficient)
+      const capRate = 0.065;
+      const estimatedValue = noi / capRate;
+
+      results = {
+        ...results,
+        typologyLabel: 'Self-Storage',
+        icon: '📦',
+        stories,
+        grossBuildingSF: Math.round(grossBuildingSF),
+        netRentableSF,
+        totalUnits,
+        unitBreakdown,
+        climateSF,
+        nonClimateSF,
+        climateControlledPct,
+        lotCoverage: `${(lotCoverage * 100).toFixed(0)}%`,
+        efficiency: '85%',
+        occupancy: '88%',
+        avgRentPerSF: (monthlyRevenue / netRentableSF).toFixed(2),
+        // Pro forma
+        landCost,
+        hardCosts,
+        softCosts,
+        totalCost,
+        monthlyRevenue: Math.round(monthlyRevenue),
+        annualRevenue: Math.round(annualRevenue),
+        effectiveRevenue: Math.round(effectiveRevenue),
+        noi: Math.round(noi),
+        yieldOnCost: ((noi / totalCost) * 100).toFixed(2),
+        capRate: '6.5%',
+        estimatedValue: Math.round(estimatedValue),
+        profit: Math.round(estimatedValue - totalCost),
+        margin: (((estimatedValue - totalCost) / totalCost) * 100).toFixed(1),
+      };
+    }
+
+    // =========================================
+    // MULTI-FAMILY CALCULATIONS
+    // =========================================
+    else if (config.typology === 'multifamily' || config.typology === 'apartment') {
       const maxUnits = config.units || Math.floor(acreage * (zoning.maxDensity || 10));
       const avgUnitSF = 875;
       const grossSF = Math.round(maxUnits * avgUnitSF * 1.15);
@@ -184,6 +306,7 @@ export default function SPDAIChatApp() {
       results = {
         ...results,
         typologyLabel: 'Multi-Family',
+        icon: '🏢',
         units: maxUnits,
         grossSF,
         floors,
@@ -197,7 +320,6 @@ export default function SPDAIChatApp() {
           twoBed: Math.round(maxUnits * 0.35),
           threeBed: Math.round(maxUnits * 0.15),
         },
-        // Pro forma
         landCost: acreage * 150000,
         hardCosts: grossSF * 185,
         softCosts: grossSF * 185 * 0.25,
@@ -209,7 +331,12 @@ export default function SPDAIChatApp() {
       };
       results.profit = results.estimatedValue - results.totalCost;
       results.margin = ((results.profit / results.totalCost) * 100).toFixed(1);
-    } else if (config.typology === 'industrial' || config.typology === 'warehouse') {
+    }
+
+    // =========================================
+    // INDUSTRIAL CALCULATIONS
+    // =========================================
+    else if (config.typology === 'industrial' || config.typology === 'warehouse') {
       const warehouseSF = Math.round(siteSquareFeet * 0.55);
       const dockDoors = Math.ceil(warehouseSF / 10000);
       const carParking = Math.ceil(warehouseSF / 2000);
@@ -217,6 +344,7 @@ export default function SPDAIChatApp() {
       results = {
         ...results,
         typologyLabel: 'Industrial/Warehouse',
+        icon: '🏭',
         warehouseSF,
         clearHeight: 32,
         dockDoors,
@@ -224,7 +352,6 @@ export default function SPDAIChatApp() {
         carParking,
         lotCoverage: '55%',
         far: (warehouseSF / siteSquareFeet).toFixed(2),
-        // Pro forma
         landCost: acreage * 100000,
         hardCosts: warehouseSF * 95,
         softCosts: warehouseSF * 95 * 0.20,
@@ -236,7 +363,12 @@ export default function SPDAIChatApp() {
       };
       results.profit = results.estimatedValue - results.totalCost;
       results.margin = ((results.profit / results.totalCost) * 100).toFixed(1);
-    } else if (config.typology === 'single-family' || config.typology === 'singlefamily') {
+    }
+
+    // =========================================
+    // SINGLE-FAMILY CALCULATIONS
+    // =========================================
+    else if (config.typology === 'single-family' || config.typology === 'singlefamily') {
       const avgLotSize = 7500;
       const usableLand = siteSquareFeet * 0.70;
       const totalLots = Math.floor(usableLand / avgLotSize);
@@ -244,12 +376,12 @@ export default function SPDAIChatApp() {
       results = {
         ...results,
         typologyLabel: 'Single-Family',
+        icon: '🏠',
         totalLots,
         avgLotSize,
         avgHomeSize: 2200,
         totalHomeSF: totalLots * 2200,
         density: (totalLots / acreage).toFixed(1),
-        // Pro forma
         landCost: acreage * 125000,
         hardCosts: totalLots * 2200 * 165,
         softCosts: totalLots * 2200 * 165 * 0.15,
@@ -260,10 +392,157 @@ export default function SPDAIChatApp() {
       results.margin = ((results.profit / results.totalCost) * 100).toFixed(1);
     }
 
+    // =========================================
+    // SENIOR LIVING CALCULATIONS
+    // =========================================
+    else if (config.typology === 'senior' || config.typology === 'assisted') {
+      const beds = config.beds || Math.floor(acreage * 25); // 25 beds per acre typical
+      const avgUnitSF = 450; // Smaller units for senior
+      const commonAreaRatio = 0.35; // More common area
+      const grossSF = Math.round(beds * avgUnitSF / (1 - commonAreaRatio));
+      const buildableArea = siteSquareFeet * 0.40;
+      const floors = Math.min(Math.ceil(grossSF / buildableArea), 4);
+      const parkingSpaces = Math.ceil(beds * 0.5); // Lower parking for senior
+
+      // Revenue: $4,500/month average for assisted living
+      const monthlyRate = 4500;
+      const occupancy = 0.90;
+
+      results = {
+        ...results,
+        typologyLabel: 'Senior Living',
+        icon: '🏥',
+        beds,
+        grossSF,
+        floors,
+        parkingSpaces,
+        density: (beds / acreage).toFixed(1),
+        lotCoverage: '40%',
+        commonAreaSF: Math.round(grossSF * commonAreaRatio),
+        unitSF: Math.round(grossSF * (1 - commonAreaRatio)),
+        landCost: acreage * 175000,
+        hardCosts: grossSF * 225, // Higher finish
+        softCosts: grossSF * 225 * 0.28,
+        totalCost: acreage * 175000 + grossSF * 225 * 1.28,
+        monthlyRevenue: Math.round(beds * monthlyRate * occupancy),
+        annualRevenue: Math.round(beds * monthlyRate * 12 * occupancy),
+        noi: Math.round(beds * monthlyRate * 12 * occupancy * 0.35), // 35% NOI (labor intensive)
+        yieldOnCost: ((beds * monthlyRate * 12 * occupancy * 0.35) / (acreage * 175000 + grossSF * 225 * 1.28) * 100).toFixed(2),
+        capRate: '7.0%',
+        estimatedValue: (beds * monthlyRate * 12 * occupancy * 0.35) / 0.07,
+      };
+      results.profit = results.estimatedValue - results.totalCost;
+      results.margin = ((results.profit / results.totalCost) * 100).toFixed(1);
+    }
+
+    // =========================================
+    // MEDICAL OFFICE CALCULATIONS
+    // =========================================
+    else if (config.typology === 'medical' || config.typology === 'office') {
+      const grossSF = Math.round(siteSquareFeet * 0.35 * (config.stories || 2));
+      const parkingSpaces = Math.ceil(grossSF / 250); // Higher parking for medical
+      const rentPerSF = 28; // NNN
+
+      results = {
+        ...results,
+        typologyLabel: 'Medical Office',
+        icon: '⚕️',
+        grossSF,
+        floors: config.stories || 2,
+        parkingSpaces,
+        parkingRatio: (parkingSpaces / (grossSF / 1000)).toFixed(1),
+        lotCoverage: '35%',
+        far: (grossSF / siteSquareFeet).toFixed(2),
+        landCost: acreage * 200000,
+        hardCosts: grossSF * 275, // Medical TI is expensive
+        softCosts: grossSF * 275 * 0.22,
+        totalCost: acreage * 200000 + grossSF * 275 * 1.22,
+        annualRevenue: grossSF * rentPerSF,
+        noi: grossSF * rentPerSF * 0.88, // NNN leases
+        yieldOnCost: ((grossSF * rentPerSF * 0.88) / (acreage * 200000 + grossSF * 275 * 1.22) * 100).toFixed(2),
+        capRate: '6.25%',
+        estimatedValue: (grossSF * rentPerSF * 0.88) / 0.0625,
+      };
+      results.profit = results.estimatedValue - results.totalCost;
+      results.margin = ((results.profit / results.totalCost) * 100).toFixed(1);
+    }
+
+    // =========================================
+    // RETAIL CALCULATIONS
+    // =========================================
+    else if (config.typology === 'retail') {
+      const grossSF = Math.round(siteSquareFeet * 0.25);
+      const parkingSpaces = Math.ceil(grossSF / 200);
+      const rentPerSF = 22;
+
+      results = {
+        ...results,
+        typologyLabel: 'Retail',
+        icon: '🛒',
+        grossSF,
+        floors: 1,
+        parkingSpaces,
+        lotCoverage: '25%',
+        padSites: Math.floor(acreage / 1.5),
+        landCost: acreage * 175000,
+        hardCosts: grossSF * 165,
+        softCosts: grossSF * 165 * 0.18,
+        totalCost: acreage * 175000 + grossSF * 165 * 1.18,
+        annualRevenue: grossSF * rentPerSF,
+        noi: grossSF * rentPerSF * 0.85,
+        yieldOnCost: ((grossSF * rentPerSF * 0.85) / (acreage * 175000 + grossSF * 165 * 1.18) * 100).toFixed(2),
+        capRate: '6.75%',
+        estimatedValue: (grossSF * rentPerSF * 0.85) / 0.0675,
+      };
+      results.profit = results.estimatedValue - results.totalCost;
+      results.margin = ((results.profit / results.totalCost) * 100).toFixed(1);
+    }
+
+    // =========================================
+    // HOTEL CALCULATIONS
+    // =========================================
+    else if (config.typology === 'hotel') {
+      const rooms = config.units || Math.floor(acreage * 60);
+      const avgRoomSF = 375;
+      const grossSF = Math.round(rooms * avgRoomSF * 1.35); // Public areas
+      const floors = Math.min(Math.ceil(grossSF / (siteSquareFeet * 0.35)), 5);
+      const parkingSpaces = Math.ceil(rooms * 0.8);
+      const adr = 145; // Average daily rate
+      const occupancy = 0.68;
+      const revPAR = adr * occupancy;
+
+      results = {
+        ...results,
+        typologyLabel: 'Hotel',
+        icon: '🏨',
+        rooms,
+        grossSF,
+        floors,
+        parkingSpaces,
+        adr,
+        occupancy: '68%',
+        revPAR: revPAR.toFixed(2),
+        landCost: acreage * 200000,
+        hardCosts: grossSF * 195,
+        softCosts: grossSF * 195 * 0.25,
+        totalCost: acreage * 200000 + grossSF * 195 * 1.25,
+        annualRevenue: Math.round(rooms * revPAR * 365),
+        noi: Math.round(rooms * revPAR * 365 * 0.35), // Hotels have thin margins
+        yieldOnCost: ((rooms * revPAR * 365 * 0.35) / (acreage * 200000 + grossSF * 195 * 1.25) * 100).toFixed(2),
+        capRate: '8.0%',
+        estimatedValue: (rooms * revPAR * 365 * 0.35) / 0.08,
+      };
+      results.profit = results.estimatedValue - results.totalCost;
+      results.margin = ((results.profit / results.totalCost) * 100).toFixed(1);
+    }
+
     return results;
   }, []);
 
-  // Generate AI response
+  // ============================================================================
+  // RESPONSE GENERATION
+  // ============================================================================
+
   const generateResponse = useCallback((text, currentConfig) => {
     const { intents, params } = parseIntent(text);
     let response = '';
@@ -289,9 +568,6 @@ export default function SPDAIChatApp() {
         updatedConfig.zoning = zoneCode;
         const zone = BREVARD_ZONING[zoneCode];
         response += `Zoning set to **${zoneCode}** (${zone.name}). `;
-        if (zone.maxDensity) {
-          response += `Max density: ${zone.maxDensity} units/acre. `;
-        }
       }
     }
 
@@ -306,10 +582,25 @@ export default function SPDAIChatApp() {
         'singlefamily': 'single-family',
         'retail': 'retail',
         'hotel': 'hotel',
+        'self-storage': 'self-storage',
+        'selfstorage': 'self-storage',
+        'storage': 'self-storage',
+        'mini-storage': 'self-storage',
+        'ministorage': 'self-storage',
+        'senior': 'senior',
+        'assisted': 'senior',
+        'memory-care': 'senior',
+        'memorycare': 'senior',
+        'medical': 'medical',
+        'office': 'medical',
+        'mixed-use': 'mixed-use',
+        'mixeduse': 'mixed-use',
+        'flex': 'industrial',
       };
       const rawTypology = params.typology.toLowerCase().replace(/\s+/g, '-');
       updatedConfig.typology = typologyMap[rawTypology] || rawTypology;
-      response += `Development type: **${updatedConfig.typology}**. `;
+      const info = TYPOLOGY_INFO[updatedConfig.typology];
+      response += `Development type: **${info?.label || updatedConfig.typology}** ${info?.icon || ''}. `;
     }
 
     if (intents.includes('units')) {
@@ -317,9 +608,39 @@ export default function SPDAIChatApp() {
       response += `Targeting **${updatedConfig.units} units**. `;
     }
 
+    if (intents.includes('beds')) {
+      updatedConfig.beds = parseInt(params.beds);
+      response += `Targeting **${updatedConfig.beds} beds**. `;
+    }
+
     if (intents.includes('parking')) {
       updatedConfig.parkingRatio = parseFloat(params.parking);
       response += `Parking ratio: **${updatedConfig.parkingRatio}** spaces/unit. `;
+    }
+
+    if (intents.includes('stories')) {
+      const storiesMatch = text.match(/(\d+)\s+(?:story|stories|floors?)/i);
+      if (storiesMatch) {
+        updatedConfig.stories = parseInt(storiesMatch[1]);
+        response += `**${updatedConfig.stories}-story** building. `;
+      } else if (text.match(/multi.?story/i)) {
+        updatedConfig.stories = 3;
+        response += `**Multi-story** (3 floors). `;
+      } else if (text.match(/single.?story/i)) {
+        updatedConfig.stories = 1;
+        response += `**Single-story** building. `;
+      }
+    }
+
+    if (intents.includes('climate')) {
+      const climateMatch = text.match(/(\d+)%?\s+climate/i);
+      if (climateMatch) {
+        updatedConfig.climateControlled = parseInt(climateMatch[1]);
+        response += `**${updatedConfig.climateControlled}%** climate controlled. `;
+      } else {
+        updatedConfig.climateControlled = 100;
+        response += `**100%** climate controlled. `;
+      }
     }
 
     // Generate feasibility if we have enough info
@@ -327,10 +648,23 @@ export default function SPDAIChatApp() {
       const results = generateFeasibility(updatedConfig);
       if (results) {
         response += '\n\n---\n\n';
-        response += `### 📊 Feasibility Analysis\n\n`;
+        response += `### ${results.icon || '📊'} ${results.typologyLabel} Feasibility\n\n`;
         
-        if (results.typologyLabel === 'Multi-Family') {
-          response += `| Metric | Value |\n|--------|-------|\n`;
+        // Build metrics table based on typology
+        response += `| Metric | Value |\n|--------|-------|\n`;
+        
+        if (results.typologyLabel === 'Self-Storage') {
+          response += `| **Net Rentable SF** | ${results.netRentableSF.toLocaleString()} |\n`;
+          response += `| **Total Units** | ${results.totalUnits} |\n`;
+          response += `| **Stories** | ${results.stories} |\n`;
+          response += `| **Climate Controlled** | ${results.climateControlledPct}% (${results.climateSF.toLocaleString()} SF) |\n`;
+          response += `| **Avg Rent/SF** | $${results.avgRentPerSF}/mo |\n`;
+          response += `| **Monthly Revenue** | $${results.monthlyRevenue.toLocaleString()} |\n`;
+          response += `\n**Unit Mix:**\n`;
+          for (const [size, count] of Object.entries(results.unitBreakdown)) {
+            response += `• ${size}: ${count} units\n`;
+          }
+        } else if (results.typologyLabel === 'Multi-Family') {
           response += `| **Units** | ${results.units} |\n`;
           response += `| **Gross SF** | ${results.grossSF.toLocaleString()} |\n`;
           response += `| **Stories** | ${results.floors} |\n`;
@@ -339,18 +673,41 @@ export default function SPDAIChatApp() {
           response += `| **FAR** | ${results.far} |\n`;
           response += `\n**Unit Mix:** ${results.unitMix.studio} Studio, ${results.unitMix.oneBed} 1BR, ${results.unitMix.twoBed} 2BR, ${results.unitMix.threeBed} 3BR\n`;
         } else if (results.typologyLabel === 'Industrial/Warehouse') {
-          response += `| Metric | Value |\n|--------|-------|\n`;
           response += `| **Warehouse SF** | ${results.warehouseSF.toLocaleString()} |\n`;
           response += `| **Clear Height** | ${results.clearHeight}' |\n`;
           response += `| **Dock Doors** | ${results.dockDoors} |\n`;
           response += `| **Trailer Spaces** | ${results.trailerSpaces} |\n`;
           response += `| **Car Parking** | ${results.carParking} |\n`;
+        } else if (results.typologyLabel === 'Senior Living') {
+          response += `| **Beds** | ${results.beds} |\n`;
+          response += `| **Gross SF** | ${results.grossSF.toLocaleString()} |\n`;
+          response += `| **Stories** | ${results.floors} |\n`;
+          response += `| **Parking** | ${results.parkingSpaces} spaces |\n`;
+          response += `| **Common Area** | ${results.commonAreaSF.toLocaleString()} SF |\n`;
+          response += `| **Density** | ${results.density} beds/acre |\n`;
+        } else if (results.typologyLabel === 'Medical Office') {
+          response += `| **Gross SF** | ${results.grossSF.toLocaleString()} |\n`;
+          response += `| **Stories** | ${results.floors} |\n`;
+          response += `| **Parking** | ${results.parkingSpaces} spaces |\n`;
+          response += `| **Parking Ratio** | ${results.parkingRatio}/1,000 SF |\n`;
+          response += `| **FAR** | ${results.far} |\n`;
+        } else if (results.typologyLabel === 'Hotel') {
+          response += `| **Rooms** | ${results.rooms} |\n`;
+          response += `| **Gross SF** | ${results.grossSF.toLocaleString()} |\n`;
+          response += `| **Stories** | ${results.floors} |\n`;
+          response += `| **ADR** | $${results.adr} |\n`;
+          response += `| **Occupancy** | ${results.occupancy} |\n`;
+          response += `| **RevPAR** | $${results.revPAR} |\n`;
         } else if (results.typologyLabel === 'Single-Family') {
-          response += `| Metric | Value |\n|--------|-------|\n`;
           response += `| **Total Lots** | ${results.totalLots} |\n`;
           response += `| **Avg Lot Size** | ${results.avgLotSize.toLocaleString()} SF |\n`;
           response += `| **Avg Home Size** | ${results.avgHomeSize.toLocaleString()} SF |\n`;
           response += `| **Density** | ${results.density} lots/acre |\n`;
+        } else if (results.typologyLabel === 'Retail') {
+          response += `| **Gross SF** | ${results.grossSF.toLocaleString()} |\n`;
+          response += `| **Parking** | ${results.parkingSpaces} spaces |\n`;
+          response += `| **Pad Sites** | ${results.padSites} |\n`;
+          response += `| **Lot Coverage** | ${results.lotCoverage} |\n`;
         }
 
         response += `\n💰 **Estimated Profit:** $${(results.profit / 1000000).toFixed(2)}M (${results.margin}% margin)`;
@@ -364,7 +721,7 @@ export default function SPDAIChatApp() {
     if (intents.includes('proforma') && currentConfig.acreage && currentConfig.typology) {
       const results = generateFeasibility(currentConfig);
       if (results) {
-        response = `### 💰 Pro Forma Analysis\n\n`;
+        response = `### 💰 Pro Forma Analysis - ${results.typologyLabel}\n\n`;
         response += `| Cost Category | Amount |\n|---------------|--------|\n`;
         response += `| Land | $${(results.landCost / 1000000).toFixed(2)}M |\n`;
         response += `| Hard Costs | $${(results.hardCosts / 1000000).toFixed(2)}M |\n`;
@@ -373,9 +730,13 @@ export default function SPDAIChatApp() {
         
         if (results.noi) {
           response += `| Revenue | Amount |\n|---------|--------|\n`;
+          if (results.monthlyRevenue) {
+            response += `| Monthly Revenue | $${(results.monthlyRevenue).toLocaleString()} |\n`;
+          }
           response += `| Annual Revenue | $${(results.annualRevenue / 1000000).toFixed(2)}M |\n`;
           response += `| NOI | $${(results.noi / 1000000).toFixed(2)}M |\n`;
           response += `| Yield on Cost | ${results.yieldOnCost}% |\n`;
+          response += `| Cap Rate | ${results.capRate} |\n`;
           response += `| Estimated Value | $${(results.estimatedValue / 1000000).toFixed(2)}M |\n\n`;
         }
         
@@ -400,9 +761,21 @@ export default function SPDAIChatApp() {
       if (!currentConfig.acreage) {
         response = `I need a bit more info to help. What's the **acreage** of your site? You can say something like "I have a 5 acre site" or "analyze a 10 acre parcel."`;
       } else if (!currentConfig.typology) {
-        response = `Got your ${currentConfig.acreage} acre site. What do you want to build? Options:\n\n• **Multi-family** (apartments, condos)\n• **Industrial** (warehouse, logistics)\n• **Single-family** (subdivision, townhomes)\n• **Retail** (shopping center)\n• **Hotel**`;
+        response = `Got your ${currentConfig.acreage} acre site. What do you want to build?\n\n`;
+        response += `• **Multi-family** (apartments, condos)\n`;
+        response += `• **Self-storage** 📦\n`;
+        response += `• **Industrial** (warehouse, logistics)\n`;
+        response += `• **Single-family** (subdivision, townhomes)\n`;
+        response += `• **Senior Living** (assisted living, memory care)\n`;
+        response += `• **Medical Office**\n`;
+        response += `• **Retail** (shopping center)\n`;
+        response += `• **Hotel**`;
       } else {
-        response = `I'm not sure what you're asking. Try:\n\n• "Show me the pro forma"\n• "Change parking to 2.0 per unit"\n• "What if I target 150 units"\n• "Export the report"`;
+        response = `I'm not sure what you're asking. Try:\n\n`;
+        response += `• "Show me the pro forma"\n`;
+        response += `• "Change to 3-story"\n`;
+        response += `• "50% climate controlled"\n`;
+        response += `• "Export the report"`;
       }
     }
 
@@ -424,7 +797,6 @@ export default function SPDAIChatApp() {
     setInputValue('');
     setIsTyping(true);
 
-    // Simulate AI thinking
     setTimeout(() => {
       const { response, config, feasibility: newFeasibility } = generateResponse(inputValue, siteConfig);
       
@@ -448,7 +820,6 @@ export default function SPDAIChatApp() {
     }, 800 + Math.random() * 400);
   }, [inputValue, messages, siteConfig, generateResponse]);
 
-  // Handle key press
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -456,18 +827,18 @@ export default function SPDAIChatApp() {
     }
   };
 
-  // Quick actions
+  // Quick actions - EXPANDED
   const quickActions = [
-    { label: '5 acre multifamily', action: 'Analyze a 5 acre site for multifamily development, R-2 zoning' },
-    { label: '10 acre industrial', action: 'I have a 10 acre industrial site, I-1 zoning' },
-    { label: 'Show pro forma', action: 'Show me the pro forma' },
+    { label: '📦 5ac self-storage', action: 'Analyze a 5 acre site for self-storage, 3-story, 50% climate controlled' },
+    { label: '🏢 5ac apartments', action: 'Analyze a 5 acre site for multifamily development, R-2 zoning' },
+    { label: '🏭 10ac industrial', action: 'I have a 10 acre industrial site, I-1 zoning' },
+    { label: '🏥 3ac senior living', action: 'Build senior living on 3 acres' },
   ];
 
   return (
     <div style={styles.container}>
       {/* Left Panel - Chat */}
       <div style={styles.chatPanel}>
-        {/* Chat Header */}
         <div style={styles.chatHeader}>
           <div style={styles.logoContainer}>
             <div style={styles.logoIcon}>◆</div>
@@ -482,7 +853,6 @@ export default function SPDAIChatApp() {
           </div>
         </div>
 
-        {/* Messages */}
         <div style={styles.messagesContainer}>
           {messages.map((msg) => (
             <div
@@ -522,7 +892,6 @@ export default function SPDAIChatApp() {
           <div ref={chatEndRef} />
         </div>
 
-        {/* Quick Actions */}
         {messages.length <= 2 && (
           <div style={styles.quickActions}>
             {quickActions.map((qa, i) => (
@@ -540,13 +909,12 @@ export default function SPDAIChatApp() {
           </div>
         )}
 
-        {/* Input Area */}
         <div style={styles.inputArea}>
           <div style={styles.inputWrapper}>
             <textarea
               ref={inputRef}
               style={styles.input}
-              placeholder="Describe your site... (e.g., 'I have a 5 acre site zoned R-2')"
+              placeholder="Describe your site... (e.g., '5 acres for self-storage')"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={handleKeyPress}
@@ -571,12 +939,10 @@ export default function SPDAIChatApp() {
         </div>
       </div>
 
-      {/* Resizer */}
       <div style={styles.resizer}></div>
 
       {/* Right Panel - Preview */}
       <div style={styles.previewPanel}>
-        {/* Preview Header */}
         <div style={styles.previewHeader}>
           <div style={styles.previewTabs}>
             {[
@@ -613,14 +979,17 @@ export default function SPDAIChatApp() {
           </div>
         </div>
 
-        {/* Preview Content */}
         <div style={styles.previewContent}>
           {feasibility ? (
             <div style={styles.feasibilityView}>
-              {/* Site Info Card */}
               <div style={styles.siteCard}>
                 <div style={styles.siteCardHeader}>
-                  <div style={styles.siteIcon}>🏗️</div>
+                  <div style={{
+                    ...styles.siteIcon,
+                    background: TYPOLOGY_INFO[feasibility.typology]?.color || THEME.accent.primary,
+                  }}>
+                    {feasibility.icon || '🏗️'}
+                  </div>
                   <div>
                     <h3 style={styles.siteTitle}>{feasibility.typologyLabel} Development</h3>
                     <p style={styles.siteMeta}>
@@ -630,45 +999,127 @@ export default function SPDAIChatApp() {
                 </div>
               </div>
 
-              {/* Metrics Grid */}
               <div style={styles.metricsGrid}>
-                {feasibility.units && (
-                  <MetricCard icon="🏢" label="Total Units" value={feasibility.units} />
+                {/* Self-Storage Metrics */}
+                {feasibility.netRentableSF && (
+                  <>
+                    <MetricCard icon="📦" label="Net Rentable SF" value={feasibility.netRentableSF.toLocaleString()} />
+                    <MetricCard icon="🔢" label="Total Units" value={feasibility.totalUnits} />
+                    <MetricCard icon="🏗️" label="Stories" value={feasibility.stories} />
+                    <MetricCard icon="❄️" label="Climate Ctrl" value={`${feasibility.climateControlledPct}%`} />
+                    <MetricCard icon="💵" label="Rent/SF/Mo" value={`$${feasibility.avgRentPerSF}`} />
+                    <MetricCard icon="📊" label="Occupancy" value={feasibility.occupancy} />
+                  </>
                 )}
-                {feasibility.grossSF && (
-                  <MetricCard icon="📐" label="Gross SF" value={feasibility.grossSF.toLocaleString()} />
+                
+                {/* Multi-Family Metrics */}
+                {feasibility.units && !feasibility.netRentableSF && !feasibility.rooms && (
+                  <>
+                    <MetricCard icon="🏢" label="Total Units" value={feasibility.units} />
+                    <MetricCard icon="📐" label="Gross SF" value={feasibility.grossSF?.toLocaleString()} />
+                    <MetricCard icon="🏗️" label="Stories" value={feasibility.floors} />
+                    <MetricCard icon="🚗" label="Parking" value={feasibility.parkingSpaces} />
+                    <MetricCard icon="📊" label="Density" value={`${feasibility.density}/ac`} />
+                    <MetricCard icon="📈" label="FAR" value={feasibility.far} />
+                  </>
                 )}
-                {feasibility.floors && (
-                  <MetricCard icon="🏗️" label="Stories" value={feasibility.floors} />
-                )}
-                {feasibility.parkingSpaces && (
-                  <MetricCard icon="🚗" label="Parking" value={feasibility.parkingSpaces} />
-                )}
+
+                {/* Industrial Metrics */}
                 {feasibility.warehouseSF && (
-                  <MetricCard icon="🏭" label="Warehouse SF" value={feasibility.warehouseSF.toLocaleString()} />
+                  <>
+                    <MetricCard icon="🏭" label="Warehouse SF" value={feasibility.warehouseSF.toLocaleString()} />
+                    <MetricCard icon="📏" label="Clear Height" value={`${feasibility.clearHeight}'`} />
+                    <MetricCard icon="🚚" label="Dock Doors" value={feasibility.dockDoors} />
+                    <MetricCard icon="🚛" label="Trailer Spaces" value={feasibility.trailerSpaces} />
+                    <MetricCard icon="🚗" label="Car Parking" value={feasibility.carParking} />
+                    <MetricCard icon="📈" label="FAR" value={feasibility.far} />
+                  </>
                 )}
-                {feasibility.dockDoors && (
-                  <MetricCard icon="🚚" label="Dock Doors" value={feasibility.dockDoors} />
+
+                {/* Senior Living Metrics */}
+                {feasibility.beds && (
+                  <>
+                    <MetricCard icon="🛏️" label="Beds" value={feasibility.beds} />
+                    <MetricCard icon="📐" label="Gross SF" value={feasibility.grossSF?.toLocaleString()} />
+                    <MetricCard icon="🏗️" label="Stories" value={feasibility.floors} />
+                    <MetricCard icon="🚗" label="Parking" value={feasibility.parkingSpaces} />
+                    <MetricCard icon="🏠" label="Common Area" value={`${Math.round(feasibility.commonAreaSF / 1000)}K SF`} />
+                    <MetricCard icon="📊" label="Density" value={`${feasibility.density}/ac`} />
+                  </>
                 )}
+
+                {/* Hotel Metrics */}
+                {feasibility.rooms && (
+                  <>
+                    <MetricCard icon="🛏️" label="Rooms" value={feasibility.rooms} />
+                    <MetricCard icon="📐" label="Gross SF" value={feasibility.grossSF?.toLocaleString()} />
+                    <MetricCard icon="🏗️" label="Stories" value={feasibility.floors} />
+                    <MetricCard icon="💵" label="ADR" value={`$${feasibility.adr}`} />
+                    <MetricCard icon="📊" label="Occupancy" value={feasibility.occupancy} />
+                    <MetricCard icon="📈" label="RevPAR" value={`$${feasibility.revPAR}`} />
+                  </>
+                )}
+
+                {/* Single-Family Metrics */}
                 {feasibility.totalLots && (
-                  <MetricCard icon="🏠" label="Total Lots" value={feasibility.totalLots} />
+                  <>
+                    <MetricCard icon="🏠" label="Total Lots" value={feasibility.totalLots} />
+                    <MetricCard icon="📐" label="Avg Lot Size" value={`${feasibility.avgLotSize.toLocaleString()} SF`} />
+                    <MetricCard icon="🏗️" label="Avg Home" value={`${feasibility.avgHomeSize.toLocaleString()} SF`} />
+                    <MetricCard icon="📊" label="Density" value={`${feasibility.density}/ac`} />
+                  </>
                 )}
-                {feasibility.density && (
-                  <MetricCard icon="📊" label="Density" value={`${feasibility.density}/ac`} />
-                )}
-                {feasibility.far && (
-                  <MetricCard icon="📈" label="FAR" value={feasibility.far} />
+
+                {/* Retail Metrics */}
+                {feasibility.padSites !== undefined && (
+                  <>
+                    <MetricCard icon="🛒" label="Gross SF" value={feasibility.grossSF?.toLocaleString()} />
+                    <MetricCard icon="🚗" label="Parking" value={feasibility.parkingSpaces} />
+                    <MetricCard icon="🏪" label="Pad Sites" value={feasibility.padSites} />
+                    <MetricCard icon="📊" label="Coverage" value={feasibility.lotCoverage} />
+                  </>
                 )}
               </div>
+
+              {/* Unit Mix for Self-Storage */}
+              {feasibility.unitBreakdown && (
+                <div style={styles.unitMixCard}>
+                  <h4 style={styles.unitMixTitle}>📦 Unit Mix</h4>
+                  <div style={styles.unitMixGrid}>
+                    {Object.entries(feasibility.unitBreakdown).map(([size, count]) => (
+                      <div key={size} style={styles.unitMixItem}>
+                        <span style={styles.unitMixSize}>{size}</span>
+                        <span style={styles.unitMixCount}>{count}</span>
+                        <span style={styles.unitMixLabel}>units</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Site Visualization */}
               <div style={styles.siteViz}>
                 <div style={styles.siteVizGrid}>
-                  <div style={styles.buildingFootprint}>
-                    <span style={styles.buildingLabel}>
-                      {feasibility.typologyLabel}
+                  <div style={{
+                    ...styles.buildingFootprint,
+                    backgroundColor: `${TYPOLOGY_INFO[feasibility.typology]?.color || THEME.accent.primary}33`,
+                    borderColor: TYPOLOGY_INFO[feasibility.typology]?.color || THEME.accent.primary,
+                  }}>
+                    <span style={{
+                      ...styles.buildingLabel,
+                      color: TYPOLOGY_INFO[feasibility.typology]?.color || THEME.accent.primary,
+                    }}>
+                      {feasibility.icon} {feasibility.typologyLabel}
                       <br />
-                      <small>{feasibility.units ? `${feasibility.units} Units` : feasibility.warehouseSF ? `${feasibility.warehouseSF.toLocaleString()} SF` : `${feasibility.totalLots} Lots`}</small>
+                      <small>
+                        {feasibility.netRentableSF ? `${feasibility.netRentableSF.toLocaleString()} SF` :
+                         feasibility.units ? `${feasibility.units} Units` :
+                         feasibility.warehouseSF ? `${feasibility.warehouseSF.toLocaleString()} SF` :
+                         feasibility.beds ? `${feasibility.beds} Beds` :
+                         feasibility.rooms ? `${feasibility.rooms} Rooms` :
+                         feasibility.totalLots ? `${feasibility.totalLots} Lots` :
+                         feasibility.grossSF ? `${feasibility.grossSF.toLocaleString()} SF` : ''}
+                      </small>
                     </span>
                   </div>
                 </div>
@@ -695,14 +1146,14 @@ export default function SPDAIChatApp() {
               </p>
               <div style={styles.emptyExamples}>
                 <p style={styles.emptyExampleLabel}>Try saying:</p>
-                <code style={styles.emptyExample}>"Analyze a 5 acre site for apartments"</code>
-                <code style={styles.emptyExample}>"I have 10 acres zoned I-1 for warehouse"</code>
+                <code style={styles.emptyExample}>"5 acres for self-storage, 3-story"</code>
+                <code style={styles.emptyExample}>"Build apartments on 8 acres"</code>
+                <code style={styles.emptyExample}>"10 acre industrial site"</code>
               </div>
             </div>
           )}
         </div>
 
-        {/* Preview Footer */}
         <div style={styles.previewFooter}>
           <span>Powered by</span>
           <span style={styles.brandLink}>BidDeed.AI</span>
@@ -719,14 +1170,11 @@ export default function SPDAIChatApp() {
 // ============================================================================
 
 function MessageContent({ content }) {
-  // Simple markdown-ish rendering
   const renderContent = (text) => {
-    // Split by markdown table pattern
     const parts = text.split(/((?:\|[^\n]+\|\n)+)/g);
     
     return parts.map((part, i) => {
       if (part.includes('|') && part.includes('\n')) {
-        // It's a table
         const rows = part.trim().split('\n').filter(r => r.includes('|'));
         const isHeader = rows.length > 1 && rows[1].match(/^\|[\s-:|]+\|$/);
         
@@ -734,7 +1182,7 @@ function MessageContent({ content }) {
           <table key={i} style={styles.table}>
             <tbody>
               {rows.map((row, ri) => {
-                if (isHeader && ri === 1) return null; // Skip separator row
+                if (isHeader && ri === 1) return null;
                 const cells = row.split('|').filter(c => c.trim());
                 const isHeaderRow = isHeader && ri === 0;
                 return (
@@ -756,26 +1204,21 @@ function MessageContent({ content }) {
         );
       }
       
-      // Regular text with basic formatting
       return (
         <span key={i}>
           {part.split('\n').map((line, li) => {
-            // Headers
             if (line.startsWith('### ')) {
               return <h4 key={li} style={styles.mdH4}>{line.replace('### ', '').replace(/\*\*/g, '')}</h4>;
             }
             if (line.startsWith('## ')) {
               return <h3 key={li} style={styles.mdH3}>{line.replace('## ', '').replace(/\*\*/g, '')}</h3>;
             }
-            // HR
             if (line === '---') {
               return <hr key={li} style={styles.mdHr} />;
             }
-            // List items
             if (line.startsWith('• ') || line.startsWith('* ')) {
               return <div key={li} style={styles.mdLi}>{line.replace(/\*\*/g, '')}</div>;
             }
-            // Bold text
             const boldParts = line.split(/\*\*([^*]+)\*\*/g);
             if (boldParts.length > 1) {
               return (
@@ -786,7 +1229,6 @@ function MessageContent({ content }) {
                 </p>
               );
             }
-            // Regular line
             return line ? <p key={li} style={styles.mdP}>{line}</p> : null;
           })}
         </span>
@@ -822,8 +1264,6 @@ const styles = {
     fontFamily: "'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif",
     color: THEME.text.primary,
   },
-
-  // Chat Panel
   chatPanel: {
     width: '45%',
     minWidth: '400px',
@@ -886,8 +1326,6 @@ const styles = {
     backgroundColor: THEME.accent.success,
     borderRadius: '50%',
   },
-
-  // Messages
   messagesContainer: {
     flex: 1,
     overflow: 'auto',
@@ -946,8 +1384,6 @@ const styles = {
     borderRadius: '50%',
     animation: 'typingPulse 1s infinite',
   },
-
-  // Quick Actions
   quickActions: {
     display: 'flex',
     gap: '8px',
@@ -964,8 +1400,6 @@ const styles = {
     cursor: 'pointer',
     transition: 'all 0.2s',
   },
-
-  // Input Area
   inputArea: {
     padding: '16px 20px',
     borderTop: `1px solid ${THEME.border.subtle}`,
@@ -1011,15 +1445,11 @@ const styles = {
     color: THEME.text.muted,
     marginTop: '8px',
   },
-
-  // Resizer
   resizer: {
     width: '4px',
     backgroundColor: THEME.bg.primary,
     cursor: 'col-resize',
   },
-
-  // Preview Panel
   previewPanel: {
     flex: 1,
     display: 'flex',
@@ -1082,8 +1512,6 @@ const styles = {
     borderColor: THEME.accent.primary,
     color: '#fff',
   },
-
-  // Preview Content
   previewContent: {
     flex: 1,
     overflow: 'auto',
@@ -1113,7 +1541,6 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    background: THEME.gradient.brand,
     borderRadius: '12px',
     fontSize: '24px',
   },
@@ -1128,31 +1555,70 @@ const styles = {
   },
   metricsGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
     gap: '12px',
   },
   metricCard: {
     display: 'flex',
     alignItems: 'center',
     gap: '12px',
-    padding: '16px',
+    padding: '14px',
     backgroundColor: THEME.bg.secondary,
     borderRadius: '12px',
     border: `1px solid ${THEME.border.subtle}`,
   },
   metricIcon: {
-    fontSize: '24px',
+    fontSize: '20px',
   },
   metricInfo: {
     display: 'flex',
     flexDirection: 'column',
   },
   metricValue: {
-    fontSize: '18px',
+    fontSize: '16px',
     fontWeight: '600',
   },
   metricLabel: {
+    fontSize: '11px',
+    color: THEME.text.muted,
+  },
+  unitMixCard: {
+    padding: '20px',
+    backgroundColor: THEME.bg.secondary,
+    borderRadius: '16px',
+    border: `1px solid ${THEME.border.subtle}`,
+  },
+  unitMixTitle: {
+    fontSize: '14px',
+    fontWeight: '600',
+    marginBottom: '16px',
+    color: THEME.text.secondary,
+  },
+  unitMixGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(6, 1fr)',
+    gap: '12px',
+  },
+  unitMixItem: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: '12px 8px',
+    backgroundColor: THEME.bg.elevated,
+    borderRadius: '10px',
+  },
+  unitMixSize: {
     fontSize: '12px',
+    fontWeight: '600',
+    color: THEME.accent.orange,
+    marginBottom: '4px',
+  },
+  unitMixCount: {
+    fontSize: '18px',
+    fontWeight: '700',
+  },
+  unitMixLabel: {
+    fontSize: '10px',
     color: THEME.text.muted,
   },
   siteViz: {
@@ -1163,13 +1629,13 @@ const styles = {
   },
   siteVizGrid: {
     width: '100%',
-    height: '200px',
+    height: '180px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundImage: `
-      linear-gradient(rgba(59,130,246,0.1) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(59,130,246,0.1) 1px, transparent 1px)
+      linear-gradient(rgba(59,130,246,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,130,246,0.08) 1px, transparent 1px)
     `,
     backgroundSize: '20px 20px',
     borderRadius: '8px',
@@ -1180,15 +1646,13 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(59, 130, 246, 0.2)',
-    border: '2px dashed #3B82F6',
+    border: '2px dashed',
     borderRadius: '8px',
   },
   buildingLabel: {
-    fontSize: '16px',
+    fontSize: '14px',
     fontWeight: '600',
     textAlign: 'center',
-    color: THEME.accent.secondary,
   },
   siteVizLegend: {
     display: 'flex',
@@ -1224,8 +1688,6 @@ const styles = {
     color: THEME.accent.success,
     opacity: 0.8,
   },
-
-  // Empty State
   emptyPreview: {
     display: 'flex',
     flexDirection: 'column',
@@ -1267,8 +1729,6 @@ const styles = {
     fontSize: '13px',
     color: THEME.text.secondary,
   },
-
-  // Preview Footer
   previewFooter: {
     display: 'flex',
     alignItems: 'center',
@@ -1286,8 +1746,6 @@ const styles = {
   footerDivider: {
     opacity: 0.3,
   },
-
-  // Markdown styles
   table: {
     width: '100%',
     borderCollapse: 'collapse',
