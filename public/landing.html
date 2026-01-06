@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPD.AI - Site Planning & Development Intelligence | BidDeed.AI</title>
+  <meta name="description" content="AI-powered site planning and development feasibility platform for real estate developers, architects, and investors in Brevard County, Florida.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #0F172A;
+      --secondary: #1E293B;
+      --accent: #3B82F6;
+      --accent-light: #60A5FA;
+      --success: #10B981;
+      --surface: #F8FAFC;
+      --border: #E2E8F0;
+      --text: #0F172A;
+      --text-muted: #64748B;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--primary);
+      color: #fff;
+      overflow-x: hidden;
+    }
+    
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(ellipse at 20% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(16, 185, 129, 0.1) 0%, transparent 40%),
+        linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
+    }
+    
+    .grid-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: linear-gradient(180deg, black 0%, transparent 80%);
+    }
+    
+    /* Navigation */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 48px;
+      position: relative;
+      z-index: 10;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    
+    .logo-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+    
+    .logo-text span {
+      color: var(--accent-light);
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+    
+    .nav-links a {
+      color: #94A3B8;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    
+    .nav-links a:hover {
+      color: #fff;
+    }
+    
+    .nav-cta {
+      display: flex;
+      gap: 12px;
+    }
+    
+    .btn {
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 1px solid #334155;
+      color: #fff;
+    }
+    
+    .btn-outline:hover {
+      border-color: var(--accent);
+      background: rgba(59, 130, 246, 0.1);
+    }
+    
+    .btn-primary {
+      background: var(--accent);
+      border: none;
+      color: #fff;
+    }
+    
+    .btn-primary:hover {
+      background: var(--accent-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+    }
+    
+    /* Hero Content */
+    .hero-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 48px;
+      position: relative;
+      z-index: 10;
+    }
+    
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 100px;
+      font-size: 13px;
+      color: var(--accent-light);
+      margin-bottom: 32px;
+    }
+    
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(48px, 8vw, 80px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+      max-width: 900px;
+    }
+    
+    h1 span {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 50%, var(--success) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .hero-subtitle {
+      font-size: 20px;
+      color: #94A3B8;
+      max-width: 600px;
+      line-height: 1.6;
+      margin-bottom: 48px;
+    }
+    
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 64px;
+    }
+    
+    .btn-large {
+      padding: 16px 32px;
+      font-size: 16px;
+    }
+    
+    /* Stats */
+    .stats {
+      display: flex;
+      gap: 64px;
+      padding: 32px 48px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    .stat {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 36px;
+      font-weight: 700;
+      color: #fff;
+    }
+    
+    .stat-value span {
+      color: var(--accent-light);
+    }
+    
+    .stat-label {
+      font-size: 13px;
+      color: #64748B;
+      margin-top: 4px;
+    }
+    
+    /* Features Section */
+    .features {
+      padding: 120px 48px;
+      background: var(--surface);
+      color: var(--text);
+    }
+    
+    .section-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+    
+    .section-header h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 16px;
+    }
+    
+    .section-header p {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .feature-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 32px;
+      border: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    }
+    
+    .feature-icon {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+    
+    .feature-card h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--primary);
+    }
+    
+    .feature-card p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    
+    /* Typologies Section */
+    .typologies {
+      padding: 120px 48px;
+      background: var(--primary);
+    }
+    
+    .typologies .section-header h2,
+    .typologies .section-header p {
+      color: #fff;
+    }
+    
+    .typologies .section-header p {
+      color: #94A3B8;
+    }
+    
+    .typology-grid {
+      display: flex;
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .typology-card {
+      width: 200px;
+      padding: 32px 24px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    
+    .typology-card:hover {
+      background: rgba(59, 130, 246, 0.1);
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+    
+    .typology-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+    
+    .typology-card h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .typology-card p {
+      font-size: 13px;
+      color: #64748B;
+    }
+    
+    /* CTA Section */
+    .cta-section {
+      padding: 120px 48px;
+      background: linear-gradient(135deg, var(--accent) 0%, #1D4ED8 100%);
+      text-align: center;
+    }
+    
+    .cta-section h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    
+    .cta-section p {
+      font-size: 18px;
+      opacity: 0.9;
+      margin-bottom: 32px;
+    }
+    
+    .btn-white {
+      background: #fff;
+      color: var(--accent);
+      border: none;
+    }
+    
+    .btn-white:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+    
+    /* Footer */
+    footer {
+      padding: 48px;
+      background: var(--primary);
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .footer-brand .logo {
+      opacity: 0.7;
+    }
+    
+    .footer-powered {
+      font-size: 12px;
+      color: #64748B;
+    }
+    
+    .footer-powered a {
+      color: var(--accent-light);
+      text-decoration: none;
+    }
+    
+    .footer-links {
+      display: flex;
+      gap: 32px;
+    }
+    
+    .footer-links a {
+      color: #64748B;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+    
+    .footer-links a:hover {
+      color: #fff;
+    }
+    
+    .footer-copy {
+      font-size: 13px;
+      color: #475569;
+    }
+    
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      nav {
+        padding: 16px 24px;
+      }
+      
+      .nav-links {
+        display: none;
+      }
+      
+      .hero-content {
+        padding: 0 24px;
+      }
+      
+      h1 {
+        font-size: 36px;
+        letter-spacing: -1px;
+      }
+      
+      .hero-subtitle {
+        font-size: 16px;
+      }
+      
+      .stats {
+        flex-direction: column;
+        gap: 24px;
+      }
+      
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .typology-grid {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .typology-card {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="grid-overlay"></div>
+    
+    <nav>
+      <div class="logo">
+        <div class="logo-icon">◆</div>
+        <div class="logo-text">SPD<span>.AI</span></div>
+      </div>
+      
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#typologies">Typologies</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#docs">Docs</a>
+      </div>
+      
+      <div class="nav-cta">
+        <a href="#" class="btn btn-outline">Sign In</a>
+        <a href="#" class="btn btn-primary">Start Free Trial</a>
+      </div>
+    </nav>
+    
+    <div class="hero-content">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        Now Available for Brevard County, FL
+      </div>
+      
+      <h1>Site Planning<br><span>Powered by AI</span></h1>
+      
+      <p class="hero-subtitle">
+        Generate feasibility studies in seconds. Optimize unit mix, parking, and pro forma 
+        with AI-driven site planning intelligence built for Florida real estate.
+      </p>
+      
+      <div class="hero-cta">
+        <a href="#" class="btn btn-primary btn-large">Start Planning →</a>
+        <a href="#" class="btn btn-outline btn-large">Watch Demo</a>
+      </div>
+      
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-value">10<span>x</span></div>
+          <div class="stat-label">Faster than manual studies</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">$<span>2.5M</span></div>
+          <div class="stat-label">Avg deal size analyzed</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">96<span>%</span></div>
+          <div class="stat-label">Accuracy vs traditional</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">5</div>
+          <div class="stat-label">Development typologies</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="section-header">
+      <h2>Everything You Need</h2>
+      <p>From site selection to pro forma analysis, SPD.AI handles the entire feasibility workflow.</p>
+    </div>
+    
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🗺️</div>
+        <h3>Interactive Site Definition</h3>
+        <p>Draw parcels, import GIS data, or search by address. Automatic zoning lookup for Brevard County jurisdictions.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Instant Generation</h3>
+        <p>AI optimizes unit mix, parking ratios, and building placement in seconds—not days or weeks.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Real-Time Pro Forma</h3>
+        <p>Live cost estimates, NOI projections, and yield-on-cost calculations updated as you adjust parameters.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">🏗️</div>
+        <h3>Multiple Typologies</h3>
+        <p>Multi-family, single-family, industrial, retail, and hotel configurations with specialized algorithms.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">📐</div>
+        <h3>Zoning Compliance</h3>
+        <p>Automatic setback, height, density, and FAR calculations based on local jurisdiction requirements.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">📤</div>
+        <h3>Export Anywhere</h3>
+        <p>PDF reports, Excel pro formas, DXF for CAD, and shareable links for stakeholder collaboration.</p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Typologies Section -->
+  <section class="typologies" id="typologies">
+    <div class="section-header">
+      <h2>Five Development Types</h2>
+      <p>Specialized algorithms for each property type, optimized for Florida markets.</p>
+    </div>
+    
+    <div class="typology-grid">
+      <div class="typology-card">
+        <div class="typology-icon">🏢</div>
+        <h4>Multi-Family</h4>
+        <p>Apartments, condos, student housing</p>
+      </div>
+      
+      <div class="typology-card">
+        <div class="typology-icon">🏠</div>
+        <h4>Single-Family</h4>
+        <p>Subdivisions, townhomes, BTR</p>
+      </div>
+      
+      <div class="typology-card">
+        <div class="typology-icon">🏭</div>
+        <h4>Industrial</h4>
+        <p>Warehouses, logistics, flex</p>
+      </div>
+      
+      <div class="typology-card">
+        <div class="typology-icon">🛒</div>
+        <h4>Retail</h4>
+        <p>Shopping centers, pad sites</p>
+      </div>
+      
+      <div class="typology-card">
+        <div class="typology-icon">🏨</div>
+        <h4>Hotel</h4>
+        <p>Limited & full service</p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <h2>Ready to Plan Smarter?</h2>
+    <p>Join developers across Brevard County using AI-powered feasibility analysis.</p>
+    <a href="#" class="btn btn-white btn-large">Start Your Free Trial</a>
+  </section>
+  
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <div class="logo">
+          <div class="logo-icon">◆</div>
+          <div class="logo-text">SPD<span>.AI</span></div>
+        </div>
+        <p class="footer-powered">Powered by <a href="https://biddeed.ai">BidDeed.AI</a> / Everest Capital USA</p>
+      </div>
+      
+      <div class="footer-links">
+        <a href="#">Features</a>
+        <a href="#">Pricing</a>
+        <a href="#">Documentation</a>
+        <a href="#">Support</a>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </div>
+      
+      <p class="footer-copy">© 2026 Everest Capital USA. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>
