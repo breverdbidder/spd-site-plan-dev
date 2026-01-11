@@ -1,0 +1,401 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "SPD Site Plan Development - Success Criteria",
+  "description": "Success criteria for all 12 stages of The Everest Ascent pipeline applied to site plan development. Each stage must meet these criteria before proceeding.",
+  "version": "1.0.0",
+  "created_by": "Ariel Shapira, Solo Founder - Everest Capital USA",
+  "application": "SPD Site Plan Development",
+  "stages": {
+    "discovery": {
+      "stage_number": 1,
+      "description": "Discover site plan project from Brevard County records",
+      "required_outputs": [
+        "project_id",
+        "parcel_id",
+        "project_address",
+        "application_date",
+        "applicant_name",
+        "jurisdiction"
+      ],
+      "quality_gates": {
+        "valid_project_id": {
+          "description": "Project ID matches Brevard County format",
+          "validation": "regex_match",
+          "pattern": "^\\d{7}$",
+          "critical": true
+        },
+        "jurisdiction_valid": {
+          "description": "Jurisdiction is one of 17 Brevard County municipalities",
+          "validation": "enum_check",
+          "allowed_values": [
+            "Unincorporated Brevard",
+            "City of Melbourne",
+            "City of Palm Bay",
+            "City of Titusville",
+            "City of Cocoa",
+            "City of Rockledge",
+            "City of Satellite Beach",
+            "Town of Melbourne Beach",
+            "Town of Indialantic",
+            "City of Cocoa Beach",
+            "Town of Grant-Valkaria",
+            "City of West Melbourne",
+            "Town of Malabar",
+            "City of Palm Shores",
+            "Town of Cape Canaveral",
+            "Port St. John",
+            "Merritt Island"
+          ],
+          "critical": true
+        }
+      },
+      "performance": {
+        "max_duration_seconds": 60,
+        "max_api_calls": 3
+      },
+      "data_sources": [
+        "Brevard County Development Services",
+        "BCPAO GIS API"
+      ]
+    },
+    "document_retrieval": {
+      "stage_number": 2,
+      "description": "Retrieve site plan documents and application materials",
+      "required_outputs": [
+        "site_plan_pdf",
+        "application_form",
+        "survey_documents",
+        "supporting_docs"
+      ],
+      "quality_gates": {
+        "pdf_readable": {
+          "description": "Site plan PDF is valid and readable",
+          "validation": "file_check",
+          "critical": true
+        },
+        "minimum_documents": {
+          "description": "At least site plan and application retrieved",
+          "validation": "count_check",
+          "min_count": 2,
+          "critical": true
+        }
+      },
+      "performance": {
+        "max_duration_seconds": 120,
+        "max_file_size_mb": 50
+      }
+    },
+    "zoning_analysis": {
+      "stage_number": 3,
+      "description": "Analyze zoning requirements and restrictions",
+      "required_outputs": [
+        "zoning_district",
+        "allowed_uses",
+        "setback_requirements",
+        "parking_requirements",
+        "height_restrictions",
+        "lot_coverage_limits"
+      ],
+      "quality_gates": {
+        "zoning_code_current": {
+          "description": "Zoning code data is current (within 90 days)",
+          "validation": "data_recency",
+          "max_age_days": 90,
+          "critical": true
+        },
+        "setbacks_complete": {
+          "description": "All four setbacks defined (front, rear, side-left, side-right)",
+          "validation": "completeness_check",
+          "required_fields": ["front", "rear", "side_left", "side_right"],
+          "critical": true
+        },
+        "use_compliance": {
+          "description": "Proposed use matches allowed uses in zoning district",
+          "validation": "compliance_check",
+          "critical": true
+        }
+      },
+      "performance": {
+        "max_duration_seconds": 90,
+        "max_api_calls": 5
+      },
+      "data_sources": [
+        "Municipal zoning ordinances",
+        "Brevard County LDRs"
+      ],
+      "smart_router_tier": "STANDARD"
+    },
+    "setback_verification": {
+      "stage_number": 4,
+      "description": "Verify proposed structures meet setback requirements",
+      "required_outputs": [
+        "structure_locations",
+        "setback_measurements",
+        "compliance_status",
+        "violations_found"
+      ],
+      "quality_gates": {
+        "measurements_accurate": {
+          "description": "Setback measurements within 0.5 feet of plan dimensions",
+          "validation": "tolerance_check",
+          "tolerance": 0.5,
+          "critical": true
+        },
+        "all_structures_checked": {
+          "description": "Every structure on plan has setback verification",
+          "validation": "coverage_check",
+          "critical": true
+        },
+        "violation_documentation": {
+          "description": "Any violations include specific code section reference",
+          "validation": "reference_check",
+          "critical": true
+        }
+      },
+      "performance": {
+        "max_duration_seconds": 120
+      },
+      "smart_router_tier": "STANDARD"
+    },
+    "parking_analysis": {
+      "stage_number": 5,
+      "description": "Verify parking spaces meet code requirements",
+      "required_outputs": [
+        "required_spaces",
+        "provided_spaces",
+        "ada_spaces",
+        "parking_compliance"
+      ],
+      "quality_gates": {
+        "ada_compliant": {
+          "description": "ADA spaces meet federal requirements",
+          "validation": "compliance_check",
+          "critical": true
+        },
+        "space_calculations": {
+          "description": "Parking calculations match code formula",
+          "validation": "formula_check",
+          "critical": true
+        }
+      },
+      "performance": {
+        "max_duration_seconds": 60
+      },
+      "smart_router_tier": "FREE"
+    },
+    "landscape_review": {
+      "stage_number": 6,
+      "description": "Review landscape plan compliance",
+      "required_outputs": [
+        "buffer_requirements",
+        "tree_preservation",
+        "landscape_coverage",
+        "irrigation_plan"
+      ],
+      "quality_gates": {
+        "buffer_width": {
+          "description": "Buffer widths meet minimum requirements",
+          "validation": "minimum_check",
+          "critical": false
+        },
+        "tree_count": {
+          "description": "Tree count meets code minimums",
+          "validation": "count_check",
+          "critical": false
+        }
+      },
+      "performance": {
+        "max_duration_seconds": 90
+      },
+      "smart_router_tier": "FREE"
+    },
+    "stormwater_analysis": {
+      "stage_number": 7,
+      "description": "Analyze stormwater management compliance",
+      "required_outputs": [
+        "drainage_plan",
+        "retention_areas",
+        "discharge_points",
+        "calculations"
+      ],
+      "quality_gates": {
+        "retention_adequate": {
+          "description": "Retention volume meets runoff calculations",
+          "validation": "engineering_check",
+          "critical": true
+        }
+      },
+      "performance": {
+        "max_duration_seconds": 120
+      },
+      "smart_router_tier": "STANDARD"
+    },
+    "traffic_impact": {
+      "stage_number": 8,
+      "description": "Assess traffic impact and circulation",
+      "required_outputs": [
+        "trip_generation",
+        "access_points",
+        "circulation_pattern",
+        "sight_distance"
+      ],
+      "quality_gates": {
+        "trip_gen_methodology": {
+          "description": "Trip generation uses ITE methodology",
+          "validation": "methodology_check",
+          "critical": false
+        }
+      },
+      "performance": {
+        "max_duration_seconds": 90
+      },
+      "smart_router_tier": "FREE"
+    },
+    "utility_coordination": {
+      "stage_number": 9,
+      "description": "Verify utility infrastructure availability and requirements",
+      "required_outputs": [
+        "water_service",
+        "sewer_service",
+        "electric_service",
+        "utility_easements"
+      ],
+      "quality_gates": {
+        "all_utilities_addressed": {
+          "description": "Water, sewer, electric all addressed",
+          "validation": "completeness_check",
+          "required_fields": ["water", "sewer", "electric"],
+          "critical": true
+        }
+      },
+      "performance": {
+        "max_duration_seconds": 60
+      },
+      "smart_router_tier": "FREE"
+    },
+    "code_compliance_summary": {
+      "stage_number": 10,
+      "description": "Generate comprehensive code compliance summary",
+      "required_outputs": [
+        "compliance_checklist",
+        "violations_list",
+        "recommendations",
+        "approval_likelihood"
+      ],
+      "quality_gates": {
+        "all_codes_reviewed": {
+          "description": "All applicable code sections reviewed",
+          "validation": "coverage_check",
+          "critical": true
+        },
+        "recommendations_actionable": {
+          "description": "Each recommendation includes specific action",
+          "validation": "text_analysis",
+          "min_length": 50,
+          "critical": false
+        }
+      },
+      "performance": {
+        "max_duration_seconds": 90
+      },
+      "smart_router_tier": "STANDARD"
+    },
+    "report_generation": {
+      "stage_number": 11,
+      "description": "Generate professional site plan review report",
+      "required_outputs": [
+        "docx_report",
+        "pdf_report",
+        "executive_summary",
+        "supporting_exhibits"
+      ],
+      "quality_gates": {
+        "document_valid": {
+          "description": "DOCX and PDF files generated and readable",
+          "validation": "file_check",
+          "critical": true
+        },
+        "branding_correct": {
+          "description": "SPD branding only (no other company names)",
+          "validation": "text_scan",
+          "forbidden_terms": ["BidDeed", "Property360", "Mariam"],
+          "critical": true
+        },
+        "exhibits_included": {
+          "description": "Site plan images embedded in report",
+          "validation": "image_check",
+          "critical": false
+        }
+      },
+      "performance": {
+        "max_duration_seconds": 120,
+        "max_file_size_mb": 20
+      },
+      "output_format": "DOCX+PDF",
+      "smart_router_tier": "FREE"
+    },
+    "archive": {
+      "stage_number": 12,
+      "description": "Archive project and deliver to client",
+      "required_outputs": [
+        "github_commit",
+        "cloudflare_deployed",
+        "client_notification",
+        "project_archived"
+      ],
+      "quality_gates": {
+        "github_push": {
+          "description": "Reports pushed to GitHub repo",
+          "validation": "git_check",
+          "critical": false
+        },
+        "cloudflare_live": {
+          "description": "Report accessible via Cloudflare Pages",
+          "validation": "url_check",
+          "critical": true
+        }
+      },
+      "performance": {
+        "max_duration_seconds": 90
+      }
+    }
+  },
+  "global_criteria": {
+    "no_linter_errors": {
+      "description": "All generated code passes ruff check",
+      "command": "ruff check --select E,F,W src/",
+      "critical": false
+    },
+    "no_type_errors": {
+      "description": "All code passes mypy type checking",
+      "command": "mypy src/ --ignore-missing-imports",
+      "critical": false
+    },
+    "documentation_updated": {
+      "description": "CLAUDE.md and PROJECT_STATE.json reflect changes",
+      "validation": "doc_check",
+      "critical": false
+    }
+  },
+  "iteration_limits": {
+    "max_iterations_per_stage": 5,
+    "max_total_iterations": 30,
+    "iteration_timeout_seconds": 600
+  },
+  "cost_controls": {
+    "max_cost_per_project": 0.50,
+    "smart_router_required": true,
+    "free_tier_target": 0.85
+  },
+  "project_specific": {
+    "first_project": "2835546",
+    "first_project_name": "Bliss Palm Bay",
+    "jurisdictions_supported": 17,
+    "code_sources": [
+      "Municipal ordinances (17 jurisdictions)",
+      "Brevard County LDRs",
+      "Florida Building Code",
+      "ADA requirements"
+    ]
+  }
+}
