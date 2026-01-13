@@ -1,6 +1,6 @@
 {
   "version": "1.1.0",
-  "last_updated": "2025-12-16T17:30:00Z",
+  "last_updated": "2026-01-13T21:04:56.379455Z",
   "modules": {
     "spd_pipeline": {
       "version": "1.0.13",
@@ -33,18 +33,66 @@
       "notes": "This analysis did NOT account for 200-ft wellhead protection easement. See SPD-2025-002 for updated constrained analysis.",
       "zod_reference": true,
       "stages_completed": [
-        {"stage": 1, "name": "Discovery", "status": "COMPLETED"},
-        {"stage": 2, "name": "Survey Analysis", "status": "COMPLETED"},
-        {"stage": 3, "name": "Zoning Analysis", "status": "COMPLETED"},
-        {"stage": 4, "name": "Site Constraints", "status": "COMPLETED"},
-        {"stage": 5, "name": "Parking Analysis", "status": "COMPLETED"},
-        {"stage": 6, "name": "Traffic Impact", "status": "COMPLETED"},
-        {"stage": 7, "name": "Utilities Assessment", "status": "COMPLETED"},
-        {"stage": 8, "name": "Stormwater Analysis", "status": "COMPLETED"},
-        {"stage": 9, "name": "Site Layout", "status": "COMPLETED"},
-        {"stage": 10, "name": "ML Feasibility Score", "status": "COMPLETED"},
-        {"stage": 11, "name": "Report Generation", "status": "COMPLETED"},
-        {"stage": 12, "name": "Archive", "status": "COMPLETED"}
+        {
+          "stage": 1,
+          "name": "Discovery",
+          "status": "COMPLETED"
+        },
+        {
+          "stage": 2,
+          "name": "Survey Analysis",
+          "status": "COMPLETED"
+        },
+        {
+          "stage": 3,
+          "name": "Zoning Analysis",
+          "status": "COMPLETED"
+        },
+        {
+          "stage": 4,
+          "name": "Site Constraints",
+          "status": "COMPLETED"
+        },
+        {
+          "stage": 5,
+          "name": "Parking Analysis",
+          "status": "COMPLETED"
+        },
+        {
+          "stage": 6,
+          "name": "Traffic Impact",
+          "status": "COMPLETED"
+        },
+        {
+          "stage": 7,
+          "name": "Utilities Assessment",
+          "status": "COMPLETED"
+        },
+        {
+          "stage": 8,
+          "name": "Stormwater Analysis",
+          "status": "COMPLETED"
+        },
+        {
+          "stage": 9,
+          "name": "Site Layout",
+          "status": "COMPLETED"
+        },
+        {
+          "stage": 10,
+          "name": "ML Feasibility Score",
+          "status": "COMPLETED"
+        },
+        {
+          "stage": 11,
+          "name": "Report Generation",
+          "status": "COMPLETED"
+        },
+        {
+          "stage": 12,
+          "name": "Archive",
+          "status": "COMPLETED"
+        }
       ],
       "created_at": "2025-12-09T00:00:00Z",
       "completed_at": "2025-12-09T03:00:00Z"
@@ -56,7 +104,7 @@
       "city": "Palm Bay",
       "state": "FL",
       "account_id": "2835546",
-      "legal": "S½ of NE¼, Section 17, T28S, R37E",
+      "legal": "S\u00bd of NE\u00bc, Section 17, T28S, R37E",
       "parcel_area_sf": 46394,
       "parcel_acres": 1.065,
       "buildable_area_sf": 24394,
@@ -77,51 +125,235 @@
       "highest_best_use": "Phased Multifamily Development (6-8 units now, 8-12 units in 10 years)",
       "zod_reference": true,
       "stages_completed": [
-        {"stage": 1, "name": "Discovery", "status": "COMPLETED"},
-        {"stage": 2, "name": "Survey Analysis", "status": "COMPLETED"},
-        {"stage": 3, "name": "Zoning Analysis", "status": "COMPLETED"},
-        {"stage": 4, "name": "Site Constraints", "status": "COMPLETED"},
-        {"stage": 10, "name": "ML Feasibility Score", "status": "COMPLETED"}
+        {
+          "stage": 1,
+          "name": "Discovery",
+          "status": "COMPLETED"
+        },
+        {
+          "stage": 2,
+          "name": "Survey Analysis",
+          "status": "COMPLETED"
+        },
+        {
+          "stage": 3,
+          "name": "Zoning Analysis",
+          "status": "COMPLETED"
+        },
+        {
+          "stage": 4,
+          "name": "Site Constraints",
+          "status": "COMPLETED"
+        },
+        {
+          "stage": 10,
+          "name": "ML Feasibility Score",
+          "status": "COMPLETED"
+        }
       ],
       "stages_pending": [
-        {"stage": 5, "name": "Parking Analysis", "status": "PENDING", "notes": "Pending confirmation of parking in easement"},
-        {"stage": 6, "name": "Traffic Impact", "status": "PENDING"},
-        {"stage": 7, "name": "Utilities Assessment", "status": "PENDING"},
-        {"stage": 8, "name": "Stormwater Analysis", "status": "PENDING"},
-        {"stage": 9, "name": "Site Layout", "status": "PENDING", "notes": "Depends on pre-app meeting results"},
-        {"stage": 11, "name": "Report Generation", "status": "IN_PROGRESS"},
-        {"stage": 12, "name": "Archive", "status": "PENDING"}
+        {
+          "stage": 5,
+          "name": "Parking Analysis",
+          "status": "PENDING",
+          "notes": "Pending confirmation of parking in easement"
+        },
+        {
+          "stage": 6,
+          "name": "Traffic Impact",
+          "status": "PENDING"
+        },
+        {
+          "stage": 7,
+          "name": "Utilities Assessment",
+          "status": "PENDING"
+        },
+        {
+          "stage": 8,
+          "name": "Stormwater Analysis",
+          "status": "PENDING"
+        },
+        {
+          "stage": 9,
+          "name": "Site Layout",
+          "status": "PENDING",
+          "notes": "Depends on pre-app meeting results"
+        },
+        {
+          "stage": 11,
+          "name": "Report Generation",
+          "status": "IN_PROGRESS"
+        },
+        {
+          "stage": 12,
+          "name": "Archive",
+          "status": "PENDING"
+        }
       ],
       "next_action": "Pre-Application Meeting December 16, 2025",
       "created_at": "2025-12-16T14:00:00Z",
       "updated_at": "2025-12-16T14:45:00Z"
+    },
+    {
+      "id": "SPD-2026-001",
+      "name": "Bliss Palm Bay (ZoneWise Architecture)",
+      "address": "2165 Sandy Pines Dr NE",
+      "city": "Palm Bay",
+      "state": "FL",
+      "account_id": "2835546",
+      "legal": "S\u00bd of NE\u00bc, Section 17, T28S, R37E",
+      "parcel_area_sf": 46394,
+      "parcel_acres": 1.065,
+      "buildable_area_sf": 24394,
+      "buildable_acres": 0.56,
+      "current_stage": 2,
+      "stage_name": "Survey Analysis",
+      "status": "IN_PROGRESS",
+      "architecture": "ZoneWise Marketplace v1.0.0",
+      "jurisdiction": "palm-bay",
+      "plugin_status": "manual (plugin target: 2026-02-24)",
+      "critical_constraint": {
+        "type": "Wellhead Protection Easement",
+        "radius_ft": 200,
+        "impact_percent": 47,
+        "resolution_timeline_years": 10
+      },
+      "development_strategy": {
+        "phase_1_units": "6-8",
+        "phase_2_units": "8-12",
+        "total_units": "14-20"
+      },
+      "stages_completed": [
+        {
+          "stage": 1,
+          "name": "Discovery",
+          "status": "COMPLETED",
+          "completed_at": "2026-01-13T21:04:56.379254Z"
+        }
+      ],
+      "stages_in_progress": [
+        {
+          "stage": 2,
+          "name": "Survey Analysis",
+          "status": "IN_PROGRESS",
+          "started_at": "2026-01-13T21:04:56.379356Z"
+        }
+      ],
+      "created_at": "2026-01-13T21:04:56.379404Z",
+      "target_completion": "2026-01-25T00:00:00Z"
     }
   ],
   "pipeline_stages": [
-    {"id": 1, "name": "Discovery", "description": "Find parcels, initial assessment"},
-    {"id": 2, "name": "Survey Analysis", "description": "Boundary, easements, buildable area"},
-    {"id": 3, "name": "Zoning Analysis", "description": "Current zoning, rezoning needs"},
-    {"id": 4, "name": "Site Constraints", "description": "Environmental, flood, endangered species"},
-    {"id": 5, "name": "Parking Analysis", "description": "Required spaces, layout options"},
-    {"id": 6, "name": "Traffic Impact", "description": "Traffic study requirements"},
-    {"id": 7, "name": "Utilities Assessment", "description": "Water, sewer, electric availability"},
-    {"id": 8, "name": "Stormwater Analysis", "description": "Retention, drainage requirements"},
-    {"id": 9, "name": "Site Layout", "description": "Building placement, circulation"},
-    {"id": 10, "name": "ML Feasibility Score", "description": "Financial feasibility, HBU analysis"},
-    {"id": 11, "name": "Report Generation", "description": "Final report creation"},
-    {"id": 12, "name": "Archive", "description": "Historical storage"}
+    {
+      "id": 1,
+      "name": "Discovery",
+      "description": "Find parcels, initial assessment"
+    },
+    {
+      "id": 2,
+      "name": "Survey Analysis",
+      "description": "Boundary, easements, buildable area"
+    },
+    {
+      "id": 3,
+      "name": "Zoning Analysis",
+      "description": "Current zoning, rezoning needs"
+    },
+    {
+      "id": 4,
+      "name": "Site Constraints",
+      "description": "Environmental, flood, endangered species"
+    },
+    {
+      "id": 5,
+      "name": "Parking Analysis",
+      "description": "Required spaces, layout options"
+    },
+    {
+      "id": 6,
+      "name": "Traffic Impact",
+      "description": "Traffic study requirements"
+    },
+    {
+      "id": 7,
+      "name": "Utilities Assessment",
+      "description": "Water, sewer, electric availability"
+    },
+    {
+      "id": 8,
+      "name": "Stormwater Analysis",
+      "description": "Retention, drainage requirements"
+    },
+    {
+      "id": 9,
+      "name": "Site Layout",
+      "description": "Building placement, circulation"
+    },
+    {
+      "id": 10,
+      "name": "ML Feasibility Score",
+      "description": "Financial feasibility, HBU analysis"
+    },
+    {
+      "id": 11,
+      "name": "Report Generation",
+      "description": "Final report creation"
+    },
+    {
+      "id": 12,
+      "name": "Archive",
+      "description": "Historical storage"
+    }
   ],
   "zod_pipeline_stages": [
-    {"id": 1, "name": "Data Acquisition", "description": "GIS + BCPAO data collection"},
-    {"id": 2, "name": "Zoning Analysis", "description": "Parse zoning district rules"},
-    {"id": 3, "name": "FLU Analysis", "description": "Calculate density gap opportunity"},
-    {"id": 4, "name": "Constraint Mapping", "description": "Overlay environmental/physical constraints"},
-    {"id": 5, "name": "Opportunity Scoring", "description": "Weighted scoring (0-100 scale)"},
-    {"id": 6, "name": "Market Validation", "description": "Rezoning history analysis (top 20%)"},
-    {"id": 7, "name": "Regulatory Pathway", "description": "Approval roadmap (top 10%)"},
-    {"id": 8, "name": "Report Generation", "description": "JSON/DOCX reports"}
+    {
+      "id": 1,
+      "name": "Data Acquisition",
+      "description": "GIS + BCPAO data collection"
+    },
+    {
+      "id": 2,
+      "name": "Zoning Analysis",
+      "description": "Parse zoning district rules"
+    },
+    {
+      "id": 3,
+      "name": "FLU Analysis",
+      "description": "Calculate density gap opportunity"
+    },
+    {
+      "id": 4,
+      "name": "Constraint Mapping",
+      "description": "Overlay environmental/physical constraints"
+    },
+    {
+      "id": 5,
+      "name": "Opportunity Scoring",
+      "description": "Weighted scoring (0-100 scale)"
+    },
+    {
+      "id": 6,
+      "name": "Market Validation",
+      "description": "Rezoning history analysis (top 20%)"
+    },
+    {
+      "id": 7,
+      "name": "Regulatory Pathway",
+      "description": "Approval roadmap (top 10%)"
+    },
+    {
+      "id": 8,
+      "name": "Report Generation",
+      "description": "JSON/DOCX reports"
+    }
   ],
   "recent_decisions": [
+    {
+      "date": "2026-01-13",
+      "project": "SPD-2026-001",
+      "decision": "Initiated Bliss Palm Bay using ZoneWise Marketplace Architecture",
+      "rationale": "Apply jurisdiction-as-plugin pattern from inception. Palm Bay plugin manual until Feb 24 target."
+    },
     {
       "date": "2025-12-16",
       "module": "ZOD",
