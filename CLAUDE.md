@@ -152,3 +152,30 @@ Log all schema changes and bulk operations to `activities` table:
 INSERT INTO activities (activity_type, description, metadata, created_at)
 VALUES ('mcp_operation', 'description', '{"operation": "..."}', NOW());
 ```
+
+---
+
+# Autonomous Improvement Protocol (Greptile-Powered)
+
+## Before ANY Code Change:
+1. Query Greptile: "What does [file/component] do and connections?"
+2. Query Greptile: "Dependencies and side effects of changing [file]?"
+3. Query Greptile: "Existing tests for [component]?"
+
+## Sprint Task Workflow:
+```
+1. get_next_task() from Supabase
+2. start_task(task_id)
+3. Query Greptile for context
+4. Implement + write tests
+5. Create PR
+6. complete_task(task_id, pr_url)
+7. Repeat
+```
+
+## Quality Gates:
+- Tests written and passing
+- Type hints on new functions  
+- Error handling with retry logic
+- Greptile queried for side effects
+
