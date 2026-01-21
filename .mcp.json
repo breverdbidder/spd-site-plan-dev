@@ -1,8 +1,9 @@
 {
+  "$schema": "https://raw.githubusercontent.com/anthropics/claude-code/main/schemas/mcp.schema.json",
   "mcpServers": {
     "supabase": {
       "command": "npx",
-      "args": ["-y", "@supabase/mcp-server"],
+      "args": ["-y", "@supabase/mcp-server-supabase"],
       "env": {
         "SUPABASE_URL": "https://mocerqjnksmhcjzxrewo.supabase.co",
         "SUPABASE_SERVICE_ROLE_KEY": "${SUPABASE_SERVICE_ROLE_KEY}"
@@ -15,9 +16,13 @@
         "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
       }
     },
-    "filesystem": {
+    "greptile": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "./src", "./reports"]
+      "args": ["-y", "greptile-mcp-server"],
+      "env": {
+        "GREPTILE_API_KEY": "${GREPTILE_API_KEY}",
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+      }
     }
   }
 }
