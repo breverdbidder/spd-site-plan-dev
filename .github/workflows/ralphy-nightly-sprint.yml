@@ -1,0 +1,176 @@
+# =============================================================================
+# RALPHY NIGHTLY SPRINT - Autonomous Task Execution
+# =============================================================================
+# Runs every night at 11 PM EST (4 AM UTC) to process sprint_tasks queue
+# Can also be triggered manually via workflow_dispatch
+# =============================================================================
+
+name: Ralphy Nightly Sprint
+
+on:
+  schedule:
+    # 11 PM EST = 4 AM UTC (or 3 AM UTC during DST)
+    - cron: '0 4 * * *'
+  
+  workflow_dispatch:
+    inputs:
+      max_tasks:
+        description: 'Maximum number of tasks to process'
+        required: false
+        default: '10'
+        type: string
+      dry_run:
+        description: 'Dry run (no actual execution)'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+  ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+jobs:
+  sprint-run:
+    name: Execute Sprint Tasks
+    runs-on: ubuntu-latest
+    timeout-minutes: 420  # 7 hours max (matches Claude Code session length)
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install Dependencies
+        run: |
+          # Install Claude Code CLI
+          npm install -g @anthropic-ai/claude-code
+          
+          # Install Python dependencies
+          pip install httpx supabase pytest ruff
+          
+          # Install jq for JSON processing
+          sudo apt-get update && sudo apt-get install -y jq
+      
+      - name: Configure Git
+        run: |
+          git config --global user.name "Ralphy Sprint Bot"
+          git config --global user.email "ralphy@biddeed.ai"
+      
+      - name: Verify Environment
+        run: |
+          echo "🔍 Verifying environment..."
+          claude --version || echo "Claude Code CLI installed"
+          python --version
+          node --version
+          jq --version
+          echo "✅ Environment ready"
+      
+      - name: Check Pending Tasks
+        id: check-tasks
+        run: |
+          TASK_COUNT=$(curl -s -X GET \
+            "${SUPABASE_URL}/rest/v1/sprint_tasks?status=eq.pending&select=id" \
+            -H "apikey: ${SUPABASE_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_KEY}" | jq '. | length')
+          
+          echo "pending_tasks=$TASK_COUNT" >> $GITHUB_OUTPUT
+          echo "📋 Found $TASK_COUNT pending tasks"
+          
+          if [ "$TASK_COUNT" -eq 0 ]; then
+            echo "No pending tasks - skipping execution"
+          fi
+      
+      - name: Run Ralphy Sprint
+        if: steps.check-tasks.outputs.pending_tasks != '0'
+        run: |
+          chmod +x scripts/ralphy_sprint_runner.sh
+          
+          MAX_TASKS="${{ github.event.inputs.max_tasks || '10' }}"
+          
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            echo "🧪 DRY RUN MODE"
+            ./scripts/ralphy_sprint_runner.sh --max-tasks "$MAX_TASKS" --dry-run
+          else
+            ./scripts/ralphy_sprint_runner.sh --max-tasks "$MAX_TASKS"
+          fi
+      
+      - name: Commit Any Changes
+        if: steps.check-tasks.outputs.pending_tasks != '0'
+        run: |
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "🤖 Ralphy Sprint: $(date +%Y-%m-%d) - Automated task completion"
+            git push
+          fi
+      
+      - name: Generate Sprint Report
+        if: always()
+        run: |
+          # Create summary for GitHub Actions
+          echo "## 🏃 Ralphy Sprint Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Date:** $(date '+%Y-%m-%d %H:%M:%S %Z')" >> $GITHUB_STEP_SUMMARY
+          echo "**Pending Tasks Found:** ${{ steps.check-tasks.outputs.pending_tasks }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Get completed tasks from this run
+          if [ -d "logs/ralphy" ]; then
+            LATEST_LOG=$(ls -t logs/ralphy/sprint_run_*.log 2>/dev/null | head -1)
+            if [ -n "$LATEST_LOG" ]; then
+              echo "### Log Summary" >> $GITHUB_STEP_SUMMARY
+              echo '```' >> $GITHUB_STEP_SUMMARY
+              tail -50 "$LATEST_LOG" >> $GITHUB_STEP_SUMMARY
+              echo '```' >> $GITHUB_STEP_SUMMARY
+            fi
+          fi
+      
+      - name: Upload Logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ralphy-logs-${{ github.run_id }}
+          path: logs/ralphy/
+          retention-days: 30
+
+  # Notify on failure
+  notify-failure:
+    name: Notify on Failure
+    needs: sprint-run
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log Failure to Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: |
+          curl -X POST \
+            "${SUPABASE_URL}/rest/v1/insights" \
+            -H "apikey: ${SUPABASE_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_KEY}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "source": "ralphy_github_action",
+              "type": "sprint_failure",
+              "message": "Nightly sprint run failed - check GitHub Actions logs",
+              "metadata": {
+                "run_id": "${{ github.run_id }}",
+                "run_url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+              }
+            }'
