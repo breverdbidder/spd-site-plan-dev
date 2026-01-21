@@ -1,0 +1,98 @@
+# =============================================================================
+# RALPHY PROJECT CONFIGURATION - SPD Site Plan Development
+# =============================================================================
+# Agentic AI 12-stage pipeline for land development approvals
+# =============================================================================
+
+project:
+  name: "SPD Site Plan Development"
+  description: "Agentic AI 12-stage pipeline for land development approvals"
+  language: "Python"
+  framework: "FastAPI + LangGraph"
+  version: "1.0.0"
+
+repository:
+  owner: "breverdbidder"
+  name: "spd-site-plan-dev"
+  default_branch: "main"
+  
+commands:
+  test: "pytest tests/ -v"
+  lint: "ruff check src/"
+  format: "ruff format src/"
+  type_check: "mypy src/"
+  build: "pip install -e ."
+  
+checks:
+  - "ruff check src/"
+  - "pytest tests/ -x --tb=line"
+
+rules:
+  # Code style
+  - "Use Python 3.11+ features"
+  - "Follow PEP 8 with 88 char line limit"
+  - "Use httpx for HTTP requests"
+  - "Use pydantic v2 for validation"
+  - "Async-first architecture"
+  
+  # SPD Pipeline stages
+  - "12 stages: Discovery→Scraping→Zoning→Setbacks→Parking→Traffic→Environmental→Utilities→Permits→Timeline→Cost→Report"
+  - "Each stage has its own agent"
+  - "State machine manages pipeline flow"
+  
+  # Architecture
+  - "LangGraph for orchestration"
+  - "Supabase for persistence"
+  - "Circuit breakers on all external APIs"
+  
+  # Data integrity
+  - "Cite municipal codes for all requirements"
+  - "Log all decisions to audit trail"
+  - "Never hallucinate zoning requirements"
+
+boundaries:
+  never_touch:
+    - "*.env*"
+    - "*.lock"
+    - "__pycache__/**"
+    - ".venv/**"
+    - "src/data/verified/**"  # Verified municipal data
+    
+  caution:
+    - "src/db/migrations/**"
+    - "src/agents/**"
+
+llm_config:
+  default_model: "claude-sonnet-4-5-20250929"
+  fallback_model: "gemini-2.5-flash"
+  max_tokens: 4096
+  temperature: 0.1
+  
+execution:
+  max_iterations: 50
+  timeout_minutes: 60
+  retry_attempts: 3
+  
+commit:
+  prefix: "🏗️"
+  format: "{prefix} {type}: {description}"
+  types:
+    - "feat"
+    - "fix"
+    - "refactor"
+    - "test"
+    - "docs"
+    - "chore"
+
+integrations:
+  supabase:
+    tables:
+      - "sprint_tasks"
+      - "insights"
+      - "site_plans"
+      - "pipeline_states"
+    
+  github:
+    auto_commit: true
+    auto_push: true
+    create_prs: false
