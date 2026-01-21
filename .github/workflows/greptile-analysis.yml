@@ -1,0 +1,62 @@
+name: Greptile Code Analysis
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+    inputs:
+      analysis_type:
+        description: "Type of analysis"
+        required: true
+        default: "full"
+        type: choice
+        options:
+          - full
+          - bugs
+          - security
+          - performance
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Greptile Analysis
+        id: greptile
+        env:
+          GREPTILE_API_KEY: ${{ secrets.GREPTILE_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ANALYSIS_TYPE="${{ github.event.inputs.analysis_type || 'full' }}"
+          
+          case $ANALYSIS_TYPE in
+            full) QUERY="Give a code review: architecture issues, missing tests, error handling. Top 10 priorities." ;;
+            bugs) QUERY="Find bugs and error handling gaps with file paths." ;;
+            security) QUERY="Security audit: injection, auth issues, data exposure." ;;
+            performance) QUERY="Performance bottlenecks: queries, caching, algorithms." ;;
+          esac
+          
+          curl -s -X POST "https://api.greptile.com/v2/query" \
+            -H "Authorization: Bearer $GREPTILE_API_KEY" \
+            -H "X-GitHub-Token: $GH_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{\"messages\": [{\"role\": \"user\", \"content\": \"$QUERY\"}], \"repositories\": [{\"remote\": \"github\", \"repository\": \"${{ github.repository }}\", \"branch\": \"main\"}]}" \
+            | jq -r '.message // "Analysis failed"' > /tmp/analysis.md
+          
+          echo "type=$ANALYSIS_TYPE" >> $GITHUB_OUTPUT
+
+      - name: Create Issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create \
+            --title "[Greptile] ${{ steps.greptile.outputs.type }} - $(date +%Y-%m-%d)" \
+            --body "## Greptile Analysis
+
+$(cat /tmp/analysis.md)
+
+---
+*Auto-generated*" \
+            --label "greptile,automated"
