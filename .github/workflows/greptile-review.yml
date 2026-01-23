@@ -1,0 +1,125 @@
+# Greptile AI Code Review for SPD Site Plan Development
+# Auto-reviews all PRs with codebase context
+# Repo: breverdbidder/spd-site-plan-dev
+
+name: Greptile Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main, develop]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  greptile-review:
+    runs-on: ubuntu-latest
+    name: AI Code Review
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            **/*.py
+            **/*.js
+            **/*.ts
+            **/*.yml
+            **/*.yaml
+            **/*.json
+          files_ignore: |
+            **/*.test.*
+            **/*.spec.*
+            **/node_modules/**
+            **/__pycache__/**
+            
+      - name: Greptile AI Review
+        if: steps.changed-files.outputs.any_changed == 'true'
+        env:
+          GREPTILE_API_KEY: ${{ secrets.GREPTILE_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          REPO="${{ github.repository }}"
+          
+          echo "🔍 Reviewing PR #${PR_NUMBER} with Greptile..."
+          
+          # SPD specific review - 12-stage pipeline focus
+          REVIEW_RESPONSE=$(curl -s -X POST "https://api.greptile.com/v2/query" \
+            -H "Authorization: Bearer ${GREPTILE_API_KEY}" \
+            -H "X-GitHub-Token: ${GITHUB_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "messages": [
+                {
+                  "role": "user",
+                  "content": "Review this pull request for SPD Site Plan agentic pipeline: 1) Pipeline stage sequencing correctness (Discovery→Approval), 2) Zoning code lookup accuracy, 3) Document generation quality, 4) State persistence between stages, 5) Error recovery mechanisms. Flag any issues that could cause pipeline failures or incorrect permit submissions."
+                }
+              ],
+              "repositories": [
+                {
+                  "remote": "github",
+                  "repository": "'"${REPO}"'",
+                  "branch": "main"
+                }
+              ],
+              "sessionId": "pr-review-'"${PR_NUMBER}"'"
+            }')
+          
+          REVIEW_MESSAGE=$(echo "$REVIEW_RESPONSE" | jq -r '.message // "No issues detected"')
+          
+          if [ -n "$REVIEW_MESSAGE" ] && [ "$REVIEW_MESSAGE" != "null" ]; then
+            COMMENT_BODY="## 🤖 Greptile AI Code Review\n\n${REVIEW_MESSAGE}\n\n---\n*Automated review by [Greptile](https://greptile.com) • SPD Site Plan Quality Gate*"
+            
+            curl -s -X POST \
+              -H "Authorization: token ${GITHUB_TOKEN}" \
+              -H "Content-Type: application/json" \
+              "https://api.github.com/repos/${REPO}/issues/${PR_NUMBER}/comments" \
+              -d "{\"body\": \"$(echo -e "$COMMENT_BODY" | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')\"}"
+            
+            echo "✅ Review posted to PR #${PR_NUMBER}"
+          fi
+          
+      - name: Pipeline integrity check
+        if: steps.changed-files.outputs.any_changed == 'true'
+        env:
+          GREPTILE_API_KEY: ${{ secrets.GREPTILE_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PIPELINE_CHECK=$(curl -s -X POST "https://api.greptile.com/v2/query" \
+            -H "Authorization: Bearer ${GREPTILE_API_KEY}" \
+            -H "X-GitHub-Token: ${GITHUB_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "messages": [
+                {
+                  "role": "user",
+                  "content": "Check for CRITICAL pipeline issues only: broken stage transitions, missing rollback handlers, unhandled API failures that could corrupt project state. Reply YES or NO with brief explanation."
+                }
+              ],
+              "repositories": [
+                {
+                  "remote": "github",
+                  "repository": "'"${{ github.repository }}"'",
+                  "branch": "main"
+                }
+              ]
+            }')
+          
+          RESULT=$(echo "$PIPELINE_CHECK" | jq -r '.message // "NO"')
+          
+          if echo "$RESULT" | grep -qi "^YES"; then
+            echo "❌ Critical pipeline issues detected!"
+            echo "$RESULT"
+            exit 1
+          else
+            echo "✅ Pipeline integrity verified"
+          fi
