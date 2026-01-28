@@ -1,0 +1,49 @@
+[run]
+source = src
+branch = True
+parallel = True
+omit = 
+    */tests/*
+    */__pycache__/*
+    */migrations/*
+    */.venv/*
+    */node_modules/*
+    setup.py
+    conftest.py
+
+[paths]
+source =
+    src/
+    */src/
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    def __str__
+    raise AssertionError
+    raise NotImplementedError
+    if __name__ == .__main__.:
+    if TYPE_CHECKING:
+    @abstractmethod
+    @abc.abstractmethod
+    pass
+    ...
+    
+fail_under = 80
+show_missing = True
+precision = 2
+skip_covered = False
+skip_empty = True
+
+[html]
+directory = coverage_html
+title = SPD Coverage Report
+show_contexts = True
+
+[xml]
+output = coverage.xml
+
+[json]
+output = coverage.json
+pretty_print = True
