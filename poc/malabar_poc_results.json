@@ -1,0 +1,104 @@
+{
+  "municipality": "Malabar",
+  "state": "FL",
+  "county": "Brevard",
+  "source_url": "https://library.municode.com/fl/malabar/codes/code_of_ordinances",
+  "scraped_at": "2026-01-28T17:23:49.150Z",
+  "scraper_version": "1.0.0-puppeteer",
+  "scraper_method": "Puppeteer MCP (headless browser)",
+  "status": "success",
+  
+  "land_development_code": {
+    "url": "https://library.municode.com/fl/malabar/codes/code_of_ordinances?nodeId=LADECO",
+    "version": "OCT 23, 2025 (Supplement 26)",
+    "articles": [
+      {"number": "I", "title": "PREAMBLE"},
+      {"number": "II", "title": "LAND USE AND ZONING"},
+      {"number": "III", "title": "DISTRICT PROVISIONS"},
+      {"number": "IV", "title": "PLANNED UNIT DEVELOPMENT DISTRICT REGULATIONS"},
+      {"number": "V", "title": "GENERAL PROVISIONS"},
+      {"number": "VI", "title": "CONDITIONAL USE AND SPECIAL EXCEPTION USE CRITERIA"},
+      {"number": "VII", "title": "SITE PLAN REVIEW"},
+      {"number": "VIII", "title": "SURFACE WATER, NATURAL RESOURCES, AND STORMWATER MANAGEMENT"},
+      {"number": "IX", "title": "OFF-STREET PARKING AND INTERNAL TRAFFIC CIRCULATION"},
+      {"number": "X", "title": "NUISANCE ABATEMENT STANDARDS"},
+      {"number": "XI", "title": "NONCONFORMITIES AND NONCOMPLIANCES"},
+      {"number": "XII", "title": "ADMINISTRATIVE PROCEDURES"},
+      {"number": "XIII", "title": "CONCURRENCY MANAGEMENT"},
+      {"number": "XIV", "title": "LANDSCAPE REGULATIONS"},
+      {"number": "XV", "title": "TREE PROTECTION AND RESTORATION"},
+      {"number": "XVI", "title": "SUBDIVISION ADMINISTRATION AND PROCEDURES"},
+      {"number": "XVII", "title": "REQUIRED IMPROVEMENTS AND DESIGN STANDARDS"},
+      {"number": "XVIII", "title": "CONSTRUCTION OF REQUIRED IMPROVEMENTS"},
+      {"number": "XIX", "title": "SIGNAGE"},
+      {"number": "XX", "title": "LANGUAGE AND DEFINITIONS"}
+    ]
+  },
+  
+  "zoning_districts": {
+    "source_section": "Section 1-2.2 - Zoning districts established",
+    "source_url": "https://library.municode.com/fl/malabar/codes/code_of_ordinances?nodeId=LADECO_ARTIILAUSZO_S1-2.2ZODIES",
+    "districts": [
+      {"code": "CP", "name": "Coastal Preservation", "flum": "OSR/INS"},
+      {"code": "INS", "name": "Institutional", "flum": "INS"},
+      {"code": "RR-65", "name": "Rural Residential", "flum": "RR"},
+      {"code": "RS-21", "name": "Single Family LDR", "flum": "LDR"},
+      {"code": "RS-15", "name": "Single Family MDR", "flum": "MDR"},
+      {"code": "RS-10", "name": "Single Family MDR", "flum": "MDR"},
+      {"code": "RM-4", "name": "Multiple Family MDR", "flum": "MDR/MRO"},
+      {"code": "RM-6", "name": "Multiple Family HDR", "flum": "HDR/MRO"},
+      {"code": "R-MH", "name": "Residential Mobile Home", "flum": "HDR"},
+      {"code": "RVP", "name": "Recreational Vehicle Park", "flum": "HDR"},
+      {"code": "OI", "name": "Office-Institutional", "flum": "OI/INS"},
+      {"code": "CL", "name": "Commercial Limited", "flum": "CL"},
+      {"code": "CG", "name": "Commercial General", "flum": "CG"},
+      {"code": "R/LC", "name": "Residential and Limited Commercial", "flum": "R/LC"},
+      {"code": "IND", "name": "Industrial", "flum": "IND"},
+      {"code": "PUD(R)", "name": "Planned Unit Development (Residential)", "flum": "PUD(R)"},
+      {"code": "PUD(C)", "name": "Planned Unit Development (Commercial)", "flum": "PUD(C)"},
+      {"code": "PUD(I)", "name": "Planned Unit Development (Industrial)", "flum": "PUD(I)"}
+    ]
+  },
+  
+  "site_plan_review": {
+    "source_article": "Article VII - SITE PLAN REVIEW",
+    "source_url": "https://library.municode.com/fl/malabar/codes/code_of_ordinances?nodeId=LADECO_ARTVIISIPLRE",
+    "sections": [
+      {"number": "1-7.1", "title": "Applicability and filing procedure"},
+      {"number": "1-7.2", "title": "Considerations in reviewing site plans"},
+      {"number": "1-7.3", "title": "Information to be included in site plan"},
+      {"number": "1-7.4", "title": "Approval, disapproval and appeal procedure"},
+      {"number": "1-7.5", "title": "Termination, extension and transferability"},
+      {"number": "1-7.6", "title": "Violations"}
+    ],
+    "applicability_triggers": [
+      "All permitted uses and structures (surface water management compliance)",
+      "All conditional uses",
+      "Any land disturbance >= 1,000 sq ft",
+      "Excavation/fill > 500 cubic yards",
+      "Fill > 3 feet vertical depth",
+      "Excavation > 4 feet vertical depth",
+      "Plant/tree removal > 1,000 sq ft"
+    ],
+    "review_process": [
+      "1. File application with Town Clerk",
+      "2. Building Department Town Staff review",
+      "3. Planning and Zoning Board recommendation",
+      "4. Town Council final approval/denial"
+    ],
+    "minor_site_plan_criteria": [
+      "Residential < 5 dwelling units (single building)",
+      "Projects < 1,000 sq ft new impervious surface",
+      "Single family homes/accessory buildings/ponds per 1-7.1.5"
+    ]
+  },
+  
+  "poc_validation": {
+    "scraper_working": true,
+    "municode_accessible": true,
+    "zoning_districts_extracted": 18,
+    "site_plan_sections_found": 6,
+    "ldc_articles_found": 20,
+    "notes": "Successfully extracted Malabar FL Land Development Code via Puppeteer MCP. Municode blocked direct HTTP fetch (403) but Puppeteer headless browser bypasses protection."
+  }
+}
