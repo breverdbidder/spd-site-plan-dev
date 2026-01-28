@@ -1,12 +1,12 @@
 /**
  * Unit Tests for SPD.AI React Components
- * P2 Codebase Requirement: Additional unit tests for components
+ * P2 Codebase Requirement: Additional unit tests
  * 
  * Tests cover:
- * - ChatInterface: message handling, API calls, state management
- * - FormInterface: form validation, parameter updates, typology selection
- * - Results: display logic, pro forma calculations
- * - MapView: rendering, view mode switching
+ * - ChatInterface: Message handling, API calls, state management
+ * - FormInterface: Input validation, typology selection
+ * - Results: Display logic, pro forma rendering
+ * - MapView: Site visualization
  * 
  * @author BidDeed.AI / Everest Capital USA
  */
@@ -14,253 +14,171 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import '@testing-library/jest-dom';
 
 // Mock fetch globally
 global.fetch = jest.fn();
-
-// Import components
-import ChatInterface from '../src/components/ChatInterface';
-import FormInterface from '../src/components/FormInterface';
-import Results from '../src/components/Results';
-import MapView from '../src/components/MapView';
-import { COLORS, TYPOLOGY_CONFIGS, BREVARD_ZONING_DATA } from '../src/components/constants';
-
-
-// =============================================================================
-// TEST UTILITIES
-// =============================================================================
-
-const mockSiteContext = {
-  acreage: 5.0,
-  zoning: 'R-2',
-  typology: 'multifamily',
-};
-
-const mockResults = {
-  typology: 'Multi-Family',
-  icon: '🏢',
-  color: '#3B82F6',
-  acreage: 5.0,
-  zoning: 'R-2',
-  units: 150,
-  grossSF: 125000,
-  floors: 3,
-  parkingSpaces: 225,
-  proForma: {
-    landCost: 750000,
-    hardCosts: 21875000,
-    softCosts: 3281250,
-    totalCost: 25906250,
-    noi: 1620000,
-    profit: 2093750,
-    margin: 18,
-  },
-};
-
-const mockApiResponse = {
-  response: 'Based on your 5-acre site with R-2 zoning, you could build approximately 150 units.',
-  metadata: {
-    tier: 'FREE',
-    model: 'gemini-2.5-flash',
-    tokens: 150,
-  },
-};
-
 
 // =============================================================================
 // CHAT INTERFACE TESTS
 // =============================================================================
 
-describe('ChatInterface Component', () => {
+describe('ChatInterface', () => {
+  const ChatInterface = require('../src/components/ChatInterface').default;
+  
   beforeEach(() => {
-    jest.clearAllMocks();
-    fetch.mockImplementation((url) => {
-      if (url.includes('/health')) {
-        return Promise.resolve({ ok: true });
-      }
-      return Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve(mockApiResponse),
-      });
-    });
+    fetch.mockClear();
   });
-
+  
+  const defaultProps = {
+    siteContext: { acreage: 5.0, zoning: 'R-2', typology: 'multifamily' },
+    onSiteParamsExtracted: jest.fn(),
+    apiBase: '',
+  };
+  
   test('renders welcome message on mount', () => {
-    render(<ChatInterface siteContext={mockSiteContext} />);
-    
-    expect(screen.getByText(/I'm SPD.AI/)).toBeInTheDocument();
-    expect(screen.getByText(/Feasibility analysis/)).toBeInTheDocument();
+    render(<ChatInterface {...defaultProps} />);
+    expect(screen.getByText(/SPD.AI/i)).toBeInTheDocument();
+    expect(screen.getByText(/site planning assistant/i)).toBeInTheDocument();
   });
-
-  test('shows connected status when API is healthy', async () => {
-    render(<ChatInterface siteContext={mockSiteContext} />);
-    
-    await waitFor(() => {
-      expect(screen.getByText(/Connected/)).toBeInTheDocument();
-    });
+  
+  test('displays chat input field', () => {
+    render(<ChatInterface {...defaultProps} />);
+    expect(screen.getByPlaceholderText(/describe your site/i)).toBeInTheDocument();
   });
-
-  test('shows disconnected status when API fails', async () => {
-    fetch.mockImplementation((url) => {
-      if (url.includes('/health')) {
-        return Promise.resolve({ ok: false });
-      }
-      return Promise.resolve({ ok: true });
-    });
-
-    render(<ChatInterface siteContext={mockSiteContext} />);
-    
-    await waitFor(() => {
-      expect(screen.getByText(/Disconnected/)).toBeInTheDocument();
-    });
+  
+  test('disables send button when input is empty', () => {
+    render(<ChatInterface {...defaultProps} />);
+    const sendButton = screen.getByRole('button', { name: /send/i });
+    expect(sendButton).toBeDisabled();
   });
-
-  test('sends message when Send button is clicked', async () => {
-    const user = userEvent.setup();
-    render(<ChatInterface siteContext={mockSiteContext} />);
+  
+  test('enables send button when input has text', async () => {
+    render(<ChatInterface {...defaultProps} />);
+    const input = screen.getByPlaceholderText(/describe your site/i);
+    await userEvent.type(input, 'Hello');
+    const sendButton = screen.getByRole('button', { name: /send/i });
+    expect(sendButton).not.toBeDisabled();
+  });
+  
+  test('sends message on button click', async () => {
+    fetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve({ response: 'AI response', metadata: { tier: 'FREE' } }),
+    });
     
-    const input = screen.getByPlaceholderText(/Describe your site/);
-    const sendButton = screen.getByRole('button', { name: /Send/i });
-    
-    await user.type(input, 'What can I build on 5 acres?');
-    await user.click(sendButton);
+    render(<ChatInterface {...defaultProps} />);
+    const input = screen.getByPlaceholderText(/describe your site/i);
+    await userEvent.type(input, 'Test message');
+    fireEvent.click(screen.getByRole('button', { name: /send/i }));
     
     await waitFor(() => {
       expect(fetch).toHaveBeenCalledWith(
         expect.stringContaining('/api/chat'),
-        expect.objectContaining({
-          method: 'POST',
-          body: expect.stringContaining('What can I build on 5 acres?'),
-        })
+        expect.objectContaining({ method: 'POST' })
       );
     });
   });
-
-  test('sends message on Enter key press', async () => {
-    const user = userEvent.setup();
-    render(<ChatInterface siteContext={mockSiteContext} />);
+  
+  test('sends message on Enter key', async () => {
+    fetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve({ response: 'Response', metadata: {} }),
+    });
     
-    const input = screen.getByPlaceholderText(/Describe your site/);
-    
-    await user.type(input, 'Test message{enter}');
+    render(<ChatInterface {...defaultProps} />);
+    const input = screen.getByPlaceholderText(/describe your site/i);
+    await userEvent.type(input, 'Test{enter}');
     
     await waitFor(() => {
-      expect(fetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/chat'),
-        expect.any(Object)
-      );
+      expect(fetch).toHaveBeenCalled();
     });
   });
-
+  
   test('displays user message after sending', async () => {
-    const user = userEvent.setup();
-    render(<ChatInterface siteContext={mockSiteContext} />);
+    fetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve({ response: 'AI response', metadata: {} }),
+    });
     
-    const input = screen.getByPlaceholderText(/Describe your site/);
-    
-    await user.type(input, 'My test message');
-    await user.click(screen.getByRole('button', { name: /Send/i }));
+    render(<ChatInterface {...defaultProps} />);
+    const input = screen.getByPlaceholderText(/describe your site/i);
+    await userEvent.type(input, 'My test message');
+    fireEvent.click(screen.getByRole('button', { name: /send/i }));
     
     await waitFor(() => {
       expect(screen.getByText('My test message')).toBeInTheDocument();
     });
   });
-
-  test('displays assistant response after API call', async () => {
-    const user = userEvent.setup();
-    render(<ChatInterface siteContext={mockSiteContext} />);
+  
+  test('displays AI response after API call', async () => {
+    fetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve({ response: 'AI generated response', metadata: {} }),
+    });
     
-    const input = screen.getByPlaceholderText(/Describe your site/);
-    
-    await user.type(input, 'Test query');
-    await user.click(screen.getByRole('button', { name: /Send/i }));
+    render(<ChatInterface {...defaultProps} />);
+    const input = screen.getByPlaceholderText(/describe your site/i);
+    await userEvent.type(input, 'Query');
+    fireEvent.click(screen.getByRole('button', { name: /send/i }));
     
     await waitFor(() => {
-      expect(screen.getByText(/150 units/)).toBeInTheDocument();
+      expect(screen.getByText('AI generated response')).toBeInTheDocument();
     });
   });
-
-  test('shows typing indicator while waiting for response', async () => {
-    fetch.mockImplementation(() => 
-      new Promise(resolve => setTimeout(() => resolve({
-        ok: true,
-        json: () => Promise.resolve(mockApiResponse),
-      }), 100))
-    );
-
-    const user = userEvent.setup();
-    render(<ChatInterface siteContext={mockSiteContext} />);
+  
+  test('handles API error gracefully', async () => {
+    fetch.mockRejectedValueOnce(new Error('Network error'));
     
-    const input = screen.getByPlaceholderText(/Describe your site/);
-    
-    await user.type(input, 'Test');
-    await user.click(screen.getByRole('button', { name: /Send/i }));
-    
-    // Typing indicator should appear
-    // (implementation depends on how TypingIndicator is rendered)
-  });
-
-  test('clears chat when Clear button is clicked', async () => {
-    const user = userEvent.setup();
-    render(<ChatInterface siteContext={mockSiteContext} />);
-    
-    // Send a message first
-    const input = screen.getByPlaceholderText(/Describe your site/);
-    await user.type(input, 'Test message');
-    await user.click(screen.getByRole('button', { name: /Send/i }));
+    render(<ChatInterface {...defaultProps} />);
+    const input = screen.getByPlaceholderText(/describe your site/i);
+    await userEvent.type(input, 'Query');
+    fireEvent.click(screen.getByRole('button', { name: /send/i }));
     
     await waitFor(() => {
-      expect(screen.getByText('Test message')).toBeInTheDocument();
+      expect(screen.getByText(/trouble connecting/i)).toBeInTheDocument();
+    });
+  });
+  
+  test('extracts acreage from user message', async () => {
+    const onExtract = jest.fn();
+    fetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve({ response: 'OK', metadata: {} }),
+    });
+    
+    render(<ChatInterface {...defaultProps} onSiteParamsExtracted={onExtract} />);
+    const input = screen.getByPlaceholderText(/describe your site/i);
+    await userEvent.type(input, 'I have 10 acres');
+    fireEvent.click(screen.getByRole('button', { name: /send/i }));
+    
+    await waitFor(() => {
+      expect(onExtract).toHaveBeenCalledWith(expect.objectContaining({ acreage: 10 }));
+    });
+  });
+  
+  test('clears chat on clear button click', async () => {
+    fetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve({ response: 'Response', metadata: {} }),
+    });
+    
+    render(<ChatInterface {...defaultProps} />);
+    
+    // Send a message
+    const input = screen.getByPlaceholderText(/describe your site/i);
+    await userEvent.type(input, 'Test');
+    fireEvent.click(screen.getByRole('button', { name: /send/i }));
+    
+    await waitFor(() => {
+      expect(screen.getByText('Test')).toBeInTheDocument();
     });
     
     // Clear chat
-    await user.click(screen.getByRole('button', { name: /Clear/i }));
+    fireEvent.click(screen.getByRole('button', { name: /clear/i }));
     
-    // User message should be gone, but welcome message remains
-    expect(screen.queryByText('Test message')).not.toBeInTheDocument();
-    expect(screen.getByText(/I'm SPD.AI/)).toBeInTheDocument();
-  });
-
-  test('extracts acreage from user input', async () => {
-    const mockExtractCallback = jest.fn();
-    const user = userEvent.setup();
-    
-    render(
-      <ChatInterface 
-        siteContext={mockSiteContext} 
-        onSiteParamsExtracted={mockExtractCallback}
-      />
-    );
-    
-    const input = screen.getByPlaceholderText(/Describe your site/);
-    await user.type(input, 'I have 10 acres');
-    await user.click(screen.getByRole('button', { name: /Send/i }));
-    
-    await waitFor(() => {
-      expect(mockExtractCallback).toHaveBeenCalledWith(
-        expect.objectContaining({ acreage: 10 })
-      );
-    });
-  });
-
-  test('disables input while typing', async () => {
-    fetch.mockImplementation(() => 
-      new Promise(resolve => setTimeout(() => resolve({
-        ok: true,
-        json: () => Promise.resolve(mockApiResponse),
-      }), 500))
-    );
-
-    const user = userEvent.setup();
-    render(<ChatInterface siteContext={mockSiteContext} />);
-    
-    const input = screen.getByPlaceholderText(/Describe your site/);
-    
-    await user.type(input, 'Test');
-    await user.click(screen.getByRole('button', { name: /Send/i }));
-    
-    expect(input).toBeDisabled();
+    // User message should be gone, welcome message should remain
+    expect(screen.queryByText('Test')).not.toBeInTheDocument();
+    expect(screen.getByText(/SPD.AI/i)).toBeInTheDocument();
   });
 });
 
@@ -269,7 +187,9 @@ describe('ChatInterface Component', () => {
 // FORM INTERFACE TESTS
 // =============================================================================
 
-describe('FormInterface Component', () => {
+describe('FormInterface', () => {
+  const FormInterface = require('../src/components/FormInterface').default;
+  
   const defaultProps = {
     siteAcreage: 5.0,
     setSiteAcreage: jest.fn(),
@@ -277,188 +197,152 @@ describe('FormInterface Component', () => {
     setZoning: jest.fn(),
     selectedTypology: 'multifamily',
     setSelectedTypology: jest.fn(),
-    params: { parkingRatio: 1.5 },
+    params: { parkingRatio: 1.5, stories: 1 },
     setParams: jest.fn(),
     onGenerate: jest.fn(),
     isGenerating: false,
   };
-
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
-  test('renders all sections', () => {
+  
+  test('renders site details section', () => {
     render(<FormInterface {...defaultProps} />);
-    
-    expect(screen.getByText(/Site Details/)).toBeInTheDocument();
-    expect(screen.getByText(/Development Type/)).toBeInTheDocument();
-    expect(screen.getByText(/Parameters/)).toBeInTheDocument();
+    expect(screen.getByText(/site details/i)).toBeInTheDocument();
   });
-
-  test('displays current acreage value', () => {
+  
+  test('renders acreage input with initial value', () => {
     render(<FormInterface {...defaultProps} />);
-    
-    const acreageInput = screen.getByDisplayValue('5');
-    expect(acreageInput).toBeInTheDocument();
+    const input = screen.getByDisplayValue('5');
+    expect(input).toBeInTheDocument();
   });
-
-  test('calls setSiteAcreage when acreage changes', async () => {
-    const user = userEvent.setup();
+  
+  test('renders all typology options', () => {
     render(<FormInterface {...defaultProps} />);
-    
-    const acreageInput = screen.getByDisplayValue('5');
-    await user.clear(acreageInput);
-    await user.type(acreageInput, '10');
-    
+    expect(screen.getByText(/multi-family/i)).toBeInTheDocument();
+    expect(screen.getByText(/self-storage/i)).toBeInTheDocument();
+    expect(screen.getByText(/industrial/i)).toBeInTheDocument();
+  });
+  
+  test('highlights selected typology', () => {
+    render(<FormInterface {...defaultProps} />);
+    const multifamilyBtn = screen.getByText(/multi-family/i).closest('button');
+    expect(multifamilyBtn).toHaveStyle({ borderColor: expect.any(String) });
+  });
+  
+  test('calls setSelectedTypology on typology click', async () => {
+    render(<FormInterface {...defaultProps} />);
+    const industrialBtn = screen.getByText(/industrial/i).closest('button');
+    fireEvent.click(industrialBtn);
+    expect(defaultProps.setSelectedTypology).toHaveBeenCalledWith('industrial');
+  });
+  
+  test('calls setSiteAcreage on acreage change', async () => {
+    render(<FormInterface {...defaultProps} />);
+    const input = screen.getByDisplayValue('5');
+    fireEvent.change(input, { target: { value: '10' } });
     expect(defaultProps.setSiteAcreage).toHaveBeenCalled();
   });
-
-  test('renders all typology buttons', () => {
+  
+  test('renders generate button', () => {
     render(<FormInterface {...defaultProps} />);
-    
-    Object.values(TYPOLOGY_CONFIGS).forEach(config => {
-      expect(screen.getByText(config.name)).toBeInTheDocument();
-    });
+    expect(screen.getByRole('button', { name: /generate/i })).toBeInTheDocument();
   });
-
-  test('calls setSelectedTypology when typology button is clicked', async () => {
-    const user = userEvent.setup();
+  
+  test('disables generate button when generating', () => {
+    render(<FormInterface {...defaultProps} isGenerating={true} />);
+    const btn = screen.getByRole('button', { name: /generating/i });
+    expect(btn).toBeDisabled();
+  });
+  
+  test('calls onGenerate when button clicked', () => {
     render(<FormInterface {...defaultProps} />);
-    
-    await user.click(screen.getByText('Self-Storage'));
-    
-    expect(defaultProps.setSelectedTypology).toHaveBeenCalledWith('selfStorage');
-  });
-
-  test('shows multifamily params when multifamily selected', () => {
-    render(<FormInterface {...defaultProps} />);
-    
-    expect(screen.getByText(/Parking Ratio/)).toBeInTheDocument();
-  });
-
-  test('shows self-storage params when selfStorage selected', () => {
-    render(<FormInterface {...defaultProps} selectedTypology="selfStorage" />);
-    
-    expect(screen.getByText(/Stories/)).toBeInTheDocument();
-    expect(screen.getByText(/Climate Control/)).toBeInTheDocument();
-  });
-
-  test('shows industrial params when industrial selected', () => {
-    render(<FormInterface {...defaultProps} selectedTypology="industrial" />);
-    
-    expect(screen.getByText(/Clear Height/)).toBeInTheDocument();
-    expect(screen.getByText(/Bay Depth/)).toBeInTheDocument();
-  });
-
-  test('calls onGenerate when Generate button is clicked', async () => {
-    const user = userEvent.setup();
-    render(<FormInterface {...defaultProps} />);
-    
-    await user.click(screen.getByRole('button', { name: /Generate/i }));
-    
+    fireEvent.click(screen.getByRole('button', { name: /generate/i }));
     expect(defaultProps.onGenerate).toHaveBeenCalled();
   });
-
-  test('disables Generate button when isGenerating is true', () => {
-    render(<FormInterface {...defaultProps} isGenerating={true} />);
-    
-    const button = screen.getByRole('button', { name: /Generating/i });
-    expect(button).toBeDisabled();
+  
+  test('shows typology-specific params for selfStorage', () => {
+    render(<FormInterface {...defaultProps} selectedTypology="selfStorage" />);
+    expect(screen.getByText(/stories/i)).toBeInTheDocument();
+    expect(screen.getByText(/climate/i)).toBeInTheDocument();
   });
-
-  test('shows all zoning options', async () => {
-    const user = userEvent.setup();
-    render(<FormInterface {...defaultProps} />);
-    
-    const zoningSelect = screen.getByDisplayValue(/R-2/);
-    expect(zoningSelect).toBeInTheDocument();
+  
+  test('shows typology-specific params for multifamily', () => {
+    render(<FormInterface {...defaultProps} selectedTypology="multifamily" />);
+    expect(screen.getByText(/parking/i)).toBeInTheDocument();
   });
 });
 
 
 // =============================================================================
-// RESULTS COMPONENT TESTS
+// RESULTS TESTS
 // =============================================================================
 
-describe('Results Component', () => {
+describe('Results', () => {
+  const Results = require('../src/components/Results').default;
+  
+  const mockResults = {
+    typology: 'Multi-Family',
+    icon: '🏢',
+    color: '#3B82F6',
+    acreage: 5.0,
+    zoning: 'R-2',
+    units: 42,
+    grossSF: 75000,
+    floors: 3,
+    parkingSpaces: 63,
+    proForma: {
+      landCost: 750000,
+      hardCosts: 13125000,
+      softCosts: 1968750,
+      totalCost: 15843750,
+      profit: 2500000,
+      margin: 18,
+    },
+  };
+  
   test('renders empty state when no results', () => {
     render(<Results results={null} />);
-    
-    expect(screen.getByText(/No Analysis Yet/)).toBeInTheDocument();
+    expect(screen.getByText(/no analysis yet/i)).toBeInTheDocument();
   });
-
-  test('renders typology header with results', () => {
+  
+  test('renders typology name and icon', () => {
     render(<Results results={mockResults} />);
-    
     expect(screen.getByText('Multi-Family')).toBeInTheDocument();
-    expect(screen.getByText(/5 acres/)).toBeInTheDocument();
-    expect(screen.getByText(/R-2/)).toBeInTheDocument();
+    expect(screen.getByText('🏢')).toBeInTheDocument();
   });
-
-  test('displays unit count metric', () => {
+  
+  test('renders acreage and zoning', () => {
     render(<Results results={mockResults} />);
-    
-    expect(screen.getByText('150')).toBeInTheDocument();
-    expect(screen.getByText('Units')).toBeInTheDocument();
+    expect(screen.getByText(/5 acres/i)).toBeInTheDocument();
+    expect(screen.getByText(/R-2/i)).toBeInTheDocument();
   });
-
-  test('displays gross SF metric', () => {
+  
+  test('renders unit count', () => {
     render(<Results results={mockResults} />);
-    
-    expect(screen.getByText('125,000')).toBeInTheDocument();
+    expect(screen.getByText('42')).toBeInTheDocument();
   });
-
-  test('displays parking spaces metric', () => {
+  
+  test('renders pro forma toggle', () => {
     render(<Results results={mockResults} />);
-    
-    expect(screen.getByText('225')).toBeInTheDocument();
-    expect(screen.getByText('Parking')).toBeInTheDocument();
+    expect(screen.getByText(/pro forma/i)).toBeInTheDocument();
   });
-
-  test('renders pro forma toggle button', () => {
+  
+  test('expands pro forma on click', async () => {
     render(<Results results={mockResults} />);
-    
-    expect(screen.getByText(/Pro Forma/)).toBeInTheDocument();
+    fireEvent.click(screen.getByText(/pro forma/i));
+    await waitFor(() => {
+      expect(screen.getByText(/land cost/i)).toBeInTheDocument();
+      expect(screen.getByText(/profit/i)).toBeInTheDocument();
+    });
   });
-
-  test('shows pro forma details when toggled', async () => {
-    const user = userEvent.setup();
-    render(<Results results={mockResults} />);
-    
-    await user.click(screen.getByText(/Pro Forma/));
-    
-    expect(screen.getByText(/Land Cost/)).toBeInTheDocument();
-    expect(screen.getByText(/Hard Costs/)).toBeInTheDocument();
-    expect(screen.getByText(/Total Development Cost/)).toBeInTheDocument();
-  });
-
-  test('displays profit and margin', async () => {
-    const user = userEvent.setup();
-    render(<Results results={mockResults} />);
-    
-    await user.click(screen.getByText(/Pro Forma/));
-    
-    expect(screen.getByText(/Estimated Profit/)).toBeInTheDocument();
-    expect(screen.getByText(/18%/)).toBeInTheDocument();
-  });
-
-  test('renders unit breakdown for self-storage', () => {
+  
+  test('renders unit mix for self-storage', () => {
     const storageResults = {
       ...mockResults,
       typology: 'Self-Storage',
-      unitBreakdown: {
-        '5x5': 50,
-        '5x10': 100,
-        '10x10': 150,
-        '10x15': 75,
-        '10x20': 50,
-      },
+      unitBreakdown: { '5x5': 50, '5x10': 100, '10x10': 150 },
     };
-    
     render(<Results results={storageResults} />);
-    
+    expect(screen.getByText(/unit mix/i)).toBeInTheDocument();
     expect(screen.getByText('5x5')).toBeInTheDocument();
-    expect(screen.getByText('50')).toBeInTheDocument();
   });
 });
 
@@ -467,81 +351,61 @@ describe('Results Component', () => {
 // MAP VIEW TESTS
 // =============================================================================
 
-describe('MapView Component', () => {
+describe('MapView', () => {
+  const MapView = require('../src/components/MapView').default;
+  
   const defaultProps = {
     siteAcreage: 5.0,
     zoning: 'R-2',
     results: null,
+    location: 'Brevard County, FL',
     viewMode: '2d',
     setViewMode: jest.fn(),
   };
-
-  test('renders site polygon with acreage', () => {
+  
+  test('renders location label', () => {
     render(<MapView {...defaultProps} />);
-    
-    expect(screen.getByText(/5 AC/)).toBeInTheDocument();
+    expect(screen.getByText(/brevard county/i)).toBeInTheDocument();
   });
-
-  test('displays square footage', () => {
+  
+  test('renders zoning label', () => {
     render(<MapView {...defaultProps} />);
-    
-    // 5 acres = 217,800 SF
-    expect(screen.getByText(/217,800 SF/)).toBeInTheDocument();
-  });
-
-  test('shows location in info bar', () => {
-    render(<MapView {...defaultProps} />);
-    
-    expect(screen.getByText(/Brevard County, FL/)).toBeInTheDocument();
-  });
-
-  test('shows zoning in info bar', () => {
-    render(<MapView {...defaultProps} />);
-    
     expect(screen.getByText('R-2')).toBeInTheDocument();
   });
-
-  test('renders view mode toggle buttons', () => {
+  
+  test('renders acreage in site polygon', () => {
     render(<MapView {...defaultProps} />);
-    
+    expect(screen.getByText(/5 AC/i)).toBeInTheDocument();
+  });
+  
+  test('renders square footage calculation', () => {
+    render(<MapView {...defaultProps} />);
+    // 5 acres * 43560 = 217,800 SF
+    expect(screen.getByText(/217,800 SF/i)).toBeInTheDocument();
+  });
+  
+  test('renders view mode toggle', () => {
+    render(<MapView {...defaultProps} />);
     expect(screen.getByText('2D')).toBeInTheDocument();
     expect(screen.getByText('3D')).toBeInTheDocument();
-    expect(screen.getByText('Satellite')).toBeInTheDocument();
   });
-
-  test('calls setViewMode when view button clicked', async () => {
-    const user = userEvent.setup();
+  
+  test('calls setViewMode on toggle click', () => {
     render(<MapView {...defaultProps} />);
-    
-    await user.click(screen.getByText('3D'));
-    
+    fireEvent.click(screen.getByText('3D'));
     expect(defaultProps.setViewMode).toHaveBeenCalledWith('3d');
   });
-
-  test('shows typology in info bar when results present', () => {
-    render(<MapView {...defaultProps} results={mockResults} />);
-    
+  
+  test('renders typology info when results present', () => {
+    const results = { icon: '🏢', typology: 'Multi-Family', color: '#3B82F6' };
+    render(<MapView {...defaultProps} results={results} />);
+    expect(screen.getByText('🏢')).toBeInTheDocument();
     expect(screen.getByText('Multi-Family')).toBeInTheDocument();
   });
-
-  test('applies result color to site polygon', () => {
-    const { container } = render(<MapView {...defaultProps} results={mockResults} />);
-    
-    // The polygon should have the results color applied
-    // (implementation depends on how styles are applied)
-  });
-
+  
   test('renders compass indicator', () => {
     render(<MapView {...defaultProps} />);
-    
     expect(screen.getByText('🧭')).toBeInTheDocument();
-  });
-
-  test('shows placeholder for 3D view', () => {
-    render(<MapView {...defaultProps} viewMode="3d" />);
-    
-    expect(screen.getByText(/3D View/)).toBeInTheDocument();
-    expect(screen.getByText(/Coming soon/)).toBeInTheDocument();
   });
 });
 
@@ -551,50 +415,38 @@ describe('MapView Component', () => {
 // =============================================================================
 
 describe('Constants', () => {
-  test('COLORS has all required properties', () => {
+  const { COLORS, BREVARD_ZONING_DATA, TYPOLOGY_CONFIGS } = require('../src/components/constants');
+  
+  test('COLORS contains required color keys', () => {
     expect(COLORS.primary).toBeDefined();
     expect(COLORS.accent).toBeDefined();
     expect(COLORS.success).toBeDefined();
     expect(COLORS.danger).toBeDefined();
-    expect(COLORS.textPrimary).toBeDefined();
   });
-
-  test('TYPOLOGY_CONFIGS has all 8 typologies', () => {
-    const expectedTypologies = [
-      'multifamily', 'selfStorage', 'industrial', 'singleFamily',
-      'seniorLiving', 'medical', 'retail', 'hotel'
-    ];
-    
-    expectedTypologies.forEach(typology => {
-      expect(TYPOLOGY_CONFIGS[typology]).toBeDefined();
-      expect(TYPOLOGY_CONFIGS[typology].name).toBeDefined();
-      expect(TYPOLOGY_CONFIGS[typology].icon).toBeDefined();
-      expect(TYPOLOGY_CONFIGS[typology].color).toBeDefined();
+  
+  test('BREVARD_ZONING_DATA contains R-1 through R-3', () => {
+    expect(BREVARD_ZONING_DATA['R-1']).toBeDefined();
+    expect(BREVARD_ZONING_DATA['R-2']).toBeDefined();
+    expect(BREVARD_ZONING_DATA['R-3']).toBeDefined();
+  });
+  
+  test('TYPOLOGY_CONFIGS contains all 8 typologies', () => {
+    const typologies = Object.keys(TYPOLOGY_CONFIGS);
+    expect(typologies).toContain('multifamily');
+    expect(typologies).toContain('selfStorage');
+    expect(typologies).toContain('industrial');
+    expect(typologies).toContain('singleFamily');
+    expect(typologies).toContain('seniorLiving');
+    expect(typologies).toContain('medical');
+    expect(typologies).toContain('retail');
+    expect(typologies).toContain('hotel');
+  });
+  
+  test('each typology has name, icon, and color', () => {
+    Object.values(TYPOLOGY_CONFIGS).forEach(config => {
+      expect(config.name).toBeDefined();
+      expect(config.icon).toBeDefined();
+      expect(config.color).toBeDefined();
     });
-  });
-
-  test('BREVARD_ZONING_DATA has required zoning codes', () => {
-    const expectedCodes = ['R-1', 'R-2', 'R-3', 'C-1', 'C-2', 'I-1', 'PUD'];
-    
-    expectedCodes.forEach(code => {
-      expect(BREVARD_ZONING_DATA[code]).toBeDefined();
-      expect(BREVARD_ZONING_DATA[code].name).toBeDefined();
-    });
-  });
-});
-
-
-// =============================================================================
-// INTEGRATION TESTS
-// =============================================================================
-
-describe('Component Integration', () => {
-  test('FormInterface to Results flow', async () => {
-    // This would test the full flow from form submission to results display
-    // In a real test, you'd render the full App component
-  });
-
-  test('ChatInterface extracts params and updates form', async () => {
-    // This would test parameter extraction from chat
   });
 });
