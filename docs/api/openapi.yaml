@@ -1,494 +1,265 @@
 openapi: 3.1.0
 info:
   title: SPD Site Plan Development API
-  description: |
-    API for the SPD.AI Site Planning & Development platform.
-    
-    ## Overview
-    SPD.AI provides intelligent site analysis, feasibility calculations,
-    and pro forma generation for real estate development projects in
-    Brevard County, Florida.
-    
-    ## Authentication
-    All API endpoints require authentication via Bearer token.
-    Include the token in the Authorization header:
-    ```
-    Authorization: Bearer <your-api-key>
-    ```
-    
-    ## Rate Limits
-    - Standard tier: 100 requests/minute
-    - Pro tier: 1000 requests/minute
-    
-    ## Environments
-    - Production: https://api.spd.ai
-    - Staging: https://staging-api.spd.ai
-    
-  version: 3.3.0
+  description: API for the SPD.AI Site Plan Development platform
+  version: 1.0.0
   contact:
-    name: BidDeed.AI Support
-    email: support@biddeed.ai
+    name: BidDeed.AI
     url: https://biddeed.ai
-  license:
-    name: Proprietary
-    url: https://biddeed.ai/license
-  x-logo:
-    url: https://biddeed.ai/logo.png
 
 servers:
-  - url: https://api.spd.ai/v1
-    description: Production server
-  - url: https://staging-api.spd.ai/v1
-    description: Staging server
-  - url: http://localhost:8788/api
-    description: Local development
+  - url: https://api.biddeed.ai/v1
+    description: Production
+  - url: http://localhost:8788
+    description: Development
 
 tags:
   - name: Chat
-    description: AI-powered chat for site analysis
-  - name: Parcels
-    description: Parcel search and data retrieval
   - name: Feasibility
-    description: Development feasibility analysis
+  - name: Properties
   - name: Pipeline
-    description: Rough Diamond pipeline operations
   - name: Health
-    description: System health and status
 
 paths:
-  /chat:
+  /api/chat:
     post:
-      tags:
-        - Chat
+      tags: [Chat]
       summary: Send chat message
-      description: |
-        Send a message to the AI assistant for site analysis.
-        The assistant can help with:
-        - Feasibility analysis
-        - Zoning requirements
-        - Pro forma calculations
-        - Site recommendations
-      operationId: sendChatMessage
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ChatRequest'
-            examples:
-              simple:
-                summary: Simple query
-                value:
-                  message: "What can I build on 5 acres with R-2 zoning?"
-              with_context:
-                summary: With site context
-                value:
-                  message: "Compare self-storage vs industrial"
-                  siteContext:
-                    acreage: 10.5
-                    zoning: "I-1"
-                    jurisdiction: "PALM BAY"
+              type: object
+              required: [message]
+              properties:
+                message:
+                  type: string
+                siteContext:
+                  $ref: '#/components/schemas/SiteContext'
       responses:
         '200':
-          description: Successful response
+          description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChatResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '429':
-          $ref: '#/components/responses/RateLimited'
+                type: object
+                properties:
+                  response:
+                    type: string
+                  metadata:
+                    type: object
 
-  /chat/health:
+  /api/chat/health:
     get:
-      tags:
-        - Health
-      summary: Check chat service health
-      operationId: getChatHealth
+      tags: [Health]
+      summary: Chat service health
       responses:
         '200':
-          description: Service healthy
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HealthResponse'
+          description: Healthy
 
-  /parcels/search:
-    get:
-      tags:
-        - Parcels
-      summary: Search for parcels
-      description: Search BCPAO database for parcels matching criteria
-      operationId: searchParcels
-      parameters:
-        - name: jurisdiction
-          in: query
-          description: Municipality or district
-          schema:
-            type: string
-            enum:
-              - PALM BAY
-              - WEST MELBOURNE
-              - TITUSVILLE
-              - MELBOURNE
-              - COCOA
-              - ROCKLEDGE
-              - UNINCORPORATED
-        - name: minAcreage
-          in: query
-          description: Minimum parcel size in acres
-          schema:
-            type: number
-            minimum: 0.1
-            default: 1.0
-        - name: maxAcreage
-          in: query
-          description: Maximum parcel size in acres
-          schema:
-            type: number
-            maximum: 1000
-        - name: landUse
-          in: query
-          description: Land use code filter
-          schema:
-            type: array
-            items:
-              type: string
-        - name: zoning
-          in: query
-          description: Zoning code filter
-          schema:
-            type: string
-        - name: limit
-          in: query
-          description: Maximum results to return
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 100
-            default: 20
-        - name: offset
-          in: query
-          description: Pagination offset
-          schema:
-            type: integer
-            minimum: 0
-            default: 0
-      responses:
-        '200':
-          description: Search results
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ParcelSearchResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-
-  /parcels/{accountId}:
-    get:
-      tags:
-        - Parcels
-      summary: Get parcel details
-      description: Retrieve detailed information for a specific parcel
-      operationId: getParcelByAccount
-      parameters:
-        - name: accountId
-          in: path
-          required: true
-          description: BCPAO account number
-          schema:
-            type: string
-            pattern: '^\d{7}$'
-          example: "2835546"
-      responses:
-        '200':
-          description: Parcel details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ParcelDetail'
-        '404':
-          $ref: '#/components/responses/NotFound'
-
-  /feasibility/analyze:
+  /api/feasibility/analyze:
     post:
-      tags:
-        - Feasibility
-      summary: Analyze development feasibility
-      description: |
-        Calculate development feasibility for a parcel or site.
-        Returns unit counts, building specs, and pro forma analysis.
-      operationId: analyzeFeasibility
+      tags: [Feasibility]
+      summary: Analyze site feasibility
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/FeasibilityRequest'
-            examples:
-              multifamily:
-                summary: Multi-family analysis
-                value:
-                  acreage: 5.0
-                  zoning: "R-2"
-                  typology: "multifamily"
-                  params:
-                    parkingRatio: 1.5
-              selfStorage:
-                summary: Self-storage analysis
-                value:
-                  acreage: 3.0
-                  zoning: "C-2"
-                  typology: "selfStorage"
-                  params:
-                    stories: 2
-                    climateControlled: 60
       responses:
         '200':
-          description: Feasibility analysis results
+          description: Analysis results
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/FeasibilityResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
 
-  /feasibility/compare:
+  /api/properties/discover:
     post:
-      tags:
-        - Feasibility
-      summary: Compare development types
-      description: Compare multiple development typologies for a site
-      operationId: compareFeasibility
+      tags: [Properties]
+      summary: Discover properties
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CompareRequest'
+              type: object
+              properties:
+                jurisdiction:
+                  type: string
+                minAcreage:
+                  type: number
+                landUseFilter:
+                  type: array
+                  items:
+                    type: string
       responses:
         '200':
-          description: Comparison results
+          description: Properties found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CompareResponse'
+                type: object
+                properties:
+                  parcels:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Parcel'
 
-  /pipeline/execute:
-    post:
-      tags:
-        - Pipeline
-      summary: Execute Rough Diamond pipeline
-      description: |
-        Start a full 12-stage pipeline execution for property discovery
-        and analysis. This is an async operation that returns a job ID.
-      operationId: executePipeline
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PipelineRequest'
-      responses:
-        '202':
-          description: Pipeline execution started
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PipelineJob'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-
-  /pipeline/{jobId}/status:
+  /api/properties/{accountId}:
     get:
-      tags:
-        - Pipeline
-      summary: Get pipeline job status
-      operationId: getPipelineStatus
+      tags: [Properties]
+      summary: Get property details
       parameters:
-        - name: jobId
+        - name: accountId
           in: path
           required: true
           schema:
             type: string
-            format: uuid
       responses:
         '200':
-          description: Job status
+          description: Property details
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PipelineStatus'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: '#/components/schemas/PropertyDetail'
 
-  /scoring/score:
-    post:
-      tags:
-        - Pipeline
-      summary: Score a parcel
-      description: Calculate ML-based rough diamond score for a parcel
-      operationId: scoreParcel
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ParcelInput'
+  /api/properties/{accountId}/score:
+    get:
+      tags: [Properties]
+      summary: Get ML score
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         '200':
-          description: Scoring results
+          description: Scoring result
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ScoringResult'
 
-  /health:
-    get:
-      tags:
-        - Health
-      summary: System health check
-      operationId: getHealth
+  /api/pipeline/execute:
+    post:
+      tags: [Pipeline]
+      summary: Execute pipeline
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                jurisdiction:
+                  type: string
+                minAcreage:
+                  type: number
       responses:
-        '200':
-          description: System healthy
+        '202':
+          description: Started
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SystemHealth'
+                type: object
+                properties:
+                  runId:
+                    type: string
+                  status:
+                    type: string
+
+  /api/pipeline/{runId}/status:
+    get:
+      tags: [Pipeline]
+      summary: Pipeline status
+      parameters:
+        - name: runId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineStatus'
+
+  /api/health:
+    get:
+      tags: [Health]
+      summary: System health
+      responses:
+        '200':
+          description: Health status
+
+  /api/metrics:
+    get:
+      tags: [Health]
+      summary: Performance metrics
+      responses:
+        '200':
+          description: Metrics
 
 components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: API Key
-      description: API key obtained from the dashboard
-
   schemas:
-    ChatRequest:
-      type: object
-      required:
-        - message
-      properties:
-        message:
-          type: string
-          description: User message
-          maxLength: 4000
-        messages:
-          type: array
-          description: Conversation history
-          items:
-            $ref: '#/components/schemas/ChatMessage'
-        siteContext:
-          $ref: '#/components/schemas/SiteContext'
-
-    ChatMessage:
-      type: object
-      properties:
-        role:
-          type: string
-          enum: [user, assistant]
-        content:
-          type: string
-
     SiteContext:
       type: object
       properties:
         acreage:
           type: number
-          minimum: 0.1
         zoning:
           type: string
         typology:
           type: string
-        jurisdiction:
-          type: string
+          enum: [multifamily, selfStorage, industrial, singleFamily, seniorLiving, medical, retail, hotel]
 
-    ChatResponse:
+    FeasibilityRequest:
       type: object
+      required: [acreage, zoning, typology]
       properties:
-        response:
+        acreage:
+          type: number
+        zoning:
           type: string
-          description: AI response text
-        metadata:
+        typology:
+          type: string
+        params:
           type: object
-          properties:
-            tier:
-              type: string
-              enum: [FREE, CHEAP, STANDARD, PREMIUM]
-            model:
-              type: string
-            tokens:
-              type: integer
 
-    ParcelSearchResponse:
+    FeasibilityResponse:
       type: object
       properties:
-        parcels:
-          type: array
-          items:
-            $ref: '#/components/schemas/ParcelSummary'
-        total:
-          type: integer
-        limit:
-          type: integer
-        offset:
-          type: integer
-
-    ParcelSummary:
-      type: object
-      properties:
-        account:
-          type: string
-        parcelId:
-          type: string
-        address:
+        typology:
           type: string
         acreage:
           type: number
-        jurisdiction:
-          type: string
-        zoning:
-          type: string
-        landUse:
-          type: string
-        marketValue:
+        units:
+          type: integer
+        grossSF:
+          type: integer
+        proForma:
+          $ref: '#/components/schemas/ProForma'
+
+    ProForma:
+      type: object
+      properties:
+        landCost:
+          type: number
+        hardCosts:
+          type: number
+        totalCost:
+          type: number
+        profit:
+          type: number
+        margin:
           type: number
 
-    ParcelDetail:
-      allOf:
-        - $ref: '#/components/schemas/ParcelSummary'
-        - type: object
-          properties:
-            legalDescription:
-              type: string
-            owners:
-              type: array
-              items:
-                type: string
-            yearBuilt:
-              type: integer
-            structures:
-              type: array
-              items:
-                type: object
-            photoUrl:
-              type: string
-              format: uri
-            bcpaoUrl:
-              type: string
-              format: uri
-
-    ParcelInput:
+    Parcel:
       type: object
-      required:
-        - account
       properties:
         account:
           type: string
@@ -504,156 +275,18 @@ components:
           type: string
         marketValue:
           type: number
-        owners:
-          type: string
 
-    FeasibilityRequest:
-      type: object
-      required:
-        - acreage
-        - typology
-      properties:
-        acreage:
-          type: number
-          minimum: 0.1
-        zoning:
-          type: string
-        typology:
-          type: string
-          enum:
-            - multifamily
-            - selfStorage
-            - industrial
-            - singleFamily
-            - seniorLiving
-            - medical
-            - retail
-            - hotel
-        params:
-          type: object
-          additionalProperties: true
-
-    FeasibilityResponse:
-      type: object
-      properties:
-        typology:
-          type: string
-        icon:
-          type: string
-        color:
-          type: string
-        acreage:
-          type: number
-        zoning:
-          type: string
-        units:
-          type: integer
-        grossSF:
-          type: integer
-        floors:
-          type: integer
-        parkingSpaces:
-          type: integer
-        proForma:
-          $ref: '#/components/schemas/ProForma'
-
-    ProForma:
-      type: object
-      properties:
-        landCost:
-          type: number
-        hardCosts:
-          type: number
-        softCosts:
-          type: number
-        totalCost:
-          type: number
-        noi:
-          type: number
-        profit:
-          type: number
-        margin:
-          type: number
-
-    CompareRequest:
-      type: object
-      required:
-        - acreage
-        - typologies
-      properties:
-        acreage:
-          type: number
-        zoning:
-          type: string
-        typologies:
-          type: array
-          items:
-            type: string
-          minItems: 2
-          maxItems: 8
-
-    CompareResponse:
-      type: object
-      properties:
-        comparisons:
-          type: array
-          items:
-            $ref: '#/components/schemas/FeasibilityResponse'
-        recommendation:
-          type: string
-        analysis:
-          type: string
-
-    PipelineRequest:
-      type: object
-      required:
-        - jurisdiction
-      properties:
-        jurisdiction:
-          type: string
-        minAcreage:
-          type: number
-          default: 2.0
-        landUseFilter:
-          type: array
-          items:
-            type: string
-        maxResults:
-          type: integer
-          default: 50
-
-    PipelineJob:
-      type: object
-      properties:
-        jobId:
-          type: string
-          format: uuid
-        status:
-          type: string
-          enum: [QUEUED, RUNNING, COMPLETED, FAILED]
-        createdAt:
-          type: string
-          format: date-time
-        estimatedDuration:
-          type: string
-
-    PipelineStatus:
+    PropertyDetail:
       allOf:
-        - $ref: '#/components/schemas/PipelineJob'
+        - $ref: '#/components/schemas/Parcel'
         - type: object
           properties:
-            currentStage:
+            owners:
               type: string
-            completedStages:
-              type: array
-              items:
-                type: string
-            progress:
-              type: number
-              minimum: 0
-              maximum: 100
-            results:
-              type: object
+            legalDescription:
+              type: string
+            photoUrl:
+              type: string
 
     ScoringResult:
       type: object
@@ -666,108 +299,30 @@ components:
           maximum: 100
         recommendation:
           type: string
-          enum: ['🟢 BID', '🟡 REVIEW', '🟠 WATCH', '🔴 SKIP']
-        action:
-          type: string
-        timeline:
-          type: string
         riskLevel:
           type: string
         scoringFactors:
           type: array
           items:
             type: string
-        componentScores:
-          type: object
-          properties:
-            jurisdiction:
-              type: integer
-            landUse:
-              type: integer
-            acreage:
-              type: integer
-            valueArbitrage:
-              type: integer
-            locationBonus:
-              type: integer
 
-    HealthResponse:
+    PipelineStatus:
       type: object
       properties:
+        runId:
+          type: string
         status:
           type: string
-          enum: [healthy, degraded, unhealthy]
-        timestamp:
+          enum: [IN_PROGRESS, COMPLETED, FAILED]
+        currentStage:
           type: string
-          format: date-time
+        stagesCompleted:
+          type: integer
 
-    SystemHealth:
-      type: object
-      properties:
-        status:
-          type: string
-        version:
-          type: string
-        uptime:
-          type: string
-        services:
-          type: object
-          properties:
-            database:
-              type: string
-            cache:
-              type: string
-            ai:
-              type: string
-
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
-        code:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-
-  responses:
-    BadRequest:
-      description: Invalid request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Authentication required
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    RateLimited:
-      description: Rate limit exceeded
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      headers:
-        X-RateLimit-Limit:
-          schema:
-            type: integer
-        X-RateLimit-Remaining:
-          schema:
-            type: integer
-        X-RateLimit-Reset:
-          schema:
-            type: integer
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
 
 security:
   - bearerAuth: []
