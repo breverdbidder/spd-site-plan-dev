@@ -1,221 +1,153 @@
-# SPD.AI V2 - Chat-Driven Site Planning Intelligence
+# SPD Ordinance Scraper
 
-> AI-powered site planning with conversational NLP interface
+Municipal ordinance scraper for **SPD Site Plan Development** - extracts zoning districts, site plan requirements, and land development code structure from Municode Library.
 
-![Version](https://img.shields.io/badge/Version-2.0.0-blue)
-![Interface](https://img.shields.io/badge/Interface-Chat%20%2B%20Preview-green)
-![Powered by](https://img.shields.io/badge/Powered%20by-BidDeed.AI-purple)
+## Features
 
-## 🚀 What's New in V2
+- 🏛️ **Municode Scraper** - Handles anti-bot protection using Puppeteer
+- 📊 **Structured Extraction** - Zoning districts, site plan requirements, TOC
+- 💾 **Supabase Storage** - Persistent storage with proper schema
+- 🔄 **Batch Processing** - Scrape multiple municipalities
+- 📋 **Site Plan Intelligence** - Extract applicability triggers and review process
 
-### Split-Screen Chat Interface
-
-SPD.AI V2 features a **Lovable/Claude/Manus-style** split-screen design:
-
-| Left Panel | Right Panel |
-|------------|-------------|
-| 💬 **Chat Interface** | 📊 **Real-time Preview** |
-| Natural language input | Site visualization |
-| AI-powered responses | Metrics dashboard |
-| Markdown rendering | Pro forma display |
-
-### NLP Capabilities
-
-Talk to SPD.AI naturally:
-
-```
-"I have a 5 acre site zoned R-2"
-"Build an apartment complex"
-"Target 120 units"
-"Show me the pro forma"
-"Change parking to 2.0 per unit"
-```
-
-### Intent Recognition
-
-| Intent | Example Phrases |
-|--------|-----------------|
-| **Analyze Site** | "5 acre site", "10 acre parcel" |
-| **Set Zoning** | "zoned R-2", "C-1 zoning" |
-| **Choose Typology** | "build apartments", "industrial warehouse" |
-| **Set Units** | "150 units", "target 200 units" |
-| **Parking Ratio** | "1.5 parking ratio", "2 spaces per unit" |
-| **Pro Forma** | "show pro forma", "what's the profit" |
-| **Export** | "export PDF", "download report" |
-
-## 📐 Development Typologies
-
-### Multi-Family
-- Unit mix optimization (Studio/1BR/2BR/3BR)
-- Parking ratio calculations
-- Density analysis (units/acre)
-- FAR calculations
-- Gross SF estimates
-
-### Industrial/Warehouse
-- Clear height specifications
-- Dock door calculations
-- Trailer parking allocation
-- Car parking requirements
-- Building efficiency metrics
-
-### Single-Family
-- Lot count optimization
-- Lot size calculations
-- Infrastructure allocation (roads, open space)
-- Density analysis (lots/acre)
-
-## 💰 Pro Forma Analysis
-
-Every feasibility includes:
-
-| Metric | Description |
-|--------|-------------|
-| **Land Cost** | Based on Brevard County averages |
-| **Hard Costs** | $/SF by typology |
-| **Soft Costs** | % of hard costs |
-| **Total Cost** | Sum of all costs |
-| **Annual Revenue** | Rent or sales projections |
-| **NOI** | Net Operating Income |
-| **Yield on Cost** | NOI / Total Cost |
-| **Estimated Value** | Based on cap rate |
-| **Profit** | Value - Cost |
-| **Margin** | Profit / Cost |
-
-## 🎨 Design System
-
-### Theme (Dark Mode)
-
-```javascript
-const THEME = {
-  bg: {
-    primary: '#0A0A0B',
-    secondary: '#111113',
-    tertiary: '#18181B',
-    elevated: '#1F1F23',
-  },
-  accent: {
-    primary: '#3B82F6',   // Blue
-    success: '#10B981',   // Green
-    warning: '#F59E0B',   // Orange
-    danger: '#EF4444',    // Red
-    purple: '#8B5CF6',    // Purple
-  },
-};
-```
-
-### Inspired By (Not Cloned)
-
-| Platform | Borrowed Pattern |
-|----------|------------------|
-| **Lovable** | Split-screen layout |
-| **Claude AI** | Chat bubble design |
-| **Manus AI** | Real-time preview |
-| **Cursor** | Command palette feel |
-
-**All code is original** - patterns are industry-standard.
-
-## 🏗️ Architecture
-
-```
-src/
-├── App.jsx               # Main chat application
-├── components/
-│   ├── ChatPanel.jsx     # Left panel - messages
-│   ├── PreviewPanel.jsx  # Right panel - visualization
-│   ├── MessageContent.jsx # Markdown renderer
-│   └── MetricCard.jsx    # Metric display
-├── hooks/
-│   ├── useNLP.js         # Intent recognition
-│   ├── useFeasibility.js # Calculation engine
-│   └── useChat.js        # Chat state management
-└── utils/
-    ├── intents.js        # NLP patterns
-    ├── calculations.js   # Feasibility formulas
-    └── theme.js          # Design tokens
-```
-
-## 🚀 Deployment
-
-### Deploy to Lovable
-
-1. Go to [lovable.dev](https://lovable.dev)
-2. Create new project → Import from GitHub
-3. Select `breverdbidder/spd-site-plan-dev`
-4. Deploy
-
-### Run Locally
+## Quick Start
 
 ```bash
-git clone https://github.com/breverdbidder/spd-site-plan-dev.git
-cd spd-site-plan-dev
+# Install dependencies
 npm install
-npm run dev
+
+# Scrape a municipality (outputs JSON)
+node src/index.js FL Malabar
+
+# With Supabase storage
+SUPABASE_URL=https://your-project.supabase.co \
+SUPABASE_KEY=your-service-key \
+node src/index.js FL Malabar
 ```
 
-## 🔧 Configuration
+## Environment Variables
 
-### Environment Variables
+| Variable | Description |
+|----------|-------------|
+| `SUPABASE_URL` | Supabase project URL |
+| `SUPABASE_KEY` | Supabase service role key |
+| `HEADLESS` | Set to `false` for visible browser |
 
-```env
-# Optional - Mapbox for future map integration
-VITE_MAPBOX_TOKEN=your_token
+## Database Schema
 
-# Optional - BidDeed.AI backend
-VITE_SUPABASE_URL=your_url
-VITE_SUPABASE_KEY=your_key
+Run the migration in Supabase SQL Editor:
 
-# Optional - Anthropic for enhanced NLP
-VITE_ANTHROPIC_KEY=your_key
+```bash
+supabase/migrations/001_create_ordinance_tables.sql
 ```
 
-## 📊 Brevard County Zoning
+### Tables
 
-| Code | Type | Max Density | Max Height |
-|------|------|-------------|------------|
-| R-1 | Single Family | 4 units/ac | 35 ft |
-| R-2 | Medium Density | 10 units/ac | 45 ft |
-| R-3 | High Density | 20 units/ac | 65 ft |
-| C-1 | Neighborhood Commercial | 0.5 FAR | 35 ft |
-| C-2 | General Commercial | 1.0 FAR | 50 ft |
-| I-1 | Light Industrial | 0.6 FAR | 45 ft |
-| PUD | Planned Unit Development | Varies | Varies |
+- **municipalities** - Municipality metadata and scrape status
+- **zoning_districts** - Extracted zoning district codes and details
+- **ordinance_sections** - TOC and content sections
+- **site_plan_requirements** - Site plan triggers and requirements
+- **scrape_results** - Raw scrape data for debugging
 
-## 🔜 Roadmap
+## Usage Examples
 
-### V2.1 (Current Sprint)
-- [ ] Mapbox GL JS integration
-- [ ] Parcel drawing tools
-- [ ] BCPAO API connection
+### Single Municipality
 
-### V2.2
-- [ ] 3D visualization (Three.js)
-- [ ] Unit mix slider controls
-- [ ] Multi-scenario comparison
+```javascript
+const { scrapeMunicipality } = require('./src/index');
 
-### V2.3
-- [ ] Anthropic API for enhanced NLP
-- [ ] Voice input support
-- [ ] Team collaboration
+const results = await scrapeMunicipality('FL', 'Malabar');
+console.log(results.zoningDistricts.districts);
+```
 
-### V3.0
-- [ ] Multi-county expansion
-- [ ] AutoCAD/Revit export
-- [ ] Pro forma editor
+### Batch Scrape
 
-## 📜 License
+```javascript
+const { batchScrape } = require('./src/index');
 
-**Proprietary** - © 2026 Everest Capital USA / BidDeed.AI
+const results = await batchScrape([
+  { state: 'FL', municipality: 'Malabar' },
+  { state: 'FL', municipality: 'Palm Bay' },
+  { state: 'FL', municipality: 'Melbourne' }
+]);
+```
 
-This software is confidential. Unauthorized distribution prohibited.
+### Scraper Only
 
-## 👤 Author
+```javascript
+const MunicodeScraper = require('./src/scrapers/municode_scraper');
 
-- **Ariel Shapira** - Solo Founder
-- **Company:** Everest Capital USA
-- **Platform:** BidDeed.AI
-- **Location:** Brevard County, FL
+const scraper = new MunicodeScraper({ headless: true });
+await scraper.init();
 
----
+const toc = await scraper.scrapeTOC('FL', 'Malabar');
+const districts = await scraper.scrapeZoningDistricts('FL', 'Malabar');
 
-*Built with ❤️ by BidDeed.AI*
+await scraper.close();
+```
+
+## Output Format
+
+```json
+{
+  "municipality": "Malabar",
+  "state": "FL",
+  "scrapedAt": "2026-01-28T17:23:49.150Z",
+  "status": "success",
+  "toc": {
+    "sections": [
+      { "title": "Article I - PREAMBLE", "nodeId": "LADECO_ARTIPR" }
+    ]
+  },
+  "zoningDistricts": {
+    "districts": [
+      { "code": "RR-65", "name": "Rural Residential" },
+      { "code": "RS-21", "name": "Single Family LDR" }
+    ]
+  },
+  "sitePlanReview": {
+    "sections": [...],
+    "applicabilityTriggers": [
+      "Any land disturbance >= 1,000 sq ft"
+    ]
+  }
+}
+```
+
+## Supported Sources
+
+Currently supports:
+- **Municode Library** (library.municode.com)
+
+Planned:
+- American Legal Publishing
+- General Code
+- Code Publishing Company
+
+## Project Structure
+
+```
+spd-scraper/
+├── src/
+│   ├── index.js              # Main entry point
+│   ├── scrapers/
+│   │   └── municode_scraper.js
+│   └── storage/
+│       └── supabase_client.js
+├── supabase/
+│   └── migrations/
+│       └── 001_create_ordinance_tables.sql
+├── poc/
+│   └── malabar_poc_results.json
+└── package.json
+```
+
+## Related Projects
+
+- **SPD Site Plan Development** - Parent project for site plan automation
+- **BidDeed.AI** - Foreclosure auction intelligence platform
+- **ZoneWise** - Zoning lookup desktop application
+
+## License
+
+MIT © Everest Capital USA
