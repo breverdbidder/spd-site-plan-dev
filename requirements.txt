@@ -1,29 +1,69 @@
-# SPD Rough Diamond Pipeline
-# Dependencies for BCPAO scraping, scoring, and storage
+# SPD Site Plan Development - Pinned Dependencies
+# Last updated: 2026-01-28
+# Security scanning: safety, pip-audit enabled
 
-# Core
-python-dateutil>=2.8.2
-typing-extensions>=4.0.0
+# =============================================================================
+# CORE DEPENDENCIES (Required)
+# =============================================================================
+python-dateutil==2.8.2
+typing-extensions==4.9.0
 
-# HTTP (using stdlib, but these are useful)
-# requests>=2.28.0  # Optional - using urllib instead
-# httpx>=0.24.0     # Optional async support
+# =============================================================================
+# HTTP & ASYNC (Production)
+# =============================================================================
+httpx==0.26.0
+aiohttp==3.9.1
 
-# Data processing
-# pandas>=2.0.0     # Optional - for analysis
-# numpy>=1.24.0     # Optional - for numerical ops
+# =============================================================================
+# DATA PROCESSING (Production)
+# =============================================================================
+pydantic==2.5.3
+pydantic-settings==2.1.0
 
-# LangGraph (optional - for advanced orchestration)
-# langgraph>=0.0.20
-# langchain>=0.1.0
+# =============================================================================
+# SECRETS MANAGEMENT (P0 Security Requirement)
+# =============================================================================
+python-dotenv==1.0.0
+hvac==2.1.0                    # HashiCorp Vault client
+azure-identity==1.15.0         # Azure Key Vault auth
+azure-keyvault-secrets==4.7.0  # Azure Key Vault secrets
 
-# Supabase (optional - using REST API instead)
-# supabase>=2.0.0
+# =============================================================================
+# SECURITY SCANNING (P0 Security Requirement)
+# =============================================================================
+safety==2.3.5                  # Dependency vulnerability scanner
+pip-audit==2.6.3               # PyPI vulnerability database
 
-# Testing
-pytest>=7.0.0
-pytest-asyncio>=0.21.0
+# =============================================================================
+# SUPABASE CLIENT
+# =============================================================================
+supabase==2.3.4
+postgrest==0.13.0
 
-# Linting
-# ruff>=0.1.0
-# black>=23.0.0
+# =============================================================================
+# PUPPETEER/SCRAPING
+# =============================================================================
+playwright==1.41.0
+
+# =============================================================================
+# TESTING (P0 Codebase Requirement)
+# =============================================================================
+pytest==7.4.4
+pytest-asyncio==0.23.3
+pytest-cov==4.1.0              # Coverage reporting
+pytest-mock==3.12.0            # Mocking support
+responses==0.24.1              # HTTP mocking
+
+# =============================================================================
+# CODE QUALITY
+# =============================================================================
+ruff==0.1.11                   # Fast linter
+black==23.12.1                 # Code formatter
+isort==5.13.2                  # Import sorter
+mypy==1.8.0                    # Type checker
+
+# =============================================================================
+# DEVELOPMENT ONLY (requirements-dev.txt)
+# =============================================================================
+# pre-commit==3.6.0
+# ipython==8.20.0
