@@ -1,6 +1,7 @@
 """SPD API Module - FastAPI Routes"""
 from .api_routes import (
     app,
+    HealthResponse,
     ChatRequest,
     ChatResponse,
     FeasibilityRequest,
@@ -10,12 +11,14 @@ from .api_routes import (
     SitePlanRequirementResponse,
     ScrapeRequest,
     ScrapeResponse,
-    HealthResponse,
-    TypologyEnum
+    PipelineRequest,
+    PipelineStatusResponse,
+    Typology
 )
 
 __all__ = [
     "app",
+    "HealthResponse",
     "ChatRequest",
     "ChatResponse",
     "FeasibilityRequest",
@@ -25,6 +28,7 @@ __all__ = [
     "SitePlanRequirementResponse",
     "ScrapeRequest",
     "ScrapeResponse",
-    "HealthResponse",
-    "TypologyEnum"
+    "PipelineRequest",
+    "PipelineStatusResponse",
+    "Typology"
 ]
