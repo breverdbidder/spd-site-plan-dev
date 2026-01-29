@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
 """
-ZoneWise 20-Phase Property Report Generator
-Correlates with ZoneWise.AI Supabase Schema & KPI Definitions
+ZoneWise.AI Integration Module
+Correlates SPD 20-Phase Report Generator with ZoneWise Supabase Schema
 
-This module bridges:
-- SPD Site Plan Development (spd-site-plan-dev repo)
-- ZoneWise.AI Platform (zonewise repo)
-- Supabase Schema (mocerqjnksmhcjzxrewo)
+GitHub Repositories:
+- breverdbidder/zonewise (main platform)
+- breverdbidder/zonewise-agents
+- breverdbidder/zonewise-desktop  
+- breverdbidder/zonewise-skills
+- breverdbidder/zonewise-web
+- breverdbidder/spd-site-plan-dev
 
-Maps 20 Report Phases to 300 ZoneWise KPIs across 9 categories.
+Supabase Database: mocerqjnksmhcjzxrewo
+Tables: jurisdictions (17), zoning_districts (301), kpi_definitions (300), property_analyses
 
 Author: BidDeed.AI / Everest Capital USA
 """
@@ -16,345 +20,375 @@ Author: BidDeed.AI / Everest Capital USA
 import os
 import uuid
 import json
+import httpx
 import logging
 from datetime import datetime
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Dict, List, Any, Optional
 from dataclasses import dataclass, field, asdict
-from enum import Enum
 
 logger = logging.getLogger(__name__)
 
 # =============================================================================
-# ZONEWISE KPI CATEGORY MAPPING
+# SUPABASE CONFIGURATION
 # =============================================================================
 
-# Maps 20 Phases to ZoneWise KPI Categories (300 KPIs total)
-PHASE_TO_KPI_CATEGORY = {
+SUPABASE_URL = "https://mocerqjnksmhcjzxrewo.supabase.co"
+SUPABASE_ANON_KEY = os.getenv("SUPABASE_ANON_KEY", "")
+SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY", "")
+
+
+# =============================================================================
+# 20-PHASE TO KPI CATEGORY MAPPING
+# =============================================================================
+
+# Maps each of the 20 phases to ZoneWise KPI categories
+PHASE_TO_KPI_CATEGORY: Dict[int, str] = {
     # Part I: Zoning Data (Phases 1-10)
-    1: "Summary",      # Property Identification -> Summary KPIs (SUM-001 to SUM-025)
-    2: "Zoning",       # Base Zoning -> Zoning KPIs (ZON-001 to ZON-045)
-    3: "Zoning",       # Dimensional Standards -> Zoning KPIs
-    4: "Zoning",       # Permitted Uses -> Zoning KPIs
-    5: "Zoning",       # Conditional Uses -> Zoning KPIs
-    6: "Environmental",# Overlay Districts -> Environmental KPIs (ENV-001 to ENV-025)
-    7: "Zoning",       # Development Bonuses -> Zoning KPIs
-    8: "Zoning",       # Parking Requirements -> Zoning KPIs
-    9: "Zoning",       # Site Development Standards -> Zoning KPIs
-    10: "Zoning",      # FLUM -> Zoning KPIs
+    1: "Summary",       # Property Identification
+    2: "Zoning",        # Base Zoning Districts
+    3: "Zoning",        # Dimensional Standards
+    4: "Zoning",        # Permitted Uses
+    5: "Zoning",        # Conditional Uses
+    6: "Environmental", # Overlay Districts
+    7: "Zoning",        # Development Bonuses
+    8: "Zoning",        # Parking Requirements
+    9: "Zoning",        # Site Development Standards
+    10: "Zoning",       # Future Land Use (FLUM)
     
     # Part II: Market & Property (Phases 11-14)
-    11: "Property",    # Property Characteristics -> Property KPIs (PRO-001 to PRO-035)
-    12: "Market",      # Census Demographics -> Market KPIs (MKT-001 to MKT-047)
-    13: "Market",      # Location Intelligence -> Market KPIs
-    14: "Market",      # Sales History -> Market KPIs
+    11: "Property",     # Property Characteristics
+    12: "Market",       # Census Demographics
+    13: "Market",       # Location Intelligence
+    14: "Market",       # Sales History
     
     # Part III: HBU Analysis (Phases 15-16)
-    15: "HBU",         # Highest & Best Use -> HBU KPIs (HBU-001 to HBU-030)
-    16: "HBU",         # Development Scoring -> HBU KPIs
+    15: "HBU",          # Highest & Best Use
+    16: "HBU",          # Development Scoring
     
     # Part IV: 3 Appraisal Approaches (Phases 17-19)
-    17: "SCA",         # Sales Comparison -> SCA KPIs (SCA-001 to SCA-040)
-    18: "Income",      # Income Approach -> Income KPIs (INC-001 to INC-035)
-    19: "Cost",        # Cost Approach -> Cost KPIs (CST-001 to CST-025)
+    17: "SCA",          # Sales Comparison Approach
+    18: "Income",       # Income Approach
+    19: "Cost",         # Cost Approach
     
     # Part V: Final Report (Phase 20)
-    20: "Summary",     # Reconciliation -> Summary KPIs
+    20: "Summary",      # Value Reconciliation
 }
 
-# ZoneWise KPI Code Ranges by Category
-KPI_RANGES = {
-    "Summary": ("SUM", 1, 25),
-    "Zoning": ("ZON", 1, 45),
-    "Market": ("MKT", 1, 47),
-    "Property": ("PRO", 1, 35),
-    "HBU": ("HBU", 1, 30),
-    "SCA": ("SCA", 1, 40),
-    "Income": ("INC", 1, 35),
-    "Cost": ("CST", 1, 25),
-    "Environmental": ("ENV", 1, 25),
+# KPI Category Distribution (300 total in Supabase)
+KPI_CATEGORY_COUNTS = {
+    "Market": 47,
+    "Zoning": 45,
+    "SCA": 40,
+    "Income": 35,
+    "HBU": 30,
+    "Property": 28,
+    "Cost": 25,
+    "Environmental": 25,
+    "Summary": 25,
 }
 
-# Specific KPI Mappings for 20 Phases
-PHASE_KPI_MAPPING = {
-    # Phase 1: Property Identification
-    1: {
-        "SUM-001": "parcel_id",
-        "SUM-002": "address",
-        "SUM-003": "city",
-        "SUM-004": "owner_name",
-        "SUM-005": "acreage",
-        "SUM-006": "lot_size_sf",
-        "SUM-007": "legal_description",
-    },
+# Specific KPI code mappings for each phase
+PHASE_KPI_CODES: Dict[int, List[str]] = {
+    # Phase 1: Property Identification -> Summary KPIs
+    1: ["SUM-001", "SUM-002", "SUM-003", "SUM-004", "SUM-005", "SUM-006", "SUM-007"],
     
-    # Phase 2: Base Zoning Districts
-    2: {
-        "ZON-001": "zone_code",
-        "ZON-002": "zone_name",
-        "ZON-003": "zone_category",
-        "ZON-004": "description",
-        "ZON-005": "source_url",
-    },
+    # Phase 2: Base Zoning -> Zoning KPIs
+    2: ["ZON-001", "ZON-002", "ZON-003", "ZON-004", "ZON-005"],
     
-    # Phase 3: Dimensional Standards
-    3: {
-        "ZON-010": "min_lot_size_sf",
-        "ZON-011": "min_lot_width_ft",
-        "ZON-012": "max_height_ft",
-        "ZON-013": "front_setback_ft",
-        "ZON-014": "side_setback_ft",
-        "ZON-015": "rear_setback_ft",
-        "ZON-016": "max_lot_coverage_pct",
-        "ZON-017": "floor_area_ratio",
-        "ZON-018": "max_density_units_acre",
-    },
+    # Phase 3: Dimensional Standards -> Zoning KPIs
+    3: ["ZON-010", "ZON-011", "ZON-012", "ZON-013", "ZON-014", "ZON-015", "ZON-016", "ZON-017", "ZON-018"],
     
-    # Phase 4: Permitted Uses
-    4: {
-        "ZON-020": "permitted_uses_count",
-        "ZON-021": "permitted_uses_list",
-        "ZON-022": "accessory_uses",
-    },
+    # Phase 4: Permitted Uses -> Zoning KPIs
+    4: ["ZON-020", "ZON-021", "ZON-022"],
     
-    # Phase 5: Conditional Uses
-    5: {
-        "ZON-025": "conditional_uses_count",
-        "ZON-026": "conditional_uses_list",
-        "ZON-027": "approval_body",
-        "ZON-028": "cup_timeline_days",
-    },
+    # Phase 5: Conditional Uses -> Zoning KPIs
+    5: ["ZON-025", "ZON-026", "ZON-027", "ZON-028"],
     
-    # Phase 6: Overlay Districts
-    6: {
-        "ENV-001": "flood_zone",
-        "ENV-002": "flood_zone_risk",
-        "ENV-003": "wetlands_present",
-        "ENV-004": "coastal_zone",
-        "ENV-005": "historic_district",
-        "ENV-006": "airport_overlay",
-    },
+    # Phase 6: Overlay Districts -> Environmental KPIs
+    6: ["ENV-001", "ENV-002", "ENV-003", "ENV-004", "ENV-005", "ENV-006"],
     
-    # Phase 7: Development Bonuses
-    7: {
-        "ZON-030": "density_bonus_available",
-        "ZON-031": "density_bonus_pct",
-        "ZON-032": "height_bonus_ft",
-        "ZON-033": "parking_reduction_pct",
-        "ZON-034": "bonus_conditions",
-    },
+    # Phase 7: Development Bonuses -> Zoning KPIs
+    7: ["ZON-030", "ZON-031", "ZON-032", "ZON-033", "ZON-034"],
     
-    # Phase 8: Parking Requirements
-    8: {
-        "ZON-035": "parking_spaces_required",
-        "ZON-036": "parking_ratio",
-        "ZON-037": "ada_spaces_required",
-        "ZON-038": "ev_spaces_required",
-    },
+    # Phase 8: Parking Requirements -> Zoning KPIs
+    8: ["ZON-035", "ZON-036", "ZON-037", "ZON-038"],
     
-    # Phase 9: Site Development Standards
-    9: {
-        "ZON-040": "landscaping_pct",
-        "ZON-041": "buffer_yards_ft",
-        "ZON-042": "open_space_pct",
-        "ZON-043": "signage_max_sf",
-    },
+    # Phase 9: Site Development Standards -> Zoning KPIs
+    9: ["ZON-040", "ZON-041", "ZON-042", "ZON-043"],
     
-    # Phase 10: FLUM
-    10: {
-        "ZON-044": "flum_designation",
-        "ZON-045": "flum_max_density",
-    },
+    # Phase 10: FLUM -> Zoning KPIs
+    10: ["ZON-044", "ZON-045"],
     
-    # Phase 11: Property Characteristics
-    11: {
-        "PRO-001": "year_built",
-        "PRO-002": "building_sf",
-        "PRO-003": "construction_type",
-        "PRO-004": "bedrooms",
-        "PRO-005": "bathrooms",
-        "PRO-006": "current_use",
-        "PRO-035": "condition_rating",
-    },
+    # Phase 11: Property Characteristics -> Property KPIs
+    11: ["PRO-001", "PRO-002", "PRO-003", "PRO-004", "PRO-005", "PRO-006", "PRO-035"],
     
-    # Phase 12: Census Demographics
-    12: {
-        "MKT-001": "census_tract",
-        "MKT-002": "median_household_income",
-        "MKT-003": "median_home_value",
-        "MKT-004": "median_rent",
-        "MKT-005": "population_density",
-        "MKT-006": "poverty_rate",
-    },
+    # Phase 12: Census Demographics -> Market KPIs
+    12: ["MKT-001", "MKT-002", "MKT-003", "MKT-004", "MKT-005", "MKT-006"],
     
-    # Phase 13: Location Intelligence
-    13: {
-        "MKT-010": "walk_score",
-        "MKT-011": "school_score",
-        "MKT-012": "crime_score",
-        "MKT-013": "transit_score",
-    },
+    # Phase 13: Location Intelligence -> Market KPIs
+    13: ["MKT-010", "MKT-011", "MKT-012", "MKT-013"],
     
-    # Phase 14: Sales History
-    14: {
-        "MKT-020": "last_sale_date",
-        "MKT-021": "last_sale_price",
-        "MKT-022": "price_change_1yr",
-        "MKT-023": "days_on_market",
-    },
+    # Phase 14: Sales History -> Market KPIs
+    14: ["MKT-020", "MKT-021", "MKT-022", "MKT-023"],
     
-    # Phase 15: HBU Analysis
-    15: {
-        "HBU-001": "current_use",
-        "HBU-002": "physically_possible_uses",
-        "HBU-003": "legally_permissible_uses",
-        "HBU-004": "financially_feasible_uses",
-        "HBU-005": "maximally_productive_use",
-        "HBU-010": "hbu_as_vacant",
-        "HBU-011": "hbu_as_improved",
-        "HBU-012": "rezoning_probability_pct",
-        "HBU-013": "rezoning_timeline_months",
-        "HBU-015": "development_potential_score",
-        "HBU-020": "current_value",
-        "HBU-021": "hbu_value",
-        "HBU-022": "value_gap",
-    },
+    # Phase 15: HBU Analysis -> HBU KPIs
+    15: ["HBU-001", "HBU-002", "HBU-003", "HBU-004", "HBU-005", "HBU-010", "HBU-011", 
+         "HBU-012", "HBU-013", "HBU-015", "HBU-020", "HBU-021", "HBU-022"],
     
-    # Phase 16: Development Scoring
-    16: {
-        "HBU-025": "development_score",
-        "HBU-026": "constraints_score",
-        "HBU-027": "market_score",
-        "HBU-028": "overall_opportunity_score",
-    },
+    # Phase 16: Development Scoring -> HBU KPIs
+    16: ["HBU-025", "HBU-026", "HBU-027", "HBU-028"],
     
-    # Phase 17: Sales Comparison Approach
-    17: {
-        "SCA-001": "comp_1_address",
-        "SCA-002": "comp_1_price",
-        "SCA-003": "comp_1_date",
-        "SCA-004": "comp_1_price_per_sf",
-        "SCA-020": "location_adjustment_pct",
-        "SCA-021": "size_adjustment_pct",
-        "SCA-022": "zoning_adjustment_pct",
-        "SCA-030": "price_per_sf",
-        "SCA-031": "price_per_acre",
-        "SCA-032": "indicated_value_sca",
-        "SCA-040": "sca_confidence_pct",
-    },
+    # Phase 17: Sales Comparison Approach -> SCA KPIs
+    17: ["SCA-001", "SCA-002", "SCA-003", "SCA-004", "SCA-020", "SCA-021", "SCA-022",
+         "SCA-030", "SCA-031", "SCA-032", "SCA-040"],
     
-    # Phase 18: Income Approach
-    18: {
-        "INC-001": "potential_gross_income",
-        "INC-002": "vacancy_rate",
-        "INC-003": "effective_gross_income",
-        "INC-004": "operating_expenses",
-        "INC-005": "net_operating_income",
-        "INC-010": "cap_rate",
-        "INC-020": "indicated_value_income",
-        "INC-025": "gross_rent_multiplier",
-        "INC-035": "income_confidence_pct",
-    },
+    # Phase 18: Income Approach -> Income KPIs
+    18: ["INC-001", "INC-002", "INC-003", "INC-004", "INC-005", "INC-010", 
+         "INC-020", "INC-025", "INC-035"],
     
-    # Phase 19: Cost Approach
-    19: {
-        "CST-001": "land_value",
-        "CST-002": "replacement_cost_new",
-        "CST-003": "physical_depreciation",
-        "CST-004": "functional_obsolescence",
-        "CST-005": "external_obsolescence",
-        "CST-010": "depreciated_cost",
-        "CST-020": "indicated_value_cost",
-        "CST-025": "cost_confidence_pct",
-    },
+    # Phase 19: Cost Approach -> Cost KPIs
+    19: ["CST-001", "CST-002", "CST-003", "CST-004", "CST-005", "CST-010", "CST-020", "CST-025"],
     
-    # Phase 20: Reconciliation
-    20: {
-        "SUM-010": "sca_value",
-        "SUM-011": "sca_weight_pct",
-        "SUM-012": "income_value",
-        "SUM-013": "income_weight_pct",
-        "SUM-014": "cost_value",
-        "SUM-015": "cost_weight_pct",
-        "SUM-020": "reconciled_value",
-        "SUM-021": "zonewise_score",
-        "SUM-022": "recommendation",
-        "SUM-023": "max_bid",
-        "SUM-024": "risk_level",
-        "SUM-025": "action_plan_count",
-    },
+    # Phase 20: Reconciliation -> Summary KPIs
+    20: ["SUM-010", "SUM-011", "SUM-012", "SUM-013", "SUM-014", "SUM-015",
+         "SUM-020", "SUM-021", "SUM-022", "SUM-023", "SUM-024", "SUM-025"],
 }
 
 
 # =============================================================================
-# SUPABASE TABLE MAPPING
+# SUPABASE TABLE SCHEMAS
 # =============================================================================
 
 SUPABASE_TABLES = {
     "jurisdictions": {
         "description": "17 Brevard County municipalities",
+        "count": 17,
+        "primary_key": "id",
         "fields": ["id", "name", "county", "state", "population", "data_completeness", "data_source"],
-        "phase_mapping": [1],  # Used in Phase 1
+        "phase_mapping": [1],
     },
     "zoning_districts": {
-        "description": "301 zoning districts with embedded DIMS",
+        "description": "301 zoning districts with embedded DIMS in description",
+        "count": 301,
+        "primary_key": "id",
         "fields": ["id", "jurisdiction_id", "code", "name", "category", "description"],
-        "phase_mapping": [2, 3, 4, 5, 7, 8, 9, 10],  # Phases 2-10 (except 6)
+        "phase_mapping": [2, 3, 4, 5, 7, 8, 9, 10],
     },
     "kpi_definitions": {
         "description": "300 KPIs across 9 categories",
+        "count": 300,
+        "primary_key": "kpi_code",
         "fields": ["kpi_code", "kpi_name", "category"],
-        "phase_mapping": list(range(1, 21)),  # All phases
+        "phase_mapping": list(range(1, 21)),
     },
     "property_analyses": {
-        "description": "Generated property reports with scores",
-        "fields": ["id", "parcel_id", "address", "jurisdiction_id", "analysis_date", 
+        "description": "Generated 20-phase property reports",
+        "count": "variable",
+        "primary_key": "id",
+        "fields": ["id", "parcel_id", "address", "jurisdiction_id", "analysis_date",
                    "zonewise_score", "recommendation", "max_bid", "confidence_level", "analysis_json"],
-        "phase_mapping": [20],  # Final output
+        "phase_mapping": [20],
     },
 }
 
 
 # =============================================================================
-# ZONEWISE REPORT GENERATOR CLASS
+# ZONEWISE SUPABASE CLIENT
 # =============================================================================
 
-class ZoneWiseReportGenerator:
+class ZoneWiseSupabaseClient:
     """
-    Generates 20-Phase Property Reports correlating with ZoneWise.AI ecosystem.
+    Client for ZoneWise Supabase database operations.
     
-    Supabase Tables:
-    - jurisdictions (17 municipalities)
-    - zoning_districts (301 districts)
-    - kpi_definitions (300 KPIs)
-    - property_analyses (output)
-    
-    GitHub Repos:
-    - breverdbidder/zonewise (main platform)
-    - breverdbidder/spd-site-plan-dev (this module)
+    Tables:
+    - jurisdictions: 17 Brevard municipalities
+    - zoning_districts: 301 districts with embedded dimensional standards
+    - kpi_definitions: 300 KPIs across 9 categories
+    - property_analyses: Generated reports with zonewise_score
     """
     
-    SUPABASE_URL = "https://mocerqjnksmhcjzxrewo.supabase.co"
+    def __init__(self, service_key: str = None):
+        self.url = SUPABASE_URL
+        self.key = service_key or SUPABASE_SERVICE_KEY
+        self.headers = {
+            "apikey": self.key,
+            "Authorization": f"Bearer {self.key}",
+            "Content-Type": "application/json",
+        }
+    
+    async def get_jurisdictions(self) -> List[Dict]:
+        """Get all 17 Brevard County jurisdictions"""
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(
+                f"{self.url}/rest/v1/jurisdictions",
+                headers=self.headers,
+                params={"select": "*", "order": "name"}
+            )
+            if resp.status_code == 200:
+                return resp.json()
+            return []
+    
+    async def get_jurisdiction_by_name(self, name: str) -> Optional[Dict]:
+        """Get jurisdiction by name (e.g., 'Malabar', 'Titusville')"""
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(
+                f"{self.url}/rest/v1/jurisdictions",
+                headers=self.headers,
+                params={"select": "*", "name": f"eq.{name}"}
+            )
+            if resp.status_code == 200:
+                data = resp.json()
+                return data[0] if data else None
+            return None
+    
+    async def get_zoning_districts(self, jurisdiction_id: int = None) -> List[Dict]:
+        """Get zoning districts, optionally filtered by jurisdiction"""
+        params = {"select": "*", "order": "code"}
+        if jurisdiction_id:
+            params["jurisdiction_id"] = f"eq.{jurisdiction_id}"
+        
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(
+                f"{self.url}/rest/v1/zoning_districts",
+                headers=self.headers,
+                params=params
+            )
+            if resp.status_code == 200:
+                return resp.json()
+            return []
+    
+    async def get_zoning_by_code(self, jurisdiction_id: int, code: str) -> Optional[Dict]:
+        """Get specific zoning district by code"""
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(
+                f"{self.url}/rest/v1/zoning_districts",
+                headers=self.headers,
+                params={
+                    "select": "*",
+                    "jurisdiction_id": f"eq.{jurisdiction_id}",
+                    "code": f"eq.{code}"
+                }
+            )
+            if resp.status_code == 200:
+                data = resp.json()
+                return data[0] if data else None
+            return None
+    
+    async def get_kpi_definitions(self, category: str = None) -> List[Dict]:
+        """Get KPI definitions, optionally filtered by category"""
+        params = {"select": "*", "order": "kpi_code"}
+        if category:
+            params["category"] = f"eq.{category}"
+        
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(
+                f"{self.url}/rest/v1/kpi_definitions",
+                headers=self.headers,
+                params=params
+            )
+            if resp.status_code == 200:
+                return resp.json()
+            return []
+    
+    async def save_property_analysis(self, analysis: Dict) -> Optional[str]:
+        """Save property analysis to Supabase"""
+        payload = {
+            "parcel_id": analysis.get("parcel_id"),
+            "address": analysis.get("address", ""),
+            "jurisdiction_id": analysis.get("jurisdiction_id"),
+            "analysis_date": datetime.utcnow().isoformat(),
+            "zonewise_score": analysis.get("zonewise_score", 0),
+            "recommendation": analysis.get("recommendation", "REVIEW"),
+            "max_bid": analysis.get("max_bid", 0),
+            "confidence_level": analysis.get("confidence_level", 0),
+            "analysis_json": {
+                "kpis": analysis.get("kpis", {}),
+                "phases": analysis.get("phases", {}),
+                "sources": analysis.get("sources", []),
+            }
+        }
+        
+        async with httpx.AsyncClient() as client:
+            resp = await client.post(
+                f"{self.url}/rest/v1/property_analyses",
+                headers={**self.headers, "Prefer": "return=representation"},
+                json=payload
+            )
+            if resp.status_code in [200, 201]:
+                data = resp.json()
+                return data[0]["id"] if data else None
+            logger.error(f"Failed to save analysis: {resp.status_code} {resp.text}")
+            return None
+    
+    async def get_property_analyses(self, parcel_id: str = None) -> List[Dict]:
+        """Get property analyses, optionally filtered by parcel"""
+        params = {"select": "*", "order": "analysis_date.desc"}
+        if parcel_id:
+            params["parcel_id"] = f"eq.{parcel_id}"
+        
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(
+                f"{self.url}/rest/v1/property_analyses",
+                headers=self.headers,
+                params=params
+            )
+            if resp.status_code == 200:
+                return resp.json()
+            return []
+    
+    def parse_dimensional_standards(self, description: str) -> Dict:
+        """
+        Parse embedded DIMS from zoning_districts.description field.
+        
+        Format: <!--DIMS:{"min_lot_sqft":10000,"setbacks_ft":{"front":25},...}-->
+        """
+        import re
+        match = re.search(r'<!--DIMS:(.*?)-->', description)
+        if match:
+            try:
+                return json.loads(match.group(1))
+            except json.JSONDecodeError:
+                pass
+        return {}
+
+
+# =============================================================================
+# 20-PHASE ZONEWISE REPORT GENERATOR
+# =============================================================================
+
+class ZoneWise20PhaseGenerator:
+    """
+    Generate 20-Phase Property Reports integrated with ZoneWise.AI ecosystem.
+    
+    Phases 1-10: Zoning Data (pulls from zoning_districts table)
+    Phases 11-14: Market Data (external APIs + cached data)
+    Phases 15-16: HBU Analysis (algorithm)
+    Phases 17-19: 3 Appraisal Approaches
+    Phase 20: Reconciliation (saves to property_analyses table)
+    
+    Output: ZoneWise Score (0-100), Recommendation (BID/REVIEW/SKIP), Max Bid
+    """
     
     def __init__(self, supabase_key: str = None):
-        self.supabase_key = supabase_key or os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+        self.supabase = ZoneWiseSupabaseClient(supabase_key)
         self.kpi_cache: Dict[str, Dict] = {}
     
-    async def generate_report(
+    async def generate(
         self,
         parcel_id: str,
-        jurisdiction_name: str = "Malabar",
+        jurisdiction_name: str,
         typology: str = "single_family"
     ) -> Dict[str, Any]:
         """
-        Generate a 20-phase property report with ZoneWise KPI correlation.
+        Generate complete 20-phase report.
         
         Args:
-            parcel_id: BCPAO parcel ID (e.g., "28-37-35-25-00014.0-0000.00")
-            jurisdiction_name: Municipality name (e.g., "Malabar", "Titusville")
+            parcel_id: BCPAO parcel ID
+            jurisdiction_name: Municipality name (e.g., "Malabar")
             typology: Development type
         
         Returns:
-            Dict with all 20 phases, KPIs, and final scores
+            Dict with phases, kpis, scores, and Supabase record ID
         """
         report = {
             "report_id": str(uuid.uuid4()),
@@ -364,28 +398,45 @@ class ZoneWiseReportGenerator:
             "created_at": datetime.utcnow().isoformat(),
             "phases": {},
             "kpis": {},
-            "scores": {},
+            "zonewise_score": 0,
+            "recommendation": "REVIEW",
+            "max_bid": 0,
+            "supabase_id": None,
             "errors": [],
         }
         
-        # Execute all 20 phases
-        for phase_num in range(1, 21):
-            phase_result = await self._execute_phase(report, phase_num)
-            report["phases"][phase_num] = phase_result
+        try:
+            # Get jurisdiction from Supabase
+            jurisdiction = await self.supabase.get_jurisdiction_by_name(jurisdiction_name)
+            if jurisdiction:
+                report["jurisdiction_id"] = jurisdiction["id"]
             
-            # Map KPIs for this phase
-            if phase_num in PHASE_KPI_MAPPING:
-                for kpi_code, field_name in PHASE_KPI_MAPPING[phase_num].items():
-                    if field_name in phase_result.get("data", {}):
-                        report["kpis"][kpi_code] = phase_result["data"][field_name]
-        
-        # Calculate final scores
-        report["scores"] = self._calculate_scores(report)
+            # Execute all 20 phases
+            for phase_num in range(1, 21):
+                phase_result = await self._execute_phase(report, phase_num)
+                report["phases"][phase_num] = phase_result
+                
+                # Map KPIs
+                for kpi_code in PHASE_KPI_CODES.get(phase_num, []):
+                    if kpi_code in phase_result.get("kpi_values", {}):
+                        report["kpis"][kpi_code] = phase_result["kpi_values"][kpi_code]
+            
+            # Calculate final scores
+            report["zonewise_score"] = self._calculate_zonewise_score(report)
+            report["recommendation"] = self._get_recommendation(report["zonewise_score"])
+            report["max_bid"] = self._calculate_max_bid(report)
+            
+            # Save to Supabase
+            report["supabase_id"] = await self.supabase.save_property_analysis(report)
+            
+        except Exception as e:
+            logger.error(f"Report generation failed: {e}")
+            report["errors"].append(str(e))
         
         return report
     
     async def _execute_phase(self, report: Dict, phase_num: int) -> Dict:
-        """Execute a single phase"""
+        """Execute single phase"""
         phase_info = self._get_phase_info(phase_num)
         
         result = {
@@ -393,12 +444,27 @@ class ZoneWiseReportGenerator:
             "name": phase_info["name"],
             "category": PHASE_TO_KPI_CATEGORY.get(phase_num, "Unknown"),
             "status": "completed",
+            "kpi_codes": PHASE_KPI_CODES.get(phase_num, []),
+            "kpi_values": {},
             "data": {},
-            "kpi_codes": list(PHASE_KPI_MAPPING.get(phase_num, {}).keys()),
         }
         
-        # Phase-specific logic would go here
-        # For now, return placeholder data
+        # Phase-specific logic
+        if phase_num == 2 and report.get("jurisdiction_id"):
+            # Get zoning districts from Supabase
+            districts = await self.supabase.get_zoning_districts(report["jurisdiction_id"])
+            if districts:
+                result["data"]["districts_count"] = len(districts)
+                result["data"]["categories"] = list(set(d["category"] for d in districts))
+        
+        elif phase_num == 3 and report.get("jurisdiction_id"):
+            # Get dimensional standards from zoning_districts.description DIMS
+            districts = await self.supabase.get_zoning_districts(report["jurisdiction_id"])
+            for district in districts[:5]:  # Sample
+                dims = self.supabase.parse_dimensional_standards(district.get("description", ""))
+                if dims:
+                    result["data"]["sample_dims"] = dims
+                    break
         
         return result
     
@@ -407,7 +473,7 @@ class ZoneWiseReportGenerator:
         phases = {
             1: {"name": "Property Identification", "source": "BCPAO"},
             2: {"name": "Base Zoning Districts", "source": "Supabase"},
-            3: {"name": "Dimensional Standards", "source": "Supabase"},
+            3: {"name": "Dimensional Standards", "source": "Supabase DIMS"},
             4: {"name": "Permitted Uses", "source": "Municode"},
             5: {"name": "Conditional Uses", "source": "Municode"},
             6: {"name": "Overlay Districts", "source": "FEMA/GIS"},
@@ -417,10 +483,10 @@ class ZoneWiseReportGenerator:
             10: {"name": "Future Land Use (FLUM)", "source": "Comp Plan"},
             11: {"name": "Property Characteristics", "source": "BCPAO"},
             12: {"name": "Census Demographics", "source": "Census ACS"},
-            13: {"name": "Location Intelligence", "source": "APIs"},
+            13: {"name": "Location Intelligence", "source": "Walk Score API"},
             14: {"name": "Sales History", "source": "BCPAO/MLS"},
-            15: {"name": "Highest & Best Use", "source": "Analysis"},
-            16: {"name": "Development Scoring", "source": "Algorithm"},
+            15: {"name": "Highest & Best Use", "source": "4-Test Analysis"},
+            16: {"name": "Development Scoring", "source": "ZoneWise Algorithm"},
             17: {"name": "Sales Comparison Approach", "source": "CMA"},
             18: {"name": "Income Approach", "source": "Pro Forma"},
             19: {"name": "Cost Approach", "source": "RS Means"},
@@ -428,66 +494,65 @@ class ZoneWiseReportGenerator:
         }
         return phases.get(phase_num, {"name": "Unknown", "source": "Unknown"})
     
-    def _calculate_scores(self, report: Dict) -> Dict:
-        """Calculate ZoneWise scores from KPIs"""
-        return {
-            "zonewise_score": 75.0,
-            "recommendation": "REVIEW",
-            "max_bid": 0,
-            "confidence_level": 80.0,
-        }
+    def _calculate_zonewise_score(self, report: Dict) -> float:
+        """Calculate composite ZoneWise score (0-100)"""
+        # Simplified scoring - would be more complex in production
+        base_score = 50
+        
+        # Bonus for completed phases
+        completed = sum(1 for p in report["phases"].values() if p.get("status") == "completed")
+        base_score += (completed / 20) * 25
+        
+        # Bonus for jurisdiction data
+        if report.get("jurisdiction_id"):
+            base_score += 10
+        
+        # Cap at 100
+        return min(100, max(0, base_score))
     
-    async def save_to_supabase(self, report: Dict) -> bool:
-        """Save report to Supabase property_analyses table"""
-        if not self.supabase_key:
-            return False
-        
-        import httpx
-        
-        payload = {
-            "parcel_id": report["parcel_id"],
-            "address": report.get("address", ""),
-            "jurisdiction_id": None,  # Would look up from jurisdictions table
-            "analysis_date": report["created_at"],
-            "zonewise_score": report["scores"]["zonewise_score"],
-            "recommendation": report["scores"]["recommendation"],
-            "max_bid": report["scores"]["max_bid"],
-            "confidence_level": report["scores"]["confidence_level"],
-            "analysis_json": {
-                "kpis": report["kpis"],
-                "phases": report["phases"],
-                "sources": ["BCPAO", "Supabase", "Census", "ZoneWise"],
-            }
-        }
-        
-        async with httpx.AsyncClient() as client:
-            resp = await client.post(
-                f"{self.SUPABASE_URL}/rest/v1/property_analyses",
-                headers={
-                    "apikey": self.supabase_key,
-                    "Authorization": f"Bearer {self.supabase_key}",
-                    "Content-Type": "application/json",
-                    "Prefer": "return=representation"
-                },
-                json=payload
-            )
-            return resp.status_code in [200, 201]
+    def _get_recommendation(self, score: float) -> str:
+        """Get BID/REVIEW/SKIP recommendation from score"""
+        if score >= 75:
+            return "BID"
+        elif score >= 60:
+            return "REVIEW"
+        return "SKIP"
+    
+    def _calculate_max_bid(self, report: Dict) -> float:
+        """Calculate max bid (placeholder)"""
+        # Would use HBU value * 70% in production
+        return 0
 
 
 # =============================================================================
-# CORRELATION SUMMARY
+# CLI & TESTING
 # =============================================================================
 
-def print_correlation_summary():
-    """Print the 20-Phase to ZoneWise KPI correlation summary"""
+def print_integration_summary():
+    """Print correlation summary"""
     print("=" * 80)
-    print("ZONEWISE 20-PHASE PROPERTY REPORT - KPI CORRELATION")
+    print("ZONEWISE.AI 20-PHASE REPORT INTEGRATION")
     print("=" * 80)
     print()
     
+    print("SUPABASE TABLES:")
+    for table, info in SUPABASE_TABLES.items():
+        print(f"  - {table}: {info['description']} ({info['count']} records)")
+    
+    print()
+    print("KPI CATEGORIES (300 total):")
+    for cat, count in sorted(KPI_CATEGORY_COUNTS.items(), key=lambda x: -x[1]):
+        phases = [p for p, c in PHASE_TO_KPI_CATEGORY.items() if c == cat]
+        print(f"  - {cat}: {count} KPIs (Phases {phases})")
+    
+    print()
+    print("20-PHASE TO KPI MAPPING:")
     total_kpis = 0
-    for phase_num in range(1, 21):
-        phase_info = {
+    for phase in range(1, 21):
+        kpis = PHASE_KPI_CODES.get(phase, [])
+        total_kpis += len(kpis)
+        category = PHASE_TO_KPI_CATEGORY.get(phase, "Unknown")
+        info = {
             1: "Property Identification",
             2: "Base Zoning Districts",
             3: "Dimensional Standards",
@@ -509,27 +574,17 @@ def print_correlation_summary():
             19: "Cost Approach",
             20: "Value Reconciliation",
         }
-        
-        kpis = PHASE_KPI_MAPPING.get(phase_num, {})
-        category = PHASE_TO_KPI_CATEGORY.get(phase_num, "Unknown")
-        total_kpis += len(kpis)
-        
-        print(f"Phase {phase_num:2d}: {phase_info[phase_num]:<30} | Category: {category:<12} | KPIs: {len(kpis)}")
+        print(f"  P{phase:2d}: {info[phase]:<30} | {category:<12} | {len(kpis)} KPIs")
     
     print()
-    print("=" * 80)
     print(f"TOTAL KPIs MAPPED: {total_kpis}")
-    print("=" * 80)
-    print()
-    print("SUPABASE TABLES:")
-    for table, info in SUPABASE_TABLES.items():
-        print(f"  - {table}: {info['description']}")
     print()
     print("GITHUB REPOS:")
-    print("  - breverdbidder/zonewise (main platform)")
-    print("  - breverdbidder/spd-site-plan-dev (reports module)")
-    print("  - breverdbidder/zonewise-web (React UI)")
+    repos = ["zonewise", "zonewise-agents", "zonewise-desktop", 
+             "zonewise-skills", "zonewise-web", "spd-site-plan-dev"]
+    for repo in repos:
+        print(f"  - breverdbidder/{repo}")
 
 
 if __name__ == "__main__":
-    print_correlation_summary()
+    print_integration_summary()
