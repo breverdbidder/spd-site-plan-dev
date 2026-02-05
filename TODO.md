@@ -1,5 +1,15 @@
 # SPD Site Plan Development - Agentic AI Pipeline
 
+## 🔴 PRIORITY: Claude-Mem Pilot (Feb 3-17, 2026)
+- [ ] Install Claude-Mem plugin (`/plugin marketplace add thedotmack/claude-mem`)
+- [ ] Run CLAUDE_MEM_PILOT_MISSION.md (docs/claude-code-missions/)
+- [ ] Validate ≥5 observations captured in .claude-mem/
+- [ ] Security audit: zero credential leaks
+- [ ] Cross-session recall test
+- [ ] Generate pilot-results.md
+- [ ] Decision: ADOPT / EXTEND / REJECT / HYBRID
+
+
 ## Architecture
 - **Stack:** Same as BidDeed.AI (GitHub + Supabase + Cloudflare + LangGraph)
 - **Repo:** github.com/breverdbidder/spd-site-plan-dev
