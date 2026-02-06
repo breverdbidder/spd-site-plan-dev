@@ -120,6 +120,18 @@
       "zoning_source": "Palm Bay GIS live query Feb 6, 2026",
       "critical_constraints": [
         {
+          "type": "HOA CC&Rs — Multifamily Likely Prohibited",
+          "impact": "Sandy Pines Preserve is gated HOA community (all 1-2 story SF/townhome). CC&Rs almost certainly prohibit 3-4 story multifamily.",
+          "severity": "POTENTIAL FATAL",
+          "source": "HOA corporate research Feb 6, 2026"
+        },
+        {
+          "type": "No Sewer Available",
+          "impact": "Palm Bay GIS confirms Sewer_Avail=NO, Water_Avail=NO. Not in any SANC/WANC phase. Septic likely infeasible for multifamily near wellhead.",
+          "severity": "HIGH",
+          "source": "Palm Bay GIS SWANC_Not_Impacted layer Feb 6, 2026"
+        },
+        {
           "type": "Wellhead Protection Easement",
           "radius_ft": 200,
           "impact": "47% of parcel encumbered",
@@ -171,6 +183,13 @@
         }
       ],
       "stages_completed_continued": [
+        {
+          "stage": "4A",
+          "name": "Setbacks & Buildable Envelope (Feb 2026)",
+          "status": "COMPLETED",
+          "completed_at": "2026-02-06T20:00:00Z",
+          "findings": "PUD setbacks defined by PUD ordinance (not code). RM-15 fallback: height-based setbacks. At 3-story (35ft), net buildable after setbacks + wellhead = 11,325 sf (0.26 ac, 23.3%). At 4-story (40ft): 9,861 sf (0.23 ac, 20.3%). Parking in wellhead zone: ~63 spaces possible."
+        },
         {
           "stage": 3,
           "name": "Environmental Review (Feb 2026)",
@@ -228,7 +247,7 @@
           "status": "PENDING"
         }
       ],
-      "next_action": "Obtain PUD ordinance (321-733-3042), verify sewer availability (321-952-3420), review HOA CC&Rs, commission wetland delineation + flood study",
+      "next_action": "CRITICAL: Obtain CC&Rs (OR Book 3636/2327) to confirm if multifamily prohibited. Call PBUD (321-952-3420) to confirm sewer status. Obtain PUD ordinance (321-733-3042). Assess project viability before spending on wetland delineation/flood study.",
       "created_at": "2025-12-16T14:00:00Z",
       "updated_at": "2026-02-06T19:00:00Z"
     },
@@ -386,6 +405,12 @@
     }
   ],
   "recent_decisions": [
+    {
+      "date": "2026-02-06",
+      "project": "SPD-2025-002",
+      "decision": "TWO NEW CRITICAL CONSTRAINTS DISCOVERED: (1) HOA CC&Rs almost certainly prohibit multifamily — community is all 1-2 story SF/townhome. (2) Palm Bay GIS confirms Sewer_Avail=NO, Water_Avail=NO for this parcel. Also completed setbacks analysis: at 3-story, net buildable after setbacks + wellhead = only 11,325 sf (23.3% of parcel).",
+      "rationale": "Total constraint count now FIVE: wellhead easement + Zone A flood + NWI wetland + HOA CC&Rs (potential fatal) + no sewer. Combined with $77K-$203K environmental costs exceeding $55K land value, feasibility is severely compromised. Must obtain CC&Rs before any further expenditure."
+    },
     {
       "date": "2026-02-06",
       "project": "SPD-2025-002",

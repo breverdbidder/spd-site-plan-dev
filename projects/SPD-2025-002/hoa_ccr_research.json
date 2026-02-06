@@ -1,0 +1,144 @@
+{
+  "project_id": "SPD-2025-002",
+  "project_name": "Sandy Pines Multifamily",
+  "research_type": "HOA CC&R Research",
+  "completed_at": "2026-02-06T20:00:00Z",
+  "executed_by": "claude-code-opus-4.6",
+  "status": "COMPLETED — CC&Rs NOT OBTAINED (require manual retrieval)",
+
+  "ccr_availability": {
+    "documents_found_online": false,
+    "declaration_reference": "OR Book 3636, Page 2327 (from legal description)",
+    "amendment_reference": "OR Book 3731, Page 2000 (from legal description)",
+    "plat_references": ["Plat Book 32, Page 78 (original)", "Plat Book 44, Pages 78-79 (Sandy Pines Preserve)"],
+    "retrieval_methods": [
+      "Brevard County Clerk — AcclaimWeb (browser-based): vaclmweb1.brevardclerk.us",
+      "Brevard County Clerk — email: acclaimuseradmin@brevardclerk.us, fax: (321) 264-5246",
+      "Leland Management — (407) 447-9955 (management company for Phase 1&2)",
+      "BCPAO plat maps — bcpao.us/PublicData.aspx (Plat Book 32/78 and 44/78-79)"
+    ],
+    "hoa_portal": "sandypineshoa.com (FrontSteps platform — documents behind login)"
+  },
+
+  "hoa_corporate_structure": {
+    "total_entities": 3,
+    "entities": [
+      {
+        "name": "Sandy Pines Preserve Homeowners Association, Inc. (Phases 1 & 2)",
+        "sunbiz_filing": "N97000006305",
+        "ein": "59-3484643",
+        "incorporated": "1997-11-07",
+        "status": "Active",
+        "management_company": "Leland Management, Inc.",
+        "management_phone": "(407) 447-9955",
+        "management_license": "CAB2223",
+        "management_address": "6972 Lake Gloria Blvd, Orlando, FL 32822",
+        "management_website": "lelandmanagement.com",
+        "principal_address": "2395 Sandy Pines Dr, Palm Bay, FL 32905",
+        "clubhouse_phone": "(321) 728-0514",
+        "clubhouse_address": "2300 Sandy Pines Dr NE, Palm Bay, FL 32905",
+        "board_president": "Robert Ciampa",
+        "board_vp": "Ian Weaver",
+        "board_treasurer": "Ronald Lubrat",
+        "governs_parcel": "MOST LIKELY — parcel address (2165) is within Phase 1&2 range"
+      },
+      {
+        "name": "Sandy Pines Preserve HOA Phases Three and Four, Inc.",
+        "sunbiz_filing": "N01000002407",
+        "ein": "59-3721171",
+        "incorporated": "2001-04-05",
+        "status": "Active",
+        "management_company": "Artemis Lifestyles Services, Inc.",
+        "principal_address": "1631 E. Vine Street, Kissimmee, FL 34744",
+        "board_president": "Michael Owings"
+      },
+      {
+        "name": "The Courtyards at Sandy Pines Preserve HOA, Inc.",
+        "sunbiz_filing": "N99000003017",
+        "ein": "59-3629250",
+        "incorporated": "1999-05-14",
+        "status": "Active",
+        "management_company": "Sentry Management, Inc.",
+        "management_phone": "(407) 788-6700",
+        "management_license": "CAB14",
+        "board_president": "Livia Korol"
+      }
+    ]
+  },
+
+  "community_profile": {
+    "type": "Gated community with security access",
+    "year_built": "1998-2003",
+    "housing_types": ["Single-family detached (1-2 story)", "Townhomes (1-2 story)"],
+    "multifamily_buildings_exist": false,
+    "home_sizes_sqft": { "min": 1176, "max": 2862, "median": 1491 },
+    "bedrooms": "3-5",
+    "amenities": ["Heated community pool", "Clubhouse", "BBQ area", "Walking trails", "Parks", "Private storage"],
+    "included_services": ["Weekly lawn service", "Fertilization", "Reclaimed water irrigation"],
+    "hoa_fees_phase1_2": "$246/quarter (~$82/month)",
+    "hoa_fees_courtyards": "~$135/month",
+    "median_sale_price_phase1_2": 268250,
+    "median_sale_price_courtyards": 225000
+  },
+
+  "multifamily_feasibility_assessment": {
+    "multifamily_permitted": "ALMOST CERTAINLY NO",
+    "confidence": "HIGH (based on circumstantial evidence — CC&Rs not yet reviewed)",
+    "evidence_against": [
+      "All existing structures across all phases are single-family detached or small townhomes (1-2 story)",
+      "HOA incorporated under FL Chapter 720 (Homeowners Association Act) — NOT a condo association",
+      "No apartments, condos, or multifamily buildings appear in any listing for this community",
+      "Real estate listings universally describe 'single-family residences' and 'townhomes'",
+      "Typical late-1990s gated community CC&Rs restrict to single-family/townhome use types"
+    ],
+    "density_restrictions": "UNKNOWN without CC&Rs — but per-lot density limits almost certainly exist",
+    "height_limits": "UNKNOWN without CC&Rs — typical for this era: 25-35 ft (1-2 story) max",
+    "architectural_review": "HIGHLY LIKELY — standard for gated HOA communities of this vintage",
+    "three_four_story_building": "ALMOST CERTAINLY PROHIBITED by CC&Rs based on community character"
+  },
+
+  "critical_implication": "If the CC&Rs prohibit multifamily construction (which is highly likely), the proposed 3-4 story multifamily development CANNOT proceed unless: (1) the CC&Rs are amended by HOA vote (typically requires 75% supermajority), or (2) the parcel is legally separated from the HOA jurisdiction (unlikely given PUD zoning). This is a potential FATAL CONSTRAINT independent of the zoning, environmental, and utility issues.",
+
+  "action_items": [
+    {
+      "priority": 1,
+      "action": "Obtain CC&Rs from Brevard County Clerk",
+      "document": "OR Book 3636, Page 2327",
+      "method": "AcclaimWeb browser session or email acclaimuseradmin@brevardclerk.us",
+      "purpose": "Confirm whether multifamily is prohibited, and what use restrictions apply to this lot"
+    },
+    {
+      "priority": 2,
+      "action": "Contact Leland Management for governing documents",
+      "phone": "(407) 447-9955",
+      "reference": "Sandy Pines Preserve Phases 1&2, Filing N97000006305",
+      "purpose": "Request full CC&R package including amendments, ARC guidelines, and rules"
+    },
+    {
+      "priority": 3,
+      "action": "Download plat maps from BCPAO",
+      "url": "bcpao.us/PublicData.aspx",
+      "documents": ["Plat Book 32, Page 78", "Plat Book 44, Pages 78-79"],
+      "purpose": "Confirm lot layout, tract designations, and utility easements"
+    },
+    {
+      "priority": 4,
+      "action": "Determine if parcel can be separated from HOA",
+      "method": "Legal review of CC&Rs + consultation with real estate attorney",
+      "purpose": "Assess whether the unplatted parcel is legally bound by the Sandy Pines Preserve CC&Rs"
+    }
+  ],
+
+  "data_sources": {
+    "sunbiz": "Florida Division of Corporations — sunbiz.org",
+    "bisprofiles": "bisprofiles.com — FL corporate filing data",
+    "neighborhoods_com": "neighborhoods.com — Sandy Pines Preserve community profiles",
+    "hoa_directories": ["homeowners-associations-florida.com", "hoa-resource.com", "hoa-community.com"],
+    "fl_community_network": "floridacommunitynetwork.net",
+    "brevard_clerk": "brevardclerk.us — Official Records",
+    "bcpao": "bcpao.us — Property data and plat maps"
+  },
+
+  "creator": "Claude Code (Opus 4.6)",
+  "organization": "Everest Capital USA"
+}

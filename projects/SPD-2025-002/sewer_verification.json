@@ -1,0 +1,122 @@
+{
+  "project_id": "SPD-2025-002",
+  "project_name": "Sandy Pines Multifamily",
+  "research_type": "Sewer Availability Verification",
+  "completed_at": "2026-02-06T20:00:00Z",
+  "executed_by": "claude-code-opus-4.6",
+  "status": "COMPLETED",
+
+  "primary_finding": {
+    "sewer_available": false,
+    "water_available": false,
+    "source": "Palm Bay GIS — SWANC_Not_Impacted/MapServer/0",
+    "objectid": 75229,
+    "raw_response": {
+      "Address": "2165 SANDY PINES DR NE",
+      "Water_Avail": "NO",
+      "Sewer_Avail": "NO",
+      "Water_Conn": "N",
+      "Sewer_Conn": "N",
+      "WANC_Phase": null,
+      "SANC_Phase": null,
+      "Message": "Sewer: Not impacted / Water: Not impacted",
+      "Shape_STArea": 48380.08,
+      "TN_Load_Me": 2.968519529
+    },
+    "interpretation": "'Not impacted' means the property is NOT designated as SANC or WANC — it is not in any phase of the mandatory sewer/water connection program. No city sewer or water main is readily available at the property line."
+  },
+
+  "neighbor_comparison": {
+    "source": "Palm Bay GIS SWANC_Not_Impacted layer, Sandy Pines Dr addresses",
+    "parcels": [
+      { "address": "2153 Sandy Pines Dr NE", "water": "YES", "sewer": "YES", "water_conn": "Y", "sewer_conn": "N" },
+      { "address": "2165 Sandy Pines Dr NE", "water": "NO", "sewer": "NO", "water_conn": "N", "sewer_conn": "N", "note": "TARGET PARCEL" },
+      { "address": "2240 Sandy Pines Dr NE", "water": "YES", "sewer": "YES", "water_conn": "N", "sewer_conn": "N" },
+      { "address": "2260 Sandy Pines Dr NE", "water": "YES", "sewer": "YES", "water_conn": "N", "sewer_conn": "N" },
+      { "address": "2300 Sandy Pines Dr NE", "water": "YES", "sewer": "YES", "water_conn": "Y", "sewer_conn": "Y", "note": "Likely HOA clubhouse — fully connected" },
+      { "address": "2401 Sandy Pines Dr NE", "water": "NO", "sewer": "NO", "water_conn": "N", "sewer_conn": "N" }
+    ],
+    "pattern": "Only 2165 and 2401 lack utility availability on Sandy Pines Dr. All other parcels (2153, 2240, 2260, 2300) have both water and sewer available. Sewer main likely runs along Sandy Pines Dr but does NOT extend to this parcel's frontage."
+  },
+
+  "hammock_rd_analysis": {
+    "street": "Hammock Rd SE (adjacent street within Sandy Pines Preserve)",
+    "total_parcels": 59,
+    "water_available_yes": 58,
+    "water_available_no": 1,
+    "sewer_available_yes": 0,
+    "sewer_available_no": 59,
+    "finding": "ALL 59 parcels on Hammock Rd have NO sewer. The entire Hammock Rd corridor is on septic. Most have city water but none have city sewer."
+  },
+
+  "sanc_wanc_phase_queries": {
+    "sanc_phase_1_within_1500ft": 0,
+    "sanc_phase_2_within_500ft": 0,
+    "sanc_phase_3_within_500ft": 0,
+    "sanc_phase_4_within_500ft": 0,
+    "wanc_within_1500ft": 0,
+    "conclusion": "Parcel is NOT in any SANC or WANC phase. Not scheduled for mandatory connection."
+  },
+
+  "capital_improvement_projects": {
+    "wastewater_improvements_within_2000ft": 0,
+    "acp_pipes_cip_areas_within_2000ft": 0,
+    "improvement_areas_within_2000ft": 0,
+    "proposed_water_mains_within_2000ft": 0,
+    "conclusion": "No planned sewer or water infrastructure improvements near this parcel."
+  },
+
+  "brevard_county_utility_services": {
+    "south_central_sewer": "NOT in Brevard County sewer service area",
+    "note": "Palm Bay operates its own utility system separate from Brevard County Utilities."
+  },
+
+  "mandatory_connection_ordinance": {
+    "ordinance": "2023-101 (adopted November 2, 2023)",
+    "sanc_parcels_citywide": 1066,
+    "wanc_parcels_citywide": 2344,
+    "total_septic_in_palm_bay": 40000,
+    "phase_timeline": "Summer 2024 through 2027",
+    "connection_deadline": "1 year from written notification",
+    "fee_waivers": { "sewer": 5670, "water": 3553 },
+    "applicability_to_this_parcel": "Does NOT apply — parcel is Sewer_Avail: NO and SANC_Phase: null"
+  },
+
+  "water_availability_paradox": {
+    "finding": "Despite a city wellhead being within 200 ft of the parcel (wellhead protection easement covers 47%), the Palm Bay GIS designates this parcel as Water_Avail: NO.",
+    "possible_explanations": [
+      "The wellhead is a raw water production well — its supply goes to a treatment plant, not directly to distribution mains",
+      "The water distribution main may not extend to this parcel's frontage despite the wellhead proximity",
+      "The parcel's unplatted/undeveloped status may not have been evaluated for utility availability"
+    ],
+    "note": "This does not necessarily mean water cannot be connected — it means a water main is not 'readily available' at the property line per the city's current assessment."
+  },
+
+  "sewer_development_implications": {
+    "if_no_sewer": {
+      "septic_feasibility": "LIKELY INFEASIBLE for multifamily — (1) 1.11 acres tight for multi-unit septic, (2) wellhead protection easement prohibits septic near well, (3) entire parcel in Zone A flood zone complicates drainfield design",
+      "sewer_extension_cost": "$50-$100 per linear foot (typical Palm Bay main extension)",
+      "sewer_extension_note": "Distance to nearest sewer main unknown — may be at 2153 Sandy Pines Dr (adjacent parcel). Cost highly dependent on distance, terrain, and road crossings."
+    },
+    "action_required": "Contact Palm Bay Utilities at (321) 952-3420 to: (1) confirm sewer availability status, (2) request formal utility availability letter, (3) determine sewer main extension cost if required"
+  },
+
+  "confidence_assessment": {
+    "sewer_not_available": "85% — based on City's own GIS designation",
+    "uncertainty_source": "Immediate neighbors (2153, 2240, 2260, 2300) DO have sewer, suggesting the main may be nearby but not extended to this parcel's frontage. GIS data may be outdated for this vacant lot.",
+    "verification_url": "www.pbfl.org/s2s — click front lot line for estimated connection costs"
+  },
+
+  "data_sources": {
+    "primary": "Palm Bay GIS — SWANC_Not_Impacted/MapServer/0 (parcel-level sewer/water availability)",
+    "sanc_phases": "Palm Bay GIS — SANC_Phases/MapServer, SANC_Phases_Polys/MapServer",
+    "wanc_phases": "Palm Bay GIS — WANC_Phases/MapServer, WANC_Phases_Polys/MapServer",
+    "cip": "Palm Bay GIS — Capital_Improvement_Projects__CIPs/MapServer",
+    "brevard_county": "Brevard County GIS — Utility_Services/Service_Area_WKID2881/MapServer",
+    "ordinance": "Palm Bay Code — codelibrary.amlegal.com (mandatory connection, Chapter 201)",
+    "gis_catalog": "gis.palmbayflorida.org/arcgis/rest/services (48 services, 19 folders)"
+  },
+
+  "creator": "Claude Code (Opus 4.6)",
+  "organization": "Everest Capital USA"
+}

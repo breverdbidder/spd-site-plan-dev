@@ -1,0 +1,192 @@
+{
+  "project_id": "SPD-2025-002",
+  "project_name": "Sandy Pines Multifamily",
+  "stage": "4A",
+  "stage_name": "Setbacks & Buildable Envelope Calculation",
+  "completed_at": "2026-02-06T20:00:00Z",
+  "executed_by": "claude-code-opus-4.6",
+  "status": "COMPLETED",
+
+  "parcel_dimensions": {
+    "north_ft": 200.00,
+    "east_ft": 277.15,
+    "south_arc_ft": 214.67,
+    "south_curve_radius_ft": 1036.12,
+    "west_ft": 200.00,
+    "total_area_sf": 48516,
+    "total_area_acres": 1.114
+  },
+
+  "pud_setback_standards": {
+    "code_section": "Chapter 173, Section 173.068",
+    "finding": "Palm Bay PUD setbacks are NOT fixed numeric values in the code. Per Section 173.068, setbacks must be 'compatible with surrounding existing development' and 'in compliance with the underlying zoning requirements portrayed in the PDP.' The actual PUD ordinance for Sandy Pines Preserve defines the setbacks.",
+    "pud_height_limit": "No structure shall exceed 200 ft unless Council approves (Sec. 173.068). Underlying RM-15 limits to 40 ft.",
+    "pud_open_space": "Minimum 25% of gross site acreage dedicated to common recreation and open space (Sec. 173.070). Parking, roads, minimum yards, and building spacing do NOT count toward open space.",
+    "source": "codelibrary.amlegal.com/codes/palmbay — Sections 173.061-173.086"
+  },
+
+  "rm15_fallback_standards": {
+    "code_section": "Section 185.037",
+    "note": "Used as fallback baseline since PUD ordinance not yet obtained and HDR FLU aligns with RM-15",
+    "max_density_du_per_acre": 15,
+    "max_building_height_ft": 40,
+    "setbacks": {
+      "front": "25 ft minimum, OR building height, whichever is greater",
+      "side_interior": "15 ft minimum, OR building height, whichever is greater",
+      "side_corner": "25 ft minimum, OR building height, whichever is greater",
+      "rear": "25 ft minimum, OR building height, whichever is greater"
+    },
+    "parking_setback_ft": 10,
+    "building_separation_ft": 30,
+    "perimeter_fence_required": true,
+    "perimeter_fence_height_ft": 6
+  },
+
+  "rm20_reference_standards": {
+    "code_section": "Section 185.038",
+    "max_density_du_per_acre": 20,
+    "setbacks": "Identical to RM-15 (front 25/height, side 15/height, corner 25/height, rear 25/height)",
+    "building_separation_ft": 30,
+    "parking_setback_ft": 10,
+    "height_variation_rule": "Buildings 4+ stories: 15% of roofline must have 10-ft height variation"
+  },
+
+  "multifamily_facade_standards": {
+    "code_section": "Section 173.031",
+    "up_to_100ft_length": "At least 15% of facade must vary by at least 5 ft",
+    "over_100ft_length": "2+ portions must vary by at least 5 ft, totaling at least 15%"
+  },
+
+  "yard_classification": {
+    "south_sandy_pines_dr": { "classification": "FRONT", "reason": "Road frontage" },
+    "north_tract_d": { "classification": "REAR", "reason": "Away from road, adjacent to preserve" },
+    "east_tract_o": { "classification": "SIDE (interior)", "reason": "Adjacent to preserve tract" },
+    "west_tract_d": { "classification": "SIDE (interior)", "reason": "Adjacent to preserve tract" }
+  },
+
+  "setbacks_by_height_scenario": {
+    "note": "RM-15 rule: setback = MAX(minimum, building_height). At 3+ stories, building height controls all setbacks except possibly front.",
+    "scenarios": [
+      {
+        "height": "2-story (25 ft)",
+        "front_south_ft": 25,
+        "side_east_ft": 25,
+        "side_west_ft": 25,
+        "rear_north_ft": 25
+      },
+      {
+        "height": "3-story (35 ft)",
+        "front_south_ft": 35,
+        "side_east_ft": 35,
+        "side_west_ft": 35,
+        "rear_north_ft": 35
+      },
+      {
+        "height": "4-story (40 ft)",
+        "front_south_ft": 40,
+        "side_east_ft": 40,
+        "side_west_ft": 40,
+        "rear_north_ft": 40
+      }
+    ]
+  },
+
+  "buildable_envelope": {
+    "method": "Setback offsets from each boundary, then intersect with wellhead easement exclusion zone",
+    "gross_buildable_setbacks_only": {
+      "note": "Area remaining after setbacks, BEFORE wellhead easement exclusion",
+      "two_story_25ft": { "area_sf": 29641, "pct_of_parcel": 61.1 },
+      "three_story_35ft": { "area_sf": 23125, "pct_of_parcel": 47.7 },
+      "four_story_40ft": { "area_sf": 20168, "pct_of_parcel": 41.6 }
+    },
+    "net_buildable_with_wellhead": {
+      "note": "Area remaining after BOTH setbacks AND wellhead easement (47% west exclusion). Building zone is trapezoidal in eastern portion of parcel — wider at south (road frontage), narrowing north due to wellhead arc.",
+      "two_story_25ft": {
+        "area_sf": 14555,
+        "area_acres": 0.334,
+        "pct_of_parcel": 30.0,
+        "effective_width_north_ft": 50,
+        "effective_width_south_ft": 104,
+        "average_width_ft": 77,
+        "average_depth_ft": 189
+      },
+      "three_story_35ft": {
+        "area_sf": 11325,
+        "area_acres": 0.260,
+        "pct_of_parcel": 23.3,
+        "effective_width_north_ft": 40,
+        "effective_width_south_ft": 94,
+        "average_width_ft": 67,
+        "average_depth_ft": 169
+      },
+      "four_story_40ft": {
+        "area_sf": 9861,
+        "area_acres": 0.226,
+        "pct_of_parcel": 20.3,
+        "effective_width_north_ft": 35,
+        "effective_width_south_ft": 89,
+        "average_width_ft": 62,
+        "average_depth_ft": 159
+      }
+    }
+  },
+
+  "parking_in_wellhead_zone": {
+    "wellhead_zone_total_sf": 22803,
+    "parking_setback_ft": 10,
+    "usable_parking_area_sf": 17100,
+    "estimated_spaces_at_270sf": 63,
+    "note": "Parking IS permitted within the wellhead easement zone (survey annotates 'PARKING' there). Only buildings/structures are prohibited. 10-ft parking setback from property lines applies."
+  },
+
+  "density_calculations": {
+    "rm15_at_15_du_per_acre": { "gross_area_acres": 1.114, "max_units": 16 },
+    "rm20_at_20_du_per_acre": { "gross_area_acres": 1.114, "max_units": 22 },
+    "note": "Density is calculated from gross parcel area, NOT net buildable area. PUD ordinance controls actual permitted density."
+  },
+
+  "open_space_requirement": {
+    "code_section": "Section 173.070",
+    "required_pct": 25,
+    "required_sf": 12129,
+    "required_acres": 0.278,
+    "wellhead_zone_available_sf": 22803,
+    "assessment": "The wellhead easement zone (22,803 sf), if designated as passive recreation/open space with landscaping and trails, can satisfy the entire 25% open space requirement. However, any portion used for parking does NOT count toward open space.",
+    "parking_vs_open_space_tradeoff": "Must balance parking needs (min ~63 spaces needed for 16-22 units) against open space requirements. May need to designate some wellhead zone as open space and locate all parking on remainder."
+  },
+
+  "building_footprint_feasibility": {
+    "three_story_35ft_scenario": {
+      "net_buildable_sf": 11325,
+      "typical_building_footprint_8_units": "4,000 - 5,000 sf (8 units × 900 sf avg ÷ 3 floors = ~2,400 sf/floor + corridors/stairs)",
+      "fits": true,
+      "max_units_estimate": "8-10 units in a single 3-story building"
+    },
+    "four_story_40ft_scenario": {
+      "net_buildable_sf": 9861,
+      "typical_building_footprint_12_units": "3,000 - 4,000 sf (12 units × 900 sf avg ÷ 4 floors = ~2,700 sf/floor + corridors/stairs)",
+      "fits": true,
+      "max_units_estimate": "10-14 units in a single 4-story building"
+    },
+    "note": "Actual unit count depends on PUD ordinance density cap, unit size mix, and building code requirements (egress, ADA, fire separation)."
+  },
+
+  "critical_caveats": [
+    "PUD ordinance controls actual setbacks — these RM-15 values are fallback estimates",
+    "The building-height-equals-setback rule severely limits buildable area at 3-4 stories",
+    "Wellhead easement boundary positions (125 ft at north, 85 ft at south from NW corner) are approximate — precise survey needed",
+    "Lot coverage maximum not explicitly codified for RM-15 multifamily — governed by setbacks + open space + parking",
+    "Curved front setback follows concentric arc at R=1011.12 ft (original R minus 25 ft) — ~0.5 ft sagitta difference, negligible"
+  ],
+
+  "data_sources": {
+    "pud_standards": "codelibrary.amlegal.com — Sections 173.061-173.086 (PUD District Regulations)",
+    "rm15_standards": "codelibrary.amlegal.com — Section 185.037 (RM-15 District)",
+    "rm20_standards": "codelibrary.amlegal.com — Section 185.038 (RM-20 District)",
+    "facade_standards": "codelibrary.amlegal.com — Section 173.031 (Multi-Family Dwelling Standards)",
+    "site_dimensions": "site_dimensions.json (traverse calculation from survey)"
+  },
+
+  "creator": "Claude Code (Opus 4.6)",
+  "organization": "Everest Capital USA"
+}
