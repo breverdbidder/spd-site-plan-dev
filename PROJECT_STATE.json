@@ -1,6 +1,6 @@
 {
   "version": "1.1.0",
-  "last_updated": "2026-02-06T16:00:00Z",
+  "last_updated": "2026-02-06T22:30:00Z",
   "modules": {
     "spd_pipeline": {
       "version": "1.0.13",
@@ -109,12 +109,13 @@
       "parcel_acres": 1.065,
       "buildable_area_sf": 24394,
       "buildable_acres": 0.56,
-      "current_stage": 10,
-      "stage_name": "ML Feasibility Score",
-      "status": "IN_PROGRESS",
-      "ml_score": 58.5,
-      "ml_grade": "C",
-      "recommendation": "HOLD_PENDING_PUD_REVIEW",
+      "current_stage": 12,
+      "stage_name": "Archive",
+      "status": "COMPLETED — ALL 12 STAGES",
+      "ml_score": 32.0,
+      "ml_grade": "F",
+      "recommendation": "HOLD_CONDITIONAL_NO_GO",
+      "financial_feasibility": "NOT FEASIBLE — dev cost ($3.79M) exceeds stabilized value ($1.93M) by 2x",
       "zoning": "PUD (Planned Unit Development)",
       "future_land_use": "HDR (High Density Residential)",
       "zoning_source": "Palm Bay GIS live query Feb 6, 2026",
@@ -149,7 +150,7 @@
           "source": "NWI query Feb 6, 2026"
         }
       ],
-      "highest_best_use": "UNDER REVIEW — PUD ordinance needed before feasibility determination",
+      "highest_best_use": "LAND BANK or SELL — multifamily not economically feasible",
       "zod_reference": true,
       "stages_completed": [
         {
@@ -212,44 +213,62 @@
           "findings": "City water AVAILABLE (wellhead within 200ft). Sewer UNCERTAIN (must verify). MTWCD jurisdiction confirmed. FPL electric. Impact fees estimated $12K-$16K per unit."
         }
       ],
-      "stages_pending": [
+      "stages_final": [
         {
-          "stage": 5,
-          "name": "Parking Analysis",
-          "status": "BLOCKED",
-          "notes": "Blocked by PUD ordinance review and parking-in-easement confirmation"
+          "stage": 6,
+          "name": "Environmental Detailed (Feb 2026)",
+          "status": "COMPLETED",
+          "completed_at": "2026-02-06T22:00:00Z",
+          "findings": "5 constraints inventoried. Environmental costs $77K-$203K (1.4x-3.7x land value). SJRWMD ERP required. Wetland mitigation $40K-$100K is largest cost."
+        },
+        {
+          "stage": 7,
+          "name": "Traffic Final (Feb 2026)",
+          "status": "COMPLETED",
+          "completed_at": "2026-02-06T22:00:00Z",
+          "findings": "ITE LU221: 50-100 ADT for 11-22 units. De minimis impact on Malabar Rd. Sandy Pines Dr is PRIVATE road — HOA approval required."
         },
         {
           "stage": 8,
-          "name": "Stormwater Analysis",
-          "status": "PENDING"
+          "name": "Permits (Feb 2026)",
+          "status": "COMPLETED",
+          "completed_at": "2026-02-06T22:00:00Z",
+          "findings": "14 permits identified across 7 agencies. CC&R review is fatal gate. SJRWMD ERP is longest lead (3-6 months). Total permit costs $30K-$66K excluding impact fees."
         },
         {
           "stage": 9,
-          "name": "Site Layout",
-          "status": "BLOCKED",
-          "notes": "Blocked by PUD ordinance, wetland delineation, and flood study"
+          "name": "Cost Estimate (Feb 2026)",
+          "status": "COMPLETED",
+          "completed_at": "2026-02-06T22:00:00Z",
+          "findings": "11-unit: $3.79M ($344K/unit). 22-unit: $7.26M ($330K/unit). NOT FEASIBLE — dev cost exceeds stabilized value ($1.93M at 6% cap) by ~2x."
         },
         {
           "stage": 10,
-          "name": "ML Feasibility Score (rescore)",
-          "status": "PENDING",
-          "notes": "Must rescore after PUD + flood + wetland constraints quantified"
+          "name": "Timeline (Feb 2026)",
+          "status": "COMPLETED",
+          "completed_at": "2026-02-06T22:00:00Z",
+          "findings": "22-28 months to CO (optimistic/realistic). 36 months worst case. Critical path: CC&Rs → PUD → wetland delineation → ERP → building permit."
         },
         {
           "stage": 11,
-          "name": "Report Generation",
-          "status": "PENDING"
+          "name": "Report Generation (Feb 2026)",
+          "status": "COMPLETED",
+          "completed_at": "2026-02-06T22:30:00Z",
+          "deliverable": "Bliss_Palm_Bay_Feasibility_Report.docx",
+          "sections": 12,
+          "recommendation": "HOLD / CONDITIONAL NO-GO"
         },
         {
           "stage": 12,
-          "name": "Archive",
-          "status": "PENDING"
+          "name": "Archive (Feb 2026)",
+          "status": "COMPLETED",
+          "completed_at": "2026-02-06T22:30:00Z"
         }
       ],
-      "next_action": "CRITICAL: Obtain CC&Rs (OR Book 3636/2327) to confirm if multifamily prohibited. Call PBUD (321-952-3420) to confirm sewer status. Obtain PUD ordinance (321-733-3042). Assess project viability before spending on wetland delineation/flood study.",
+      "next_action": "OWNER ACTION REQUIRED: (1) Obtain CC&Rs from Brevard Clerk OR Book 3636/2327, (2) Obtain PUD ordinance from Palm Bay at 321-733-3042, (3) Call PBUD 321-952-3420 to confirm sewer. If CC&Rs prohibit multifamily, KILL project for intended use and consider selling or land banking.",
       "created_at": "2025-12-16T14:00:00Z",
-      "updated_at": "2026-02-06T19:00:00Z"
+      "updated_at": "2026-02-06T22:30:00Z",
+      "completed_at": "2026-02-06T22:30:00Z"
     },
     {
       "id": "SPD-2026-001",
@@ -405,6 +424,12 @@
     }
   ],
   "recent_decisions": [
+    {
+      "date": "2026-02-06",
+      "project": "SPD-2025-002",
+      "decision": "ALL 12 STAGES COMPLETED. Stages 6-12 finalized: Environmental detailed ($77K-$203K costs), Traffic finalized (50-100 ADT de minimis), Permits (14 required across 7 agencies), Cost estimate ($3.79M for 11 units, NOT FEASIBLE — 2x stabilized value), Timeline (22-28 months to CO), DOCX Report generated (Bliss_Palm_Bay_Feasibility_Report.docx), Archive complete.",
+      "rationale": "Comprehensive analysis confirms multifamily development is NOT economically feasible. Environmental costs alone exceed land value. Five overlapping constraints create unresolvable constraint stacking. Recommendation: HOLD / CONDITIONAL NO-GO. Owner must obtain CC&Rs as fatal-gate first action."
+    },
     {
       "date": "2026-02-06",
       "project": "SPD-2025-002",

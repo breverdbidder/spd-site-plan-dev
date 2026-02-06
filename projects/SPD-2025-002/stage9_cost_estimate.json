@@ -1,0 +1,313 @@
+{
+  "project_id": "SPD-2025-002",
+  "project_name": "Sandy Pines Multifamily",
+  "stage": 9,
+  "stage_name": "Cost Estimation",
+  "completed_at": "2026-02-06T22:00:00Z",
+  "executed_by": "claude-code-opus-4.6",
+  "status": "COMPLETED",
+
+  "parcel_summary": {
+    "account_id": "2835546",
+    "address": "2165 Sandy Pines Dr NE, Palm Bay FL 32905",
+    "gross_area_acres": 1.114,
+    "gross_area_sf": 48516,
+    "net_buildable_sf_3story": 11325,
+    "net_buildable_acres_3story": 0.260
+  },
+
+  "land_cost": {
+    "bcpao_market_value_2025": 55000,
+    "acquisition_price_2023": 35100,
+    "deed_type": "Tax Deed",
+    "closing_costs_estimated": 3000,
+    "total_land_cost": 55000,
+    "note": "Using current market value as basis. Acquisition was $35,100 in 2023 via tax deed — owner has $20K equity if land value holds."
+  },
+
+  "scenario_11_units": {
+    "description": "11-unit multifamily — net buildable area at 20 du/ac on 0.56 buildable acres (after wellhead exclusion). Single 3-4 story building. Conservative scenario.",
+    "units": 11,
+    "avg_unit_sf": 900,
+    "total_living_sf": 9900,
+    "gross_building_sf": 13000,
+    "building_stories": 3,
+    "building_footprint_sf": 4333,
+
+    "hard_costs": {
+      "description": "Construction costs for 3-story wood-frame multifamily in Brevard County FL, 2025-2026 market",
+      "items": [
+        { "item": "Building construction (Type V-A wood frame, 3-story)", "unit_cost_per_sf": 175, "quantity_sf": 13000, "total": 2275000, "note": "Includes structural, MEP, interior finishes. Elevated construction premium included." },
+        { "item": "Flood zone construction premium (15-20%)", "pct": 17.5, "base": 2275000, "total": 398125, "note": "Elevated foundation (pile/column or fill), flood-resistant materials below BFE" },
+        { "item": "Site work (grading, clearing, earthwork)", "total": 75000 },
+        { "item": "Parking lot (surface, 22 spaces @ 270 sf)", "total": 55000, "note": "Within wellhead easement zone" },
+        { "item": "Stormwater management system", "total": 85000, "note": "On-site retention/detention per MTWCD 25-yr/24-hr standard" },
+        { "item": "Sewer main extension", "low": 5000, "high": 25000, "total": 15000, "note": "Estimated 150-300 LF @ $50-$100/LF to nearest main" },
+        { "item": "Water main connection", "total": 8000 },
+        { "item": "Landscaping and hardscaping", "total": 40000 },
+        { "item": "Perimeter fence (6-ft, per RM-15)", "total": 15000 },
+        { "item": "Fire protection (sprinkler system)", "total": 45000, "note": "NFPA 13R for multifamily 3-story" }
+      ],
+      "hard_cost_subtotal": 3011125,
+      "hard_cost_per_unit": 273739,
+      "hard_cost_per_sf": 232
+    },
+
+    "soft_costs": {
+      "items": [
+        { "item": "Architectural design (FL-licensed architect)", "total": 65000 },
+        { "item": "Civil/structural engineering (FL PE)", "total": 45000 },
+        { "item": "Survey and boundary verification", "total": 8000 },
+        { "item": "Geotechnical investigation", "total": 12000 },
+        { "item": "Legal (real estate attorney, HOA negotiation)", "total": 25000 },
+        { "item": "Environmental consultant package (ERP, wetland, species)", "low": 15000, "high": 40000, "total": 27500 },
+        { "item": "Flood study / BFE determination (HEC-RAS)", "low": 5000, "high": 25000, "total": 15000 },
+        { "item": "Wetland delineation", "low": 3000, "high": 8000, "total": 5500 },
+        { "item": "Listed species surveys", "low": 2000, "high": 8000, "total": 5000 },
+        { "item": "City planning/permit fees", "total": 8000 },
+        { "item": "SJRWMD ERP application fee", "total": 9000 },
+        { "item": "Building permit fee (~1.5% of construction)", "total": 45167 },
+        { "item": "Insurance (builder's risk, GL)", "total": 25000 },
+        { "item": "Project management / construction oversight", "total": 30000 },
+        { "item": "Contingency (10% of soft costs)", "total": 32517 }
+      ],
+      "soft_cost_subtotal": 357684,
+      "soft_cost_per_unit": 32517,
+      "soft_cost_pct_of_hard": 11.9
+    },
+
+    "environmental_costs": {
+      "items": [
+        { "item": "Wetland mitigation bank credits (0.3-0.5 UMAM)", "low": 40000, "high": 100000, "total": 70000 },
+        { "item": "Gopher tortoise survey/relocation (if applicable)", "low": 1500, "high": 6000, "total": 3750 },
+        { "item": "Palm Bay HCP scrub-jay fee", "total": 560 },
+        { "item": "Elevation certificates (3x)", "low": 500, "high": 6000, "total": 3000 }
+      ],
+      "environmental_subtotal": 77310,
+      "environmental_per_unit": 7028
+    },
+
+    "impact_fees": {
+      "items": [
+        { "item": "Palm Bay water impact fee", "per_erc": 3553, "erc_factor": 0.625, "per_unit": 2221, "total": 24431 },
+        { "item": "Palm Bay sewer impact fee", "per_erc": 5670, "erc_factor": 0.625, "per_unit": 3544, "total": 38984 },
+        { "item": "Brevard County transportation", "per_unit": 2381, "total": 26191, "note": "3+ story rate" },
+        { "item": "Brevard County education", "per_unit": 1941, "total": 21351 },
+        { "item": "Brevard County other (parks, fire, law enforcement)", "per_unit": 1750, "total": 19250 }
+      ],
+      "impact_fee_subtotal": 130207,
+      "impact_fee_per_unit": 11837
+    },
+
+    "financing_costs": {
+      "construction_loan_interest": 125000,
+      "loan_origination_fee": 30000,
+      "note": "Assumes 12-month construction loan at ~10% on 60% LTC. Actual terms vary by lender.",
+      "financing_subtotal": 155000
+    },
+
+    "total_development_cost_11_units": {
+      "land": 55000,
+      "hard_costs": 3011125,
+      "soft_costs": 357684,
+      "environmental": 77310,
+      "impact_fees": 130207,
+      "financing": 155000,
+      "grand_total": 3786326,
+      "per_unit": 344211,
+      "per_sf_living": 382,
+      "per_sf_gross_building": 291
+    }
+  },
+
+  "scenario_22_units": {
+    "description": "22-unit multifamily — maximum gross density at 20 du/ac on full 1.114 acres. Requires wellhead easement resolution or phased development. Two 3-4 story buildings. Aggressive scenario.",
+    "units": 22,
+    "avg_unit_sf": 850,
+    "total_living_sf": 18700,
+    "gross_building_sf": 24500,
+    "building_stories": 4,
+    "buildings": 2,
+    "building_footprint_sf_each": 3063,
+
+    "hard_costs": {
+      "items": [
+        { "item": "Building construction (Type V-A, 4-story, 2 buildings)", "unit_cost_per_sf": 185, "quantity_sf": 24500, "total": 4532500, "note": "Higher per-sf cost for 4-story (elevator, additional fire protection, height variation)" },
+        { "item": "Flood zone construction premium (17.5%)", "total": 793188 },
+        { "item": "Site work (grading, clearing, earthwork)", "total": 110000 },
+        { "item": "Parking lot (surface, 44 spaces @ 270 sf)", "total": 95000 },
+        { "item": "Stormwater management system", "total": 120000 },
+        { "item": "Sewer main extension", "total": 15000 },
+        { "item": "Water main connection", "total": 10000 },
+        { "item": "Landscaping and hardscaping", "total": 65000 },
+        { "item": "Perimeter fence (6-ft)", "total": 18000 },
+        { "item": "Fire protection (NFPA 13 for 4-story)", "total": 85000 },
+        { "item": "Elevator (1 per building, 2 total)", "total": 180000 }
+      ],
+      "hard_cost_subtotal": 6023688,
+      "hard_cost_per_unit": 273804,
+      "hard_cost_per_sf": 246
+    },
+
+    "soft_costs": {
+      "items": [
+        { "item": "Architectural design", "total": 95000 },
+        { "item": "Civil/structural engineering", "total": 65000 },
+        { "item": "Survey", "total": 8000 },
+        { "item": "Geotechnical investigation", "total": 15000 },
+        { "item": "Legal", "total": 35000 },
+        { "item": "Environmental consultant package", "total": 35000 },
+        { "item": "Flood study / BFE determination", "total": 15000 },
+        { "item": "Wetland delineation", "total": 5500 },
+        { "item": "Listed species surveys", "total": 5000 },
+        { "item": "City planning/permit fees", "total": 12000 },
+        { "item": "SJRWMD ERP application fee", "total": 9000 },
+        { "item": "Building permit fee (~1.5% of construction)", "total": 90355 },
+        { "item": "Insurance (builder's risk, GL)", "total": 40000 },
+        { "item": "Project management", "total": 50000 },
+        { "item": "Contingency (10%)", "total": 47986 }
+      ],
+      "soft_cost_subtotal": 527841,
+      "soft_cost_per_unit": 23993
+    },
+
+    "environmental_costs": {
+      "items": [
+        { "item": "Wetland mitigation bank credits", "total": 90000 },
+        { "item": "Gopher tortoise survey/relocation", "total": 5000 },
+        { "item": "Scrub-jay fee", "total": 560 },
+        { "item": "Elevation certificates (6x)", "total": 6000 }
+      ],
+      "environmental_subtotal": 101560,
+      "environmental_per_unit": 4616
+    },
+
+    "impact_fees": {
+      "items": [
+        { "item": "Palm Bay water impact fee", "per_unit": 2221, "total": 48862 },
+        { "item": "Palm Bay sewer impact fee", "per_unit": 3544, "total": 77968 },
+        { "item": "Brevard County transportation", "per_unit": 2381, "total": 52382 },
+        { "item": "Brevard County education", "per_unit": 1941, "total": 42702 },
+        { "item": "Brevard County other", "per_unit": 1750, "total": 38500 }
+      ],
+      "impact_fee_subtotal": 260414,
+      "impact_fee_per_unit": 11837
+    },
+
+    "financing_costs": {
+      "construction_loan_interest": 235000,
+      "loan_origination_fee": 55000,
+      "financing_subtotal": 290000
+    },
+
+    "total_development_cost_22_units": {
+      "land": 55000,
+      "hard_costs": 6023688,
+      "soft_costs": 527841,
+      "environmental": 101560,
+      "impact_fees": 260414,
+      "financing": 290000,
+      "grand_total": 7258503,
+      "per_unit": 329932,
+      "per_sf_living": 388,
+      "per_sf_gross_building": 296
+    }
+  },
+
+  "cost_comparison": {
+    "scenarios": [
+      {
+        "scenario": "11-unit (conservative)",
+        "total_cost": 3786326,
+        "per_unit": 344211,
+        "land_pct": 1.5,
+        "hard_pct": 79.5,
+        "soft_pct": 9.4,
+        "environmental_pct": 2.0,
+        "impact_fee_pct": 3.4,
+        "financing_pct": 4.1
+      },
+      {
+        "scenario": "22-unit (aggressive)",
+        "total_cost": 7258503,
+        "per_unit": 329932,
+        "land_pct": 0.8,
+        "hard_pct": 83.0,
+        "soft_pct": 7.3,
+        "environmental_pct": 1.4,
+        "impact_fee_pct": 3.6,
+        "financing_pct": 4.0
+      }
+    ],
+    "per_unit_savings_22_vs_11": 14279,
+    "note": "22-unit scenario achieves ~$14K/unit savings through economies of scale, but requires wellhead easement resolution (10+ year timeline) and carries significantly more risk."
+  },
+
+  "revenue_analysis": {
+    "brevard_county_multifamily_rents_2025": {
+      "studio": { "low": 1100, "high": 1400 },
+      "one_br": { "low": 1300, "high": 1650 },
+      "two_br": { "low": 1500, "high": 1900 },
+      "three_br": { "low": 1800, "high": 2200 },
+      "source": "Brevard County multifamily market data, 2025"
+    },
+    "assumed_rent_mix_11_units": {
+      "one_br_units": 5,
+      "two_br_units": 4,
+      "three_br_units": 2,
+      "weighted_avg_rent": 1575,
+      "gross_annual_rent": 207900,
+      "vacancy_rate_pct": 7,
+      "effective_gross_income": 193347,
+      "operating_expenses_pct": 40,
+      "net_operating_income": 116008
+    },
+    "cap_rate_analysis_11_units": {
+      "stabilized_noi": 116008,
+      "total_cost": 3786326,
+      "yield_on_cost_pct": 3.06,
+      "market_cap_rate_pct": { "low": 5.5, "high": 6.5 },
+      "stabilized_value_at_6_pct_cap": 1933467,
+      "value_gap": -1852859,
+      "assessment": "NEGATIVE VALUE — total development cost ($3.79M) far exceeds stabilized value ($1.93M at 6% cap). Project does not pencil as rental development."
+    },
+    "for_sale_analysis_11_units": {
+      "average_sale_price_per_unit": 275000,
+      "gross_revenue": 3025000,
+      "selling_costs_pct": 8,
+      "net_revenue": 2783000,
+      "total_development_cost": 3786326,
+      "profit_loss": -1003326,
+      "assessment": "NEGATIVE — for-sale condos at $275K/unit also do not cover development costs."
+    }
+  },
+
+  "financial_feasibility_assessment": {
+    "verdict": "NOT FEASIBLE",
+    "rationale": [
+      "Total development cost ($3.79M for 11 units) exceeds stabilized value ($1.93M) by nearly 2x",
+      "Environmental costs ($77K) represent 1.4x the land value ($55K)",
+      "Flood construction premium (17.5%) adds ~$400K to already-high construction costs",
+      "Impact fees ($130K for 11 units) are non-negotiable fixed costs",
+      "Small scale (11 units) prevents meaningful economies of scale",
+      "Even 22-unit scenario ($7.26M cost) does not materially improve per-unit economics"
+    ],
+    "alternative_uses_to_explore": [
+      "Single-family/townhome development (may be CC&R compliant, lower cost per unit)",
+      "Land bank: hold for wellhead easement vacation (~10 years) then reassess",
+      "Sell to adjacent homeowner or HOA as open space/preserve",
+      "Conservation easement donation for tax benefit"
+    ]
+  },
+
+  "data_sources": {
+    "construction_costs": "RSMeans 2025 residential construction data, Brevard County multifamily comps",
+    "impact_fees": "Palm Bay Rates/Charges (Sec 171.50), Brevard County Impact Fee Schedule (2017)",
+    "market_rents": "CoStar, Apartments.com — Brevard County multifamily market data 2025",
+    "cap_rates": "CBRE, Marcus & Millichap — Southeast Florida multifamily market reports 2025",
+    "prior_stages": ["stage4_setbacks.json", "stage5_utilities.json", "stage6_environmental_detailed.json", "stage8_permits.json"]
+  },
+
+  "creator": "Claude Code (Opus 4.6)",
+  "organization": "Everest Capital USA"
+}

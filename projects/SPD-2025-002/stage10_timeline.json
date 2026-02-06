@@ -1,0 +1,294 @@
+{
+  "project_id": "SPD-2025-002",
+  "project_name": "Sandy Pines Multifamily",
+  "stage": 10,
+  "stage_name": "Development Timeline",
+  "completed_at": "2026-02-06T22:00:00Z",
+  "executed_by": "claude-code-opus-4.6",
+  "status": "COMPLETED",
+
+  "project_start_date": "2026-02-06",
+  "estimated_co_date_optimistic": "2027-12-01",
+  "estimated_co_date_realistic": "2028-06-01",
+  "total_months_optimistic": 22,
+  "total_months_realistic": 28,
+
+  "phases": [
+    {
+      "phase": "Phase 1: Due Diligence & Pre-Development",
+      "months": "1-4 (Feb 2026 - May 2026)",
+      "duration_months": 4,
+      "activities": [
+        {
+          "activity": "Obtain CC&Rs from Brevard County Clerk (OR Book 3636/2327)",
+          "timeline": "Week 1-2",
+          "cost": 50,
+          "gate": "FATAL — if multifamily prohibited, project stops here",
+          "status": "PENDING"
+        },
+        {
+          "activity": "Obtain PUD ordinance from Palm Bay City Clerk",
+          "timeline": "Week 1-3",
+          "cost": 0,
+          "gate": "CRITICAL — determines all development standards",
+          "status": "PENDING"
+        },
+        {
+          "activity": "Legal review of CC&Rs and PUD ordinance",
+          "timeline": "Week 3-5",
+          "cost": 5000,
+          "gate": "Go/No-Go decision on project viability"
+        },
+        {
+          "activity": "Pre-application meeting with Palm Bay Planning",
+          "timeline": "Week 4-6",
+          "cost": 0,
+          "note": "Schedule via (321) 733-3042. Discuss PUD + flood + wetland + wellhead stacking."
+        },
+        {
+          "activity": "Commission professional wetland delineation",
+          "timeline": "Month 2-3 (4-6 weeks field + report)",
+          "cost": "$3,000-$8,000"
+        },
+        {
+          "activity": "Commission flood study / BFE determination",
+          "timeline": "Month 2-4 (6-12 weeks)",
+          "cost": "$5,000-$25,000"
+        },
+        {
+          "activity": "Listed species surveys (gopher tortoise, scrub-jay check)",
+          "timeline": "Month 2-3",
+          "cost": "$2,000-$8,000"
+        },
+        {
+          "activity": "Verify sewer availability / obtain utility availability letter",
+          "timeline": "Month 1-2",
+          "cost": 0
+        },
+        {
+          "activity": "Confirm parking allowance in wellhead easement with Palm Bay Utilities",
+          "timeline": "Month 1",
+          "cost": 0
+        }
+      ],
+      "phase_cost_range": { "low": 10050, "high": 46050 },
+      "decision_gate": "GO/NO-GO: Based on CC&R review, PUD ordinance content, and initial environmental findings. If project proceeds, commit to full entitlement process."
+    },
+    {
+      "phase": "Phase 2: Design & Entitlements",
+      "months": "5-12 (Jun 2026 - Jan 2027)",
+      "duration_months": 8,
+      "activities": [
+        {
+          "activity": "Engage architect and civil engineer",
+          "timeline": "Month 5",
+          "cost": "Retainer — see cost estimate"
+        },
+        {
+          "activity": "Prepare PUD Preliminary Development Plan (PDP)",
+          "timeline": "Month 5-6",
+          "cost": "Included in architectural/engineering fees"
+        },
+        {
+          "activity": "Submit PDP to Palm Bay Planning & Zoning",
+          "timeline": "Month 6",
+          "note": "Requires 2 public hearings (P&Z Board + City Council)"
+        },
+        {
+          "activity": "PDP public hearings and approval",
+          "timeline": "Month 7-9 (2 meeting cycles)",
+          "risk": "Public opposition from Sandy Pines Preserve residents could delay or defeat approval"
+        },
+        {
+          "activity": "SJRWMD ERP pre-application conference",
+          "timeline": "Month 5-6",
+          "cost": 0
+        },
+        {
+          "activity": "Submit SJRWMD ERP application",
+          "timeline": "Month 7 (after wetland delineation and flood study complete)",
+          "cost": "$24,000-$49,000 (fee + consultant)"
+        },
+        {
+          "activity": "ERP review and RAI response",
+          "timeline": "Month 7-10 (60-90 days standard + RAI)",
+          "note": "Request for Additional Information (RAI) is common; expect 1-2 rounds"
+        },
+        {
+          "activity": "MTWCD stormwater permit application",
+          "timeline": "Month 8",
+          "cost": "$500-$2,000"
+        },
+        {
+          "activity": "Purchase wetland mitigation credits",
+          "timeline": "Month 8-9",
+          "cost": "$40,000-$100,000"
+        },
+        {
+          "activity": "FEMA LOMA/LOMR-F application (if applicable)",
+          "timeline": "Month 7-9 (60-day FEMA processing)",
+          "cost": 0,
+          "note": "Only if fill strategy is adopted"
+        },
+        {
+          "activity": "Prepare Final Development Plan (FDP)",
+          "timeline": "Month 9-10 (after PDP approved)",
+          "cost": "Included in engineering fees"
+        },
+        {
+          "activity": "FDP administrative review and approval",
+          "timeline": "Month 10-12",
+          "cost": "$1,500-$3,000"
+        },
+        {
+          "activity": "HOA Architectural Review Committee submission",
+          "timeline": "Month 6 (concurrent with PDP)",
+          "cost": "Varies",
+          "risk": "HOA may refuse or impose conditions that make project infeasible"
+        }
+      ],
+      "phase_cost_range": { "low": 66000, "high": 154000 },
+      "critical_risks": [
+        "PDP denial by City Council or Planning & Zoning Board",
+        "HOA ARC rejection or unreasonable conditions",
+        "ERP denial or excessive mitigation requirements",
+        "Community opposition at public hearings"
+      ]
+    },
+    {
+      "phase": "Phase 3: Construction Permitting",
+      "months": "12-15 (Jan 2027 - Apr 2027)",
+      "duration_months": 3,
+      "activities": [
+        {
+          "activity": "Submit building permit application",
+          "timeline": "Month 12",
+          "cost": "1-2% of construction value (~$45K-$90K)"
+        },
+        {
+          "activity": "Floodplain development permit",
+          "timeline": "Month 12-13",
+          "cost": "$500-$1,500"
+        },
+        {
+          "activity": "Utility connection permits (water + sewer)",
+          "timeline": "Month 13",
+          "cost": "Impact fees: $130K-$260K (11-22 units)"
+        },
+        {
+          "activity": "Driveway permit",
+          "timeline": "Month 13",
+          "cost": "$200-$500"
+        },
+        {
+          "activity": "Building permit review and issuance",
+          "timeline": "Month 13-15",
+          "note": "4-8 weeks review. May require plan revisions."
+        }
+      ],
+      "phase_cost_range": { "low": 175700, "high": 352000 }
+    },
+    {
+      "phase": "Phase 4: Construction",
+      "months": "15-22 (Apr 2027 - Nov 2027) optimistic / 15-28 (Apr 2027 - Jun 2028) realistic",
+      "duration_months_optimistic": 8,
+      "duration_months_realistic": 12,
+      "activities": [
+        {
+          "activity": "Site clearing and earthwork",
+          "timeline": "Month 15 (must be outside scrub-jay nesting season Mar 1 - Jun 30)",
+          "note": "If Month 15 = April, must wait until July for clearing if scrub-jay polygons affected"
+        },
+        {
+          "activity": "Foundation and elevated construction",
+          "timeline": "Month 15-17",
+          "note": "Pile/column foundation or fill pad per flood requirements"
+        },
+        {
+          "activity": "Building framing and structure",
+          "timeline": "Month 16-19"
+        },
+        {
+          "activity": "MEP rough-in (mechanical, electrical, plumbing)",
+          "timeline": "Month 18-20"
+        },
+        {
+          "activity": "Elevation Certificate #2 (pre-drywall)",
+          "timeline": "Month 18",
+          "cost": "$150-$500"
+        },
+        {
+          "activity": "Interior finishes (drywall, flooring, cabinets, fixtures)",
+          "timeline": "Month 19-21"
+        },
+        {
+          "activity": "Site improvements (parking, landscaping, fencing)",
+          "timeline": "Month 20-22"
+        },
+        {
+          "activity": "Final inspections (building, fire, utility, elevation)",
+          "timeline": "Month 21-22"
+        },
+        {
+          "activity": "Elevation Certificate #3 (final)",
+          "timeline": "Month 22",
+          "cost": "$150-$500"
+        },
+        {
+          "activity": "Certificate of Occupancy (CO)",
+          "timeline": "Month 22 (optimistic) / Month 28 (realistic)",
+          "note": "Realistic timeline accounts for weather delays, material shortages, inspection re-visits"
+        }
+      ],
+      "construction_cost": "See stage9_cost_estimate.json hard costs"
+    }
+  ],
+
+  "critical_path": [
+    "CC&R Review (Month 1) → GO/NO-GO",
+    "PUD Ordinance (Month 1) → Design basis",
+    "Wetland Delineation (Month 2-3) → ERP application prerequisite",
+    "Flood Study (Month 2-4) → Building design basis",
+    "PDP Submission + Hearings (Month 6-9) → FDP prerequisite",
+    "ERP Application + Review (Month 7-10) → Construction prerequisite",
+    "Building Permit (Month 12-15) → Construction start",
+    "Construction (Month 15-22/28) → CO"
+  ],
+
+  "risk_adjusted_timeline": {
+    "best_case_months": 18,
+    "base_case_months": 24,
+    "worst_case_months": 36,
+    "worst_case_factors": [
+      "ERP denial requires appeal or redesign (+6 months)",
+      "PDP denied at public hearing — requires redesign or appeal (+4 months)",
+      "HOA litigation delays (+6-12 months)",
+      "Weather/supply chain delays during construction (+3-6 months)",
+      "FEMA map revision process (+6-12 months if LOMA/LOMR pursued)"
+    ]
+  },
+
+  "milestone_calendar": [
+    { "month": 1, "date": "Mar 2026", "milestone": "CC&R and PUD ordinance obtained" },
+    { "month": 2, "date": "Apr 2026", "milestone": "Go/No-Go decision" },
+    { "month": 4, "date": "Jun 2026", "milestone": "Wetland delineation complete" },
+    { "month": 5, "date": "Jul 2026", "milestone": "Flood study / BFE complete" },
+    { "month": 6, "date": "Aug 2026", "milestone": "PDP submitted to city" },
+    { "month": 9, "date": "Nov 2026", "milestone": "PDP approved by City Council" },
+    { "month": 10, "date": "Dec 2026", "milestone": "ERP issued by SJRWMD" },
+    { "month": 12, "date": "Feb 2027", "milestone": "FDP approved, building permit submitted" },
+    { "month": 15, "date": "May 2027", "milestone": "Building permit issued, construction starts" },
+    { "month": 22, "date": "Dec 2027", "milestone": "Certificate of Occupancy (optimistic)" },
+    { "month": 28, "date": "Jun 2028", "milestone": "Certificate of Occupancy (realistic)" }
+  ],
+
+  "data_sources": {
+    "permit_timelines": "stage8_permits.json",
+    "palm_bay_code": "codelibrary.amlegal.com/codes/palmbay — Sections 173.076-173.078",
+    "sjrwmd_review": "62-330 FAC review timelines",
+    "construction_timelines": "RSMeans 2025, local contractor benchmarks"
+  },
+
+  "creator": "Claude Code (Opus 4.6)",
+  "organization": "Everest Capital USA"
+}

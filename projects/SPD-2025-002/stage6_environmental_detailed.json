@@ -1,0 +1,291 @@
+{
+  "project_id": "SPD-2025-002",
+  "project_name": "Sandy Pines Multifamily",
+  "stage": 6,
+  "stage_name": "Environmental Detailed Analysis",
+  "completed_at": "2026-02-06T22:00:00Z",
+  "executed_by": "claude-code-opus-4.6",
+  "status": "COMPLETED",
+
+  "parcel_summary": {
+    "account_id": "2835546",
+    "parcel_id": "28-37-27-00-7",
+    "address": "2165 Sandy Pines Dr NE, Palm Bay FL 32905",
+    "coordinates": { "lat": 27.986, "lon": -80.625 },
+    "acreage": 1.114,
+    "total_area_sf": 48516
+  },
+
+  "constraint_inventory": {
+    "total_constraints": 5,
+    "constraints": [
+      {
+        "id": "ENV-01",
+        "name": "FEMA Zone A Flood (SFHA)",
+        "severity": "HIGH",
+        "category": "flood",
+        "coverage_pct": 100,
+        "description": "Entire parcel within Special Flood Hazard Area. No Base Flood Elevation determined (Study Type: NP — approximate Zone A).",
+        "dfirm_id": "12009C",
+        "flood_area_id": "12009C_2495",
+        "regulatory_basis": "44 CFR Part 60, Florida Building Code 8th Edition, Palm Bay Code Chapter 174",
+        "development_impact": [
+          "BFE must be established via hydraulic study (HEC-RAS modeling) before ANY building permit",
+          "All habitable floors must be elevated above BFE + 1 ft freeboard (FBC requirement)",
+          "Floodplain Development Permit required from City of Palm Bay",
+          "Elevation Certificate (FEMA FF-206-FY-22-152) required at foundation, pre-drywall, and final inspection",
+          "Flood insurance mandatory for federally-backed mortgages",
+          "15-30% construction cost premium for elevated foundation systems",
+          "Residential floodproofing NOT permitted under NFIP — must elevate"
+        ],
+        "mitigation_options": [
+          "LOMA/LOMR-F: If fill raises lot above BFE, parcel can be removed from SFHA (no FEMA fee, ~60-day processing)",
+          "Elevated construction: Pile/column foundation or fill pad to achieve required elevation",
+          "Flood-resistant materials required below BFE per FEMA Technical Bulletin 2 (FIA-TB-2)"
+        ]
+      },
+      {
+        "id": "ENV-02",
+        "name": "NWI Wetland PEM1Cd (Freshwater Emergent)",
+        "severity": "HIGH",
+        "category": "wetland",
+        "coverage_pct": 100,
+        "description": "Entire 1.114-acre parcel sits within a 10.316-acre NWI-mapped freshwater emergent wetland polygon. Classification: Palustrine, Emergent, Persistent, Seasonally Flooded, Partially Drained/Ditched.",
+        "nwi_code": "PEM1Cd",
+        "nwi_id": "202409CSw{E4F2CB85-62BF-41DF-B3B5-3F3672F3AD14}_01",
+        "regulatory_basis": "Clean Water Act Section 404 (FL assumed jurisdiction), Florida ERP rules 62-330 FAC, SJRWMD 40C-4/40C-40/40C-42",
+        "development_impact": [
+          "Professional wetland delineation required to determine jurisdictional boundary",
+          "25-ft wetland buffer setback likely required by SJRWMD",
+          "Section 404 permit (via FDEP state-assumed program) if any wetland fill proposed",
+          "Avoidance/minimization/mitigation sequence must be demonstrated",
+          "Mitigation required for any unavoidable wetland impact — purchase of mitigation bank credits",
+          "Partially drained (d) modifier may reduce mitigation requirements but does not eliminate them"
+        ],
+        "mitigation_options": [
+          "Mitigation bank credits: Farmton Mitigation Bank is the primary bank for south Brevard",
+          "Credit cost: $125,000-$200,000 per UMAM credit in this service area",
+          "Estimated credits needed: 0.3-0.5 UMAM credits (depending on impact area and functional assessment)",
+          "On-site preservation/enhancement possible for remaining wetland areas"
+        ]
+      },
+      {
+        "id": "ENV-03",
+        "name": "Wellhead Protection Easement",
+        "severity": "HIGH",
+        "category": "easement",
+        "coverage_pct": 47,
+        "coverage_sf": 22803,
+        "description": "200-ft radius circular easement around City of Palm Bay public water supply well. Covers western 47% of parcel.",
+        "regulatory_basis": "Florida DEP Chapter 62-521 FAC — Wellhead Protection Areas",
+        "development_impact": [
+          "No new construction within 200-ft radius",
+          "No new impervious surfaces (may allow pervious pavement — requires city approval)",
+          "No regulated substance storage",
+          "No septic systems within wellhead protection zone",
+          "Surface parking and open space/recreation may be permitted (survey annotates 'PARKING' in this zone)"
+        ],
+        "resolution": {
+          "timeline_years": 10,
+          "source": "Tim Roberts, Palm Bay Utilities, Sept 11, 2025",
+          "mechanism": "Well decommissioning when alternative supply sources are developed",
+          "phase_2_opportunity": "After easement vacated, additional 0.524 acres becomes buildable"
+        }
+      },
+      {
+        "id": "ENV-04",
+        "name": "HOA CC&Rs — Multifamily Likely Prohibited",
+        "severity": "POTENTIAL FATAL",
+        "category": "land_use_restriction",
+        "description": "Sandy Pines Preserve is a gated HOA community of exclusively 1-2 story single-family homes and townhomes. CC&Rs (OR Book 3636, Page 2327) almost certainly prohibit 3-4 story multifamily construction.",
+        "evidence": [
+          "All existing structures are 1-2 story SF/townhome across all phases",
+          "HOA incorporated under FL Chapter 720 (Homeowners Association Act)",
+          "No apartments/condos/multifamily exist anywhere in community",
+          "Typical late-1990s gated community CC&Rs restrict use to single-family/townhome",
+          "3 separate HOA entities govern the community"
+        ],
+        "resolution_options": [
+          "Obtain and review actual CC&Rs (OR Book 3636/2327)",
+          "CC&R amendment: typically requires 75% supermajority HOA vote (extremely unlikely)",
+          "Legal separation: attempt to remove parcel from HOA jurisdiction (requires attorney analysis)",
+          "Alternative use: develop consistent with CC&Rs (single-family/townhome)"
+        ]
+      },
+      {
+        "id": "ENV-05",
+        "name": "No Sewer or Water Service Available",
+        "severity": "HIGH",
+        "category": "infrastructure",
+        "description": "Palm Bay GIS SWANC_Not_Impacted layer confirms Sewer_Avail=NO, Water_Avail=NO. Parcel not in any SANC/WANC phase. Septic infeasible near wellhead in flood zone.",
+        "source": "Palm Bay GIS — SWANC_Not_Impacted/MapServer/0, queried Feb 6, 2026",
+        "neighbor_context": "Adjacent parcels (2153, 2240, 2260, 2300 Sandy Pines Dr) DO have water and sewer available, suggesting main may be nearby but not extended to this parcel's frontage.",
+        "development_impact": [
+          "Sewer main extension required at developer cost",
+          "Water main extension may be required despite proximity of wellhead",
+          "Estimated sewer extension: $50-$100/linear foot",
+          "Distance to nearest sewer main: unknown (likely at 2153 Sandy Pines Dr, adjacent parcel)"
+        ]
+      }
+    ]
+  },
+
+  "sjrwmd_erp_requirements": {
+    "permit_type": "Environmental Resource Permit (ERP)",
+    "rule": "62-330 FAC (consolidated) / 40C-40 (SJRWMD specific)",
+    "triggers": [
+      "Project disturbs >1 acre (parcel = 1.114 acres — triggers ERP)",
+      "Work within 100-year flood zone (entire parcel in Zone A)",
+      "Wetland impact (NWI-mapped wetland covers parcel)",
+      "New stormwater management system required"
+    ],
+    "permit_category": "Standard General ERP (project <640 acres, <50 ac wetland impact)",
+    "application_fee": 9000,
+    "review_timeline_days": "60-90 (standard general), up to 180 with RAI (Request for Additional Information)",
+    "pre_application_conference": {
+      "recommended": true,
+      "contact": "SJRWMD Melbourne Service Center",
+      "phone": "386-329-4500",
+      "purpose": "Discuss wetland delineation results, stormwater design, and mitigation strategy before formal application"
+    },
+    "required_submittals": [
+      "Completed Application Form",
+      "Site plan showing existing and proposed conditions",
+      "Stormwater management calculations (25-year/24-hour design storm per MTWCD)",
+      "Professional wetland delineation report with survey",
+      "Wetland impact assessment and mitigation plan",
+      "Environmental assessment (listed species surveys)",
+      "Hydraulic analysis establishing BFE (if not available from FEMA)",
+      "Water quality treatment calculations",
+      "Erosion and sediment control plan"
+    ],
+    "receiving_waterbody": "Melbourne-Tillman Canal",
+    "discharge_authority": "Melbourne-Tillman Water Control District (MTWCD)",
+    "mtwcd_permit_also_required": true
+  },
+
+  "listed_species_requirements": {
+    "palm_bay_hcp": {
+      "status": "Active — USFWS-approved Habitat Conservation Plan",
+      "scrub_jay_fee": "$125 per quarter-acre ($560 for 1.114 acres) — paid with building permit",
+      "nesting_season_restriction": "March 1 - June 30 — land clearing PROHIBITED in occupied scrub-jay polygons",
+      "land_clearing_window": "July 1 - February 28/29"
+    },
+    "gopher_tortoise": {
+      "survey_required": "100% survey of all upland areas before any land clearing",
+      "relocation_permit": "FWC relocation permit required if burrows found",
+      "estimated_cost": "$1,500-$6,000 (survey + relocation if needed)"
+    },
+    "wood_stork": {
+      "consultation": "USFWS consultation may be required if parcel within 18.6-mile Core Foraging Area of active colony",
+      "habitat_relevance": "PEM1Cd wetland is suitable foraging habitat"
+    },
+    "bald_eagle": {
+      "check_required": "FWC eagle nest locator — 660-ft buffer from active nests",
+      "likelihood": "Low — urban/suburban setting"
+    }
+  },
+
+  "estimated_environmental_costs": {
+    "items": [
+      { "item": "Flood study / BFE determination (HEC-RAS hydraulic modeling)", "low": 5000, "high": 25000, "category": "flood" },
+      { "item": "Elevation certificates (3 per building)", "low": 500, "high": 6000, "category": "flood" },
+      { "item": "Professional wetland delineation survey", "low": 3000, "high": 8000, "category": "wetland" },
+      { "item": "Listed species surveys (gopher tortoise, scrub-jay, wood stork)", "low": 2000, "high": 8000, "category": "species" },
+      { "item": "Environmental consultant package (ERP application, mitigation plan, water quality)", "low": 15000, "high": 40000, "category": "consulting" },
+      { "item": "SJRWMD ERP application fee", "low": 9000, "high": 9000, "category": "fees" },
+      { "item": "Wetland mitigation bank credits (0.3-0.5 UMAM @ $125K-$200K/credit)", "low": 40000, "high": 100000, "category": "mitigation" },
+      { "item": "Gopher tortoise survey and relocation", "low": 1500, "high": 6000, "category": "species" },
+      { "item": "Palm Bay HCP scrub-jay fee (4.5 quarter-acres)", "low": 560, "high": 560, "category": "fees" }
+    ],
+    "total_low": 76560,
+    "total_high": 202560,
+    "largest_item": "Wetland mitigation credits ($40K-$100K) — 52% of low-end / 49% of high-end",
+    "comparison_to_land_value": {
+      "land_value": 55000,
+      "low_env_cost_pct_of_land": 139,
+      "high_env_cost_pct_of_land": 368,
+      "assessment": "Environmental costs at minimum ($77K) are 1.4x the land value ($55K). At maximum ($203K), they are 3.7x the land value. This severely compromises project economics."
+    }
+  },
+
+  "constraint_interaction_analysis": {
+    "flood_plus_wetland": "Zone A flood zone and PEM1Cd wetland are likely co-occurring on much of the parcel. Seasonally flooded wetland is consistent with SFHA designation. This overlap may simplify some permitting (joint ERP/floodplain review) but increases mitigation costs.",
+    "wellhead_plus_flood": "Wellhead easement zone (47% of parcel) is also in Zone A. No construction allowed in wellhead zone regardless of flood status. Parking/open space in this zone still requires flood-compatible design.",
+    "wellhead_plus_wetland": "Wellhead easement zone may contain jurisdictional wetlands. If so, even parking may require wetland impact assessment.",
+    "hoa_plus_all": "Even if all environmental constraints are resolved (at $77K-$203K cost), HOA CC&Rs may still prohibit the intended use. CC&R review must precede any environmental spending.",
+    "sewer_plus_wellhead": "Septic is infeasible within wellhead protection zone. Sewer extension required. If sewer main is at adjacent parcel (2153), extension cost may be manageable ($5K-$15K)."
+  },
+
+  "recommended_sequence": [
+    {
+      "step": 1,
+      "action": "Obtain and review CC&Rs (OR Book 3636/2327)",
+      "cost": 0,
+      "timeline": "1-2 weeks",
+      "gate": "FATAL — if multifamily prohibited and cannot be amended, project is not viable for intended use"
+    },
+    {
+      "step": 2,
+      "action": "Obtain PUD ordinance from Palm Bay City Clerk",
+      "cost": 0,
+      "timeline": "1-2 weeks",
+      "gate": "CRITICAL — determines permitted density, setbacks, height, and uses"
+    },
+    {
+      "step": 3,
+      "action": "Commission professional wetland delineation",
+      "cost": "$3,000-$8,000",
+      "timeline": "4-6 weeks",
+      "gate": "Determines actual jurisdictional wetland boundary on parcel"
+    },
+    {
+      "step": 4,
+      "action": "Commission flood study / BFE determination",
+      "cost": "$5,000-$25,000",
+      "timeline": "6-12 weeks",
+      "gate": "Determines required building elevation and construction cost premium"
+    },
+    {
+      "step": 5,
+      "action": "Listed species surveys (gopher tortoise, scrub-jay check)",
+      "cost": "$2,000-$8,000",
+      "timeline": "2-4 weeks (outside nesting season)",
+      "gate": "Must be completed before any land clearing"
+    },
+    {
+      "step": 6,
+      "action": "SJRWMD ERP pre-application conference",
+      "cost": 0,
+      "timeline": "2-4 weeks to schedule",
+      "gate": "Staff guidance on mitigation strategy and stormwater design"
+    },
+    {
+      "step": 7,
+      "action": "Formal ERP application with mitigation plan",
+      "cost": "$24,000-$49,000 (consultant + fee)",
+      "timeline": "3-6 months",
+      "gate": "Must be approved before construction"
+    },
+    {
+      "step": 8,
+      "action": "Purchase wetland mitigation credits",
+      "cost": "$40,000-$100,000",
+      "timeline": "Concurrent with ERP review",
+      "gate": "Required as condition of ERP issuance"
+    }
+  ],
+
+  "data_sources": {
+    "fema_nfhl": "FEMA NFHL REST API — hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer/28",
+    "nwi": "NWI REST API — fwsprimary.wim.usgs.gov/server/rest/services/Wetlands/MapServer/0",
+    "sjrwmd": "SJRWMD ePermit GIS — permitting.sjrwmd.com/arcgis02",
+    "palm_bay_gis": "gis.palmbayflorida.org/arcgis/rest/services",
+    "palm_bay_code": "codelibrary.amlegal.com/codes/palmbay — Chapter 174 (Floodplain)",
+    "fwc": "geodata.myfwc.com — Listed species data",
+    "prior_stages": ["stage3_environmental.json", "stage4_setbacks.json", "sewer_verification.json", "hoa_ccr_research.json"]
+  },
+
+  "creator": "Claude Code (Opus 4.6)",
+  "organization": "Everest Capital USA"
+}

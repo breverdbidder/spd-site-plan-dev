@@ -1,0 +1,160 @@
+{
+  "project_id": "SPD-2025-002",
+  "project_name": "Sandy Pines Multifamily",
+  "stage": 7,
+  "stage_name": "Traffic Impact (Finalized)",
+  "completed_at": "2026-02-06T22:00:00Z",
+  "executed_by": "claude-code-opus-4.6",
+  "status": "COMPLETED",
+
+  "parcel_summary": {
+    "account_id": "2835546",
+    "address": "2165 Sandy Pines Dr NE, Palm Bay FL 32905",
+    "frontage_ft": 214.67,
+    "frontage_road": "Sandy Pines Drive NE (PRIVATE — gated HOA community)"
+  },
+
+  "trip_generation": {
+    "methodology": "ITE Trip Generation Manual, 11th Edition",
+    "land_use_code": "LU 221 — Multifamily Housing (Mid-Rise, 3-10 floors)",
+    "justification": "Survey annotations indicate 3-4 story building concept",
+    "rates_per_unit": {
+      "daily_trips": 4.54,
+      "am_peak_trips": 0.35,
+      "am_peak_in_pct": 27,
+      "am_peak_out_pct": 73,
+      "pm_peak_trips": 0.39,
+      "pm_peak_in_pct": 63,
+      "pm_peak_out_pct": 37
+    },
+    "scenarios": [
+      {
+        "scenario": "11-unit (net buildable density)",
+        "units": 11,
+        "daily_trips_adt": 50,
+        "am_peak_total": 4,
+        "am_peak_in": 1,
+        "am_peak_out": 3,
+        "pm_peak_total": 4,
+        "pm_peak_in": 3,
+        "pm_peak_out": 1,
+        "assessment": "Well below 100 peak-hour trip threshold"
+      },
+      {
+        "scenario": "22-unit (maximum gross density at 20 du/ac)",
+        "units": 22,
+        "daily_trips_adt": 100,
+        "am_peak_total": 8,
+        "am_peak_in": 2,
+        "am_peak_out": 6,
+        "pm_peak_total": 9,
+        "pm_peak_in": 5,
+        "pm_peak_out": 4,
+        "assessment": "PM peak of 9 trips — still well below 100-trip TIS threshold"
+      }
+    ]
+  },
+
+  "road_network": {
+    "sandy_pines_drive": {
+      "classification": "Private local residential road",
+      "ownership": "Sandy Pines Preserve HOA",
+      "type": "2-lane undivided",
+      "speed_limit_mph": 25,
+      "gated_access": true,
+      "estimated_aadt": "500-1,500 vpd (typical gated community)",
+      "hoa_road_use_agreement": "REQUIRED — any increase in traffic from new development requires HOA approval and potentially a road maintenance contribution agreement",
+      "road_condition": "HOA-maintained, assumed fair to good condition"
+    },
+    "malabar_road_sr514": {
+      "classification": "Minor arterial (State Road)",
+      "current_config": "2-lane undivided (Babcock Rd to US-1 segment)",
+      "current_aadt": 16000,
+      "los_assessment": "Severely congested — at or beyond LOS D capacity (11,500-15,400 vpd for 2-lane arterial)",
+      "widening_status": "FDOT PD&E completed May 2018 — widen to 4-lane divided. Estimated $84M-$97M. NOT FUNDED.",
+      "crash_data": {
+        "five_year_increase_pct": 56,
+        "high_crash_intersections": ["Minton Rd", "Jupiter Blvd", "Maywood Ave/Daffodil Dr"]
+      }
+    },
+    "community_entrance_to_malabar": {
+      "estimated_distance_mi": 0.5,
+      "intersection_type": "Community entrance on Malabar Rd (likely right-in/right-out or full movement with median break)",
+      "turn_lane_at_entrance": "May already exist — verify with site visit"
+    }
+  },
+
+  "traffic_impact_assessment": {
+    "project_impact_on_malabar_rd": {
+      "adt_increase_11_units": 50,
+      "adt_increase_22_units": 100,
+      "pct_of_corridor_volume_11": 0.31,
+      "pct_of_corridor_volume_22": 0.63,
+      "assessment": "DE MINIMIS — 0.3-0.6% of corridor volume"
+    },
+    "tis_requirement": {
+      "threshold": "100 peak-hour trips (common Florida standard; Palm Bay specific threshold not publicly available)",
+      "project_peak_hour_max": 9,
+      "tis_required": false,
+      "caveat": "Palm Bay may require traffic methodology application for ANY multifamily regardless of trip count. Contact Growth Management at (321) 733-3042 to confirm."
+    },
+    "concurrency": {
+      "florida_basis": "F.S. 163.3180 — Transportation Concurrency",
+      "malabar_rd_status": "Likely failing adopted LOS standard",
+      "project_de_minimis": true,
+      "proportionate_fair_share": "May apply per F.S. 163.3180(16) — developer contribution toward corridor improvements",
+      "estimated_fair_share": "$2,000-$10,000 (based on trip proportionality to corridor deficiency)"
+    }
+  },
+
+  "private_road_considerations": {
+    "critical_note": "Sandy Pines Drive is a PRIVATE road within a gated community. This creates additional access and approval requirements beyond standard traffic engineering.",
+    "requirements": [
+      "HOA Board approval for any change in use or increased traffic",
+      "Road maintenance contribution agreement (new units share in road upkeep costs)",
+      "Emergency vehicle access must be maintained (verify with Palm Bay Fire-Rescue)",
+      "Gated community access control must accommodate construction traffic during development",
+      "Delivery/service vehicle turning radius must be accommodated within parcel frontage"
+    ],
+    "hoa_contact": {
+      "entity": "Sandy Pines Preserve HOA (Phases 1 & 2)",
+      "management": "Leland Management, Inc.",
+      "phone": "(407) 447-9955",
+      "clubhouse": "(321) 728-0514"
+    }
+  },
+
+  "parking_and_access": {
+    "parcel_frontage_ft": 214.67,
+    "driveway_width_max_ft": 36,
+    "driveway_permit": "Required from Palm Bay Public Works per Code Chapter 179",
+    "on_site_parking": {
+      "location": "Wellhead easement zone (western portion of parcel)",
+      "available_parking_area_sf": 17100,
+      "estimated_spaces_at_270sf": 63,
+      "adequacy": "More than sufficient for 11-22 unit development (typically 1.5-2.0 spaces/unit)"
+    }
+  },
+
+  "risk_summary": {
+    "overall_traffic_risk": "LOW-MEDIUM",
+    "factors": [
+      { "factor": "Trip generation", "risk": "LOW", "note": "50-100 ADT, 4-9 PM peak — minimal" },
+      { "factor": "Malabar Rd capacity", "risk": "HIGH", "note": "16,000 vpd, 2-lane, unfunded widening — but project impact is de minimis" },
+      { "factor": "HOA road approval", "risk": "HIGH", "note": "Private road requires HOA board consent" },
+      { "factor": "TIS requirement", "risk": "LOW", "note": "Below 100 peak-hour threshold" },
+      { "factor": "Concurrency", "risk": "LOW-MEDIUM", "note": "De minimis impact, possible fair-share contribution" },
+      { "factor": "Turn lanes", "risk": "LOW", "note": "Not needed at parcel driveway for this scale" }
+    ]
+  },
+
+  "data_sources": {
+    "ite_trip_gen": "ITE Trip Generation Manual, 11th Edition",
+    "malabar_road": "The Palm Bayer (2024), FDOT PD&E Study (2018)",
+    "palm_bay_code": "Chapter 179 (Streets/Driveways), Section 184.18 (Traffic Impact)",
+    "prior_stage": "stage4_traffic.json"
+  },
+
+  "creator": "Claude Code (Opus 4.6)",
+  "organization": "Everest Capital USA"
+}

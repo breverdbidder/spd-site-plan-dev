@@ -1,0 +1,287 @@
+{
+  "project_id": "SPD-2025-002",
+  "project_name": "Sandy Pines Multifamily",
+  "stage": 8,
+  "stage_name": "Permit Identification",
+  "completed_at": "2026-02-06T22:00:00Z",
+  "executed_by": "claude-code-opus-4.6",
+  "status": "COMPLETED",
+
+  "parcel_summary": {
+    "account_id": "2835546",
+    "address": "2165 Sandy Pines Dr NE, Palm Bay FL 32905",
+    "zoning": "PUD (Planned Unit Development)",
+    "future_land_use": "HDR (High Density Residential)"
+  },
+
+  "permit_inventory": {
+    "total_permits_required": 14,
+    "categories": ["city_planning", "city_building", "state_environmental", "state_water", "federal_flood", "hoa", "utility"],
+
+    "permits": [
+      {
+        "id": "PERM-01",
+        "name": "PUD Preliminary Development Plan (PDP)",
+        "agency": "City of Palm Bay — Planning & Zoning Division",
+        "code_section": "Section 173.076 (Palm Bay Code)",
+        "description": "Required for any new development within a PUD. Shows building locations, density, open space, parking, circulation, landscaping. Must be consistent with approved PUD ordinance.",
+        "review_body": "Planning & Zoning Board (recommendation) → City Council (approval)",
+        "public_hearing": true,
+        "estimated_timeline": "3-6 months (includes 2 public hearings)",
+        "estimated_fee": "$2,000-$5,000",
+        "prerequisites": ["PUD ordinance on file", "Survey", "Conceptual site plan"],
+        "category": "city_planning"
+      },
+      {
+        "id": "PERM-02",
+        "name": "PUD Final Development Plan (FDP)",
+        "agency": "City of Palm Bay — Planning & Zoning Division",
+        "code_section": "Section 173.078 (Palm Bay Code)",
+        "description": "Detailed engineering drawings for construction. Must conform to approved PDP. Includes grading, drainage, utilities, landscaping details.",
+        "review_body": "Administrative (staff review) — if consistent with approved PDP",
+        "public_hearing": false,
+        "estimated_timeline": "2-4 months",
+        "estimated_fee": "$1,500-$3,000",
+        "prerequisites": ["Approved PDP", "Engineering drawings", "Stormwater design"],
+        "category": "city_planning"
+      },
+      {
+        "id": "PERM-03",
+        "name": "Site Plan Approval",
+        "agency": "City of Palm Bay — Development Review",
+        "code_section": "Section 185.200+ (Palm Bay Code)",
+        "description": "Detailed site plan review for multifamily development. Covers setbacks, parking, landscaping, building placement, access, fire safety.",
+        "review_body": "Development Review Committee (DRC)",
+        "public_hearing": false,
+        "estimated_timeline": "4-8 weeks (may run concurrent with FDP)",
+        "estimated_fee": "$1,000-$3,000",
+        "prerequisites": ["Approved PDP or concurrent FDP", "Traffic methodology (if required)", "Utility availability letters"],
+        "category": "city_planning"
+      },
+      {
+        "id": "PERM-04",
+        "name": "Floodplain Development Permit",
+        "agency": "City of Palm Bay — Building Department",
+        "code_section": "Chapter 174 (Palm Bay Code — Floodplain & Stormwater Management)",
+        "description": "Required before any construction in Zone A SFHA. Must demonstrate compliance with FEMA NFIP regulations and Florida Building Code flood provisions.",
+        "estimated_timeline": "2-4 weeks (after BFE established)",
+        "estimated_fee": "$500-$1,500",
+        "prerequisites": ["BFE determination (flood study)", "Elevation plan showing all structures above BFE + 1 ft freeboard"],
+        "category": "city_building"
+      },
+      {
+        "id": "PERM-05",
+        "name": "SJRWMD Environmental Resource Permit (ERP)",
+        "agency": "St. Johns River Water Management District",
+        "rule": "62-330 FAC / 40C-40 (SJRWMD)",
+        "description": "Required for projects >1 acre affecting surface water, wetlands, or requiring stormwater management. Covers wetland impacts, stormwater design, water quality treatment.",
+        "permit_category": "Standard General ERP",
+        "estimated_timeline": "3-6 months (60-90 day standard review + potential RAI)",
+        "application_fee": 9000,
+        "consultant_cost": "$15,000-$40,000",
+        "prerequisites": ["Professional wetland delineation", "Stormwater design", "Mitigation plan", "Listed species surveys"],
+        "category": "state_environmental"
+      },
+      {
+        "id": "PERM-06",
+        "name": "Section 404 Wetland Fill Permit (State-Assumed)",
+        "agency": "FDEP (assumed from USACE since Dec 22, 2020)",
+        "description": "Required if any wetland fill proposed. Joint application with SJRWMD ERP. Avoidance/minimization/mitigation sequence must be demonstrated.",
+        "estimated_timeline": "Concurrent with ERP (joint review)",
+        "estimated_fee": "Included in ERP application",
+        "prerequisites": ["Wetland delineation", "Alternatives analysis", "Mitigation plan"],
+        "note": "Verify if retained waters (within 300 ft of navigable waterway) require separate federal USACE jurisdiction",
+        "category": "state_environmental"
+      },
+      {
+        "id": "PERM-07",
+        "name": "FEMA LOMA/LOMR-F (Letter of Map Amendment/Revision Based on Fill)",
+        "agency": "Federal Emergency Management Agency (FEMA)",
+        "description": "If fill raises lot above BFE, parcel can be removed from SFHA. Eliminates mandatory flood insurance and reduces construction cost premium.",
+        "estimated_timeline": "60 days (LOMA/LOMR-F processing)",
+        "application_fee": "No FEMA fee for LOMA; LOMR fees vary",
+        "prerequisites": ["BFE determination", "Elevation Certificate showing lot above BFE"],
+        "optional": true,
+        "note": "Only viable if fill strategy is economically feasible and environmentally permissible",
+        "category": "federal_flood"
+      },
+      {
+        "id": "PERM-08",
+        "name": "FDEP Wellhead Protection Zone Approval",
+        "agency": "Florida Department of Environmental Protection",
+        "rule": "Chapter 62-521 FAC",
+        "description": "Any development activity within wellhead protection zone (200-ft radius) must comply with FDEP regulations. Coordinate with Palm Bay Utilities for site-specific restrictions.",
+        "estimated_timeline": "2-4 weeks (coordination, not separate permit)",
+        "estimated_fee": "$0 (coordination cost only)",
+        "prerequisites": ["Coordination with Palm Bay Utilities (Tim Roberts)"],
+        "category": "state_environmental"
+      },
+      {
+        "id": "PERM-09",
+        "name": "MTWCD Stormwater Discharge Permit",
+        "agency": "Melbourne-Tillman Water Control District",
+        "description": "Required for any stormwater discharge to MTWCD canals. Palm Bay Building Dept will NOT issue building permits without MTWCD clearance.",
+        "design_storm": "25-year, 24-hour event (9.5 inches)",
+        "estimated_timeline": "4-8 weeks",
+        "estimated_fee": "$500-$2,000",
+        "prerequisites": ["Stormwater management design", "Engineering calculations"],
+        "category": "state_water"
+      },
+      {
+        "id": "PERM-10",
+        "name": "Building Permit (Multifamily)",
+        "agency": "City of Palm Bay — Building Department",
+        "description": "Construction permit for multifamily building(s). Must comply with Florida Building Code 8th Edition, flood construction requirements, and ADA/FHA accessibility.",
+        "estimated_timeline": "4-8 weeks review, then construction",
+        "estimated_fee": "Based on construction value (typically 1-2% of construction cost)",
+        "prerequisites": ["Approved site plan", "Approved FDP", "ERP issued", "MTWCD permit", "Floodplain permit", "Architectural drawings sealed by FL-licensed architect", "Structural engineering sealed by FL PE"],
+        "category": "city_building"
+      },
+      {
+        "id": "PERM-11",
+        "name": "Driveway/Access Permit",
+        "agency": "City of Palm Bay — Public Works",
+        "code_section": "Chapter 179 (Palm Bay Code)",
+        "description": "Required for new driveway connection to Sandy Pines Drive. Maximum width 36 ft, angle as close to 90 degrees as practical.",
+        "estimated_timeline": "2-4 weeks",
+        "estimated_fee": "$200-$500",
+        "category": "city_building"
+      },
+      {
+        "id": "PERM-12",
+        "name": "Utility Connection Permits (Water & Sewer)",
+        "agency": "City of Palm Bay — Utilities Department",
+        "description": "Permits for connecting to city water and sewer systems. May include sewer main extension permit if main does not reach parcel frontage.",
+        "estimated_timeline": "2-6 weeks (longer if main extension required)",
+        "estimated_fee": "Impact fees: $9,223 per ERC (water $3,553 + sewer $5,670). Plus connection fees.",
+        "prerequisites": ["Utility availability letter", "Engineering drawings for connections/extensions"],
+        "category": "utility"
+      },
+      {
+        "id": "PERM-13",
+        "name": "HOA Architectural Review Committee (ARC) Approval",
+        "agency": "Sandy Pines Preserve HOA — Phases 1 & 2",
+        "description": "HOA CC&Rs almost certainly require ARC review and approval for any new construction. Must comply with community design standards, use restrictions, and CC&R provisions.",
+        "estimated_timeline": "1-3 months (HOA board meeting cycle)",
+        "estimated_fee": "Varies by HOA",
+        "prerequisites": ["CC&R compliance review", "Architectural drawings", "Landscape plan"],
+        "critical_note": "THIS IS THE MOST CRITICAL APPROVAL. If CC&Rs prohibit multifamily, this is a FATAL CONSTRAINT. Must obtain and review CC&Rs BEFORE any other permit applications.",
+        "contact": {
+          "management": "Leland Management, Inc.",
+          "phone": "(407) 447-9955",
+          "clubhouse": "(321) 728-0514"
+        },
+        "category": "hoa"
+      },
+      {
+        "id": "PERM-14",
+        "name": "FWC Gopher Tortoise Relocation Permit (if applicable)",
+        "agency": "Florida Fish and Wildlife Conservation Commission (FWC)",
+        "description": "Required if gopher tortoise burrows found during 100% survey. Covers trapping, relocation, and recipient site.",
+        "estimated_timeline": "4-8 weeks",
+        "estimated_fee": "$500-$2,000 (permit fee) + relocation costs",
+        "conditional": true,
+        "condition": "Only if burrows found during pre-construction survey",
+        "category": "state_environmental"
+      }
+    ]
+  },
+
+  "permit_timeline_summary": {
+    "phase_1_pre_development": {
+      "months": "1-4",
+      "activities": [
+        "Obtain CC&Rs and review (Month 1)",
+        "Obtain PUD ordinance (Month 1)",
+        "Commission wetland delineation (Months 1-3)",
+        "Commission flood study / BFE determination (Months 1-4)",
+        "Listed species surveys (Month 2-3)",
+        "Pre-application meeting with Palm Bay Planning (Month 2)"
+      ]
+    },
+    "phase_2_entitlements": {
+      "months": "3-9",
+      "activities": [
+        "PDP application and public hearings (Months 3-6)",
+        "SJRWMD ERP application (Month 4)",
+        "MTWCD stormwater permit (Month 5)",
+        "FDP application after PDP approved (Months 6-8)",
+        "Site plan review (Months 7-9)",
+        "FEMA LOMA/LOMR-F if applicable (Month 6)"
+      ]
+    },
+    "phase_3_construction_permits": {
+      "months": "9-12",
+      "activities": [
+        "Building permit application (Month 9)",
+        "Utility connection permits (Month 10)",
+        "Driveway permit (Month 10)",
+        "Floodplain development permit (Month 10)",
+        "Building permit issuance (Month 12)"
+      ]
+    },
+    "phase_4_construction": {
+      "months": "12-20",
+      "activities": [
+        "Site clearing (with species survey clearance) (Month 12)",
+        "Foundation and elevated construction (Months 13-16)",
+        "Building construction (Months 14-18)",
+        "Site improvements, parking, landscaping (Months 17-19)",
+        "Final inspections and CO (Month 20)"
+      ]
+    },
+    "total_estimated_months": "18-24 from project initiation to certificate of occupancy"
+  },
+
+  "permit_cost_summary": {
+    "city_planning_fees": { "low": 4500, "high": 11000 },
+    "city_building_fees": { "low": 700, "high": 2000 },
+    "building_permit_fee": "1-2% of construction value",
+    "sjrwmd_erp": { "low": 24000, "high": 49000, "note": "application fee + consultant" },
+    "mtwcd": { "low": 500, "high": 2000 },
+    "impact_fees_per_unit": { "low": 12240, "high": 16341 },
+    "fwc_gopher_tortoise": { "low": 0, "high": 2000, "note": "conditional" },
+    "total_soft_permit_costs_excl_impact_fees": { "low": 29700, "high": 66000 },
+    "total_impact_fees_11_units": { "low": 134640, "high": 179751 },
+    "total_impact_fees_22_units": { "low": 269280, "high": 359502 }
+  },
+
+  "critical_path_items": [
+    {
+      "item": "CC&R Review",
+      "gate_type": "FATAL",
+      "description": "If CC&Rs prohibit multifamily, project cannot proceed as planned. Must be resolved FIRST.",
+      "action": "Obtain OR Book 3636/2327 from Brevard County Clerk"
+    },
+    {
+      "item": "PUD Ordinance",
+      "gate_type": "CRITICAL",
+      "description": "Determines all development standards. Without it, no permit application can be prepared.",
+      "action": "Request from Palm Bay Land Development at (321) 733-3042"
+    },
+    {
+      "item": "SJRWMD ERP",
+      "gate_type": "LONG LEAD",
+      "description": "3-6 month review period. On the critical path for construction start.",
+      "action": "Begin consultant engagement as soon as CC&Rs and PUD are resolved"
+    },
+    {
+      "item": "Wetland Delineation",
+      "gate_type": "PREREQUISITE",
+      "description": "Required before ERP application. 4-6 week field work + report.",
+      "action": "Commission immediately after CC&R go/no-go decision"
+    }
+  ],
+
+  "data_sources": {
+    "palm_bay_code": "codelibrary.amlegal.com/codes/palmbay — Sections 173.076-173.078, 174, 179, 185",
+    "sjrwmd": "62-330 FAC, 40C-40 (ERP rules)",
+    "fema": "44 CFR Part 60 (NFIP regulations)",
+    "fdep": "Chapter 62-521 FAC (Wellhead Protection)",
+    "fwc": "68A-25.002 FAC (Gopher Tortoise)",
+    "prior_stages": ["stage3_environmental.json", "stage4_traffic.json", "stage5_utilities.json", "pud_ordinance_research.json", "hoa_ccr_research.json"]
+  },
+
+  "creator": "Claude Code (Opus 4.6)",
+  "organization": "Everest Capital USA"
+}
