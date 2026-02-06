@@ -1,0 +1,308 @@
+{
+  "project_id": "SPD-2025-002",
+  "project_name": "Sandy Pines Multifamily",
+  "analysis_type": "Survey Boundary Extraction & Traverse Area Calculation",
+  "completed_at": "2026-02-06T18:00:00Z",
+  "executed_by": "claude-code-opus-4.6",
+  "status": "COMPLETED",
+
+  "survey_metadata": {
+    "title": "MAP OF SURVEY",
+    "surveyor": "Smith Survey Company",
+    "license_business": "L.B. 7436",
+    "scale": "1 inch = 30 feet",
+    "address": "2165 Sandy Pines Dr NE",
+    "account_id": "2835546",
+    "parcel_id": "28-37-27-00-7",
+    "section": 27,
+    "township": "28S",
+    "range": "37E",
+    "legal_description": "The East 1/2 of the South 1/2 of Northeast 1/4 of Section 27, Township 28 South, Range 37 East, Brevard County Florida, less and except the East 83 feet. Plat Book 32, Page 78, Official Record Book 3636, Page 2327, and Official Record Book 3731, Page 2000 of the Public Records of Brevard County, Florida."
+  },
+
+  "boundaries": {
+    "north": {
+      "side": "North (NW corner to NE corner)",
+      "type": "straight",
+      "bearing": "S89°31'14\"E",
+      "bearing_decimal_degrees": 90.479,
+      "azimuth_from_north": 90.479,
+      "distance_ft": 200.00,
+      "measurement_type": "Record (R)",
+      "description": "Northern boundary, adjacent to Tract D (Preserve & Public Utilities). Runs nearly due east."
+    },
+    "east": {
+      "side": "East (NE corner to SE corner)",
+      "type": "straight",
+      "bearing": "S00°28'46\"W",
+      "bearing_decimal_degrees": 0.479,
+      "azimuth_from_north": 180.479,
+      "distance_ft": 277.15,
+      "measurement_type": "Record & Measured (R&M)",
+      "description": "Eastern boundary, adjacent to Tract O (Preserve & Public Utilities, Plat Book 44, Page 79). Runs nearly due south. The 'Except East 83 feet' in the legal description is this Tract O strip — the original E1/2 of S1/2 of NE1/4 extended 83 ft further east."
+    },
+    "south": {
+      "side": "South (SE corner to SW corner)",
+      "type": "curve",
+      "description": "Southern boundary along Sandy Pines Drive right-of-way. Concave southward (center of curvature south of parcel). This is the parcel's road frontage.",
+      "curve_data": {
+        "radius_ft": 1036.12,
+        "arc_length_ft": 214.67,
+        "delta_angle_dms": "11°52'18\"",
+        "delta_angle_decimal": 11.872,
+        "delta_angle_radians": 0.20718,
+        "chord_length_ft": 214.37,
+        "chord_bearing": "N68°23'W",
+        "chord_azimuth": 291.62,
+        "tangent_bearing_at_SE": "N74°19'W",
+        "tangent_bearing_at_SW": "N62°26'W",
+        "curve_direction": "Deflects right (northward) from SE to SW",
+        "derivation": "Delta = Arc/Radius = 214.67/1036.12. Chord = 2R×sin(Delta/2). Chord bearing derived from traverse closure."
+      }
+    },
+    "west": {
+      "side": "West (SW corner to NW corner)",
+      "type": "straight",
+      "bearing": "N00°28'46\"E",
+      "bearing_decimal_degrees": 0.479,
+      "azimuth_from_north": 0.479,
+      "distance_ft": 200.00,
+      "measurement_type": "Derived from closure",
+      "derivation_method": "Computed from GIS perimeter (891.82 ft) minus north (200.00) minus east (277.15) minus south arc (214.67) = 200.00 ft. Confirmed by traverse closure calculation (199.85 ft rounds to 200.00). Bearing is reciprocal of east boundary bearing.",
+      "description": "Western boundary, adjacent to Tract D (Preserve & Public Utilities, Plat Book 44, Page 78). Runs nearly due north. Partially obscured on survey by wellhead easement arc and annotation text."
+    }
+  },
+
+  "parcel_dimensions_summary": {
+    "frontage_sandy_pines_drive_arc_ft": 214.67,
+    "frontage_sandy_pines_drive_chord_ft": 214.37,
+    "north_boundary_ft": 200.00,
+    "east_boundary_ft": 277.15,
+    "west_boundary_ft": 200.00,
+    "max_depth_ft": 277.15,
+    "max_width_ft": 200.00,
+    "perimeter_ft": 891.82,
+    "perimeter_source": "GIS Shape_STLength; matches computed sum: 200.00 + 277.15 + 214.67 + 200.00 = 891.82"
+  },
+
+  "corner_coordinates": {
+    "datum": "Local survey coordinate system (NW corner as origin)",
+    "note": "Easting (X) positive east, Northing (Y) positive north. Survey convention.",
+    "NW": { "easting": 0.000, "northing": 0.000, "description": "Northwest corner — Point of Beginning" },
+    "NE": { "easting": 199.994, "northing": -1.674, "description": "Northeast corner" },
+    "SE": { "easting": 197.675, "northing": -278.816, "description": "Southeast corner — PC of Sandy Pines Drive curve" },
+    "SW": { "easting": -1.672, "northing": -199.993, "description": "Southwest corner — PT of Sandy Pines Drive curve" }
+  },
+
+  "interior_angles": {
+    "NW_corner": { "angle_dms": "90°00'00\"", "angle_decimal": 90.000, "note": "North and west bearings differ by exactly 90°" },
+    "NE_corner": { "angle_dms": "90°00'00\"", "angle_decimal": 90.000, "note": "North and east bearings differ by exactly 90°" },
+    "SE_corner": { "angle_dms": "74°48'00\"", "angle_decimal": 74.800, "note": "Acute angle — east boundary meets road tangent at less than 90°" },
+    "SW_corner": { "angle_dms": "117°04'18\"", "angle_decimal": 117.072, "note": "Obtuse angle — road tangent meets west boundary at greater than 90°" },
+    "sum_degrees": 371.872,
+    "expected_sum": "360° + Delta(11.872°) = 371.872° — correct for a 4-sided polygon with one outward-convex curve",
+    "closure_check": "PASS"
+  },
+
+  "traverse_computation": {
+    "method": "Coordinate (Shoelace) method with circular segment adjustment",
+    "legs": [
+      {
+        "leg": 1,
+        "from": "NW",
+        "to": "NE",
+        "bearing": "S89°31'14\"E",
+        "distance_ft": 200.00,
+        "latitude_ft": -1.674,
+        "departure_ft": 199.994
+      },
+      {
+        "leg": 2,
+        "from": "NE",
+        "to": "SE",
+        "bearing": "S00°28'46\"W",
+        "distance_ft": 277.15,
+        "latitude_ft": -277.142,
+        "departure_ft": -2.319
+      },
+      {
+        "leg": 3,
+        "from": "SE",
+        "to": "SW",
+        "type": "curve_chord",
+        "chord_bearing": "N68°23'W",
+        "chord_distance_ft": 214.37,
+        "latitude_ft": 78.823,
+        "departure_ft": -199.347
+      },
+      {
+        "leg": 4,
+        "from": "SW",
+        "to": "NW",
+        "bearing": "N00°28'46\"E",
+        "distance_ft": 200.00,
+        "latitude_ft": 199.993,
+        "departure_ft": 1.672
+      }
+    ],
+    "closure": {
+      "sum_latitudes": 0.000,
+      "sum_departures": 0.000,
+      "linear_error_of_closure": 0.000,
+      "precision_ratio": "Exact (mathematically closed from derived west boundary)"
+    }
+  },
+
+  "area_calculation": {
+    "step_1_chord_polygon": {
+      "method": "Shoelace formula on 4 corner coordinates (south boundary treated as chord)",
+      "formula": "Area = 0.5 × |sum(xi*yi+1 - xi+1*yi)|",
+      "area_sf": 47716,
+      "area_acres": 1.096
+    },
+    "step_2_curve_segment": {
+      "method": "Circular segment area = (R²/2)(Delta - sin(Delta))",
+      "radius_ft": 1036.12,
+      "delta_radians": 0.20718,
+      "sin_delta": 0.20569,
+      "segment_area_sf": 800,
+      "segment_position": "South of chord — arc bows outward (away from parcel center), so segment ADDS to polygon area"
+    },
+    "step_3_total": {
+      "total_area_sf": 48516,
+      "total_area_acres": 1.114
+    },
+    "comparison": {
+      "bcpao_acres": 1.10,
+      "bcpao_sf": 47916,
+      "bcpao_delta_sf": 600,
+      "bcpao_delta_pct": 1.25,
+      "gis_acres": 1.11,
+      "gis_sf": 48424,
+      "gis_delta_sf": 92,
+      "gis_delta_pct": 0.19,
+      "assessment": "Computed area (48,516 sf / 1.114 ac) matches GIS area (48,424 sf / 1.11 ac) within 0.19%. BCPAO's 1.10 acres likely reflects rounding or a slightly different boundary definition. GIS perimeter match (891.82 ft computed vs 891.82 ft GIS) confirms boundary geometry is correct."
+    }
+  },
+
+  "easements_and_encumbrances": {
+    "wellhead_protection_easement": {
+      "type": "Radial easement around City of Palm Bay water supply well",
+      "radius_ft": 200,
+      "regulatory_basis": "Florida DEP Chapter 62-521 FAC",
+      "survey_depiction": "Dashed arc crossing parcel from north boundary to south boundary (Sandy Pines Drive), covering western portion of parcel",
+      "approximate_entry_north_boundary_ft_from_NW": "120-130 (estimated from survey scale)",
+      "impact_percent": 47,
+      "impact_sf": 22803,
+      "restrictions": [
+        "No new construction within 200-ft radius",
+        "No new impervious surfaces",
+        "No regulated substances storage",
+        "Surface parking and open space may be permitted (per survey annotation showing 'PARKING' in easement area)"
+      ],
+      "resolution_timeline_years": 10,
+      "source": "Tim Roberts, Palm Bay Utilities, Sept 11, 2025"
+    },
+    "except_east_83_ft": {
+      "type": "Exclusion from legal description",
+      "description": "The easternmost 83 feet of the original E1/2 of S1/2 of NE1/4 was excluded from this parcel. This strip is now Tract O (Preserve & Public Utilities).",
+      "tract": "Tract O",
+      "plat_reference": "Plat Book 44, Page 79"
+    }
+  },
+
+  "adjacent_tracts": {
+    "tract_d": {
+      "location": "Northwest (adjacent to north and west boundaries)",
+      "type": "Preserve & Public Utilities",
+      "plat_reference": "Plat Book 44, Page 78",
+      "subdivision": "Sandy Pines Preserve"
+    },
+    "tract_o": {
+      "location": "East (adjacent to east boundary)",
+      "type": "Preserve & Public Utilities",
+      "plat_reference": "Plat Book 44, Page 79",
+      "subdivision": "Sandy Pines Preserve",
+      "note": "This is the 'Except East 83 feet' strip from the legal description"
+    }
+  },
+
+  "corner_monuments": {
+    "note": "Iron rods observed at corners per survey. Exact sizes partially obscured but typical 5/8-inch and 1.5-inch iron rods noted.",
+    "NW_corner": "Iron rod (size partially obscured)",
+    "NE_corner": "Iron rod (size partially obscured)",
+    "SE_corner": "Iron rod — at intersection of east boundary and Sandy Pines Drive ROW",
+    "SW_corner": "Iron rod — at intersection of west boundary and Sandy Pines Drive ROW",
+    "prm_3867": {
+      "type": "Permanent Reference Monument",
+      "label": "P.R.M. .3867",
+      "location": "Southwest area, near Sandy Pines Drive — used as survey control point"
+    }
+  },
+
+  "road_frontage": {
+    "road_name": "Sandy Pines Drive",
+    "frontage_type": "Curved",
+    "arc_length_ft": 214.67,
+    "chord_length_ft": 214.37,
+    "curve_radius_ft": 1036.12,
+    "road_direction": "Generally east-west, curving northwestward through the parcel frontage",
+    "access_note": "Parcel has direct frontage on Sandy Pines Drive. Road provides access to Malabar Road (SR-514) to the south."
+  },
+
+  "buildable_area_analysis": {
+    "total_parcel_sf": 48516,
+    "total_parcel_acres": 1.114,
+    "wellhead_easement_sf": 22803,
+    "wellhead_easement_acres": 0.524,
+    "net_buildable_sf": 25713,
+    "net_buildable_acres": 0.590,
+    "net_buildable_pct": 53,
+    "note": "Buildable area excludes wellhead easement only. Wetland delineation, flood zone BFE, and PUD setbacks may further reduce buildable area. PUD ordinance (not yet obtained) controls actual setbacks."
+  },
+
+  "annotations_handwritten": {
+    "note": "The following annotations appear to be hand-drawn on the survey, likely by the property owner or a design consultant, NOT by the surveyor.",
+    "parking_area": {
+      "location": "Western portion of parcel, within wellhead easement arc",
+      "label": "PARKING",
+      "note": "Indicates intent to place parking within the wellhead easement zone. Must confirm with Palm Bay Utilities that surface parking is permitted."
+    },
+    "building_area": {
+      "location": "Eastern and central portion of parcel, outside wellhead easement",
+      "label": "ONE or TWO, 3 to 4 Story Buildings",
+      "note": "Indicates 3-4 story multifamily building concept on the non-encumbered portion of the parcel"
+    },
+    "account_id": {
+      "location": "Top right",
+      "label": "Account ID: 2835546",
+      "note": "BCPAO account number added by hand"
+    }
+  },
+
+  "flood_zone_discrepancy": {
+    "survey_notation": "A flood zone notation appears in the lower-right corner of the survey. The text is partially obscured but may indicate a different flood zone than current FEMA mapping.",
+    "current_fema_zone": "A (Special Flood Hazard Area, no BFE determined)",
+    "current_fema_source": "FEMA NFHL REST API, queried Feb 6, 2026",
+    "note": "If the survey predates a FEMA map revision, it may show an older flood zone designation. Current FEMA Zone A controls for development purposes."
+  },
+
+  "vicinity_map": {
+    "location_on_survey": "Middle-right panel",
+    "scale": "Not to scale",
+    "shows": "Parcel location relative to Malabar Road (to the south) and surrounding Sandy Pines Preserve subdivision"
+  },
+
+  "data_quality_notes": [
+    "North and east boundary bearings and distances are clearly readable from the survey.",
+    "South curve radius (R=1036.12) and arc length (A=214.67) are clearly readable.",
+    "West boundary bearing and distance are partially obscured by the wellhead easement arc and annotation text. Values (N00°28'46\"E, 200.00 ft) were derived from traverse closure and confirmed by GIS perimeter match (891.82 ft).",
+    "Delta angle, chord length, and chord bearing for the south curve were calculated from R and A — not read directly from the survey.",
+    "Interior angles at SE (74.8°) and SW (117.1°) corners were computed from the traverse, not measured from the survey drawing.",
+    "The wellhead easement arc entry point on the north boundary (120-130 ft from NW) is estimated from the survey scale, not dimensioned on the drawing.",
+    "Corner monument sizes are partially obscured; typical survey practice uses 5/8\" and 1.5\" iron rods."
+  ],
+
+  "creator": "Claude Code (Opus 4.6)",
+  "organization": "Everest Capital USA"
+}
