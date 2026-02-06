@@ -1,0 +1,342 @@
+{
+  "project_id": "SPD-2025-002",
+  "project_name": "Sandy Pines Multifamily",
+  "stage": 2,
+  "stage_name": "Zoning Analysis",
+  "completed_at": "2026-02-06T16:00:00Z",
+  "executed_by": "claude-code-opus-4.6",
+  "status": "COMPLETED",
+
+  "parcel_summary": {
+    "account_id": "2835546",
+    "parcel_id": "28-37-27-00-7",
+    "address": "2165 Sandy Pines Dr NE",
+    "city": "Palm Bay",
+    "state": "FL",
+    "zip": "32905",
+    "acreage_bcpao": 1.10,
+    "acreage_gis": 1.11,
+    "area_sf_gis": 48424,
+    "legal": "E 1/2 OF S 1/2 OF NE 1/4, Section 27, T28S, R37E, less E 83 ft"
+  },
+
+  "survey_reference": {
+    "file": "survey_2165_sandy_pines_dr.pdf",
+    "surveyor": "Smith Survey Company (L.B. 7436)",
+    "scale": "1 inch = 30 feet",
+    "key_annotations": {
+      "proposed_buildings": "ONE or TWO, 3 to 4 Story Buildings (east/central portion)",
+      "proposed_parking": "PARKING (west portion, within wellhead easement arc)",
+      "road_curve": "R=1036.12 ft, A=214.67 ft (Sandy Pines Drive curve)",
+      "north_boundary": "S89°31'14\"E, 200.00 ft (Record)",
+      "east_boundary": "S00°28'46\"W, 277.15 ft (R&M)",
+      "adjacent_tracts": "Tract D and Tract O — public/utility tracts (Plat Book 44, Pages 78-79)"
+    }
+  },
+
+  "zoning_designation": {
+    "current_zoning": "PUD",
+    "zoning_full_name": "Planned Unit Development",
+    "source": "Palm Bay GIS REST — live query Feb 6, 2026",
+    "source_endpoint": "https://gis.palmbayflorida.org/arcgis/rest/services/GrowthManagement/Zoning/MapServer/0",
+    "query_field": "RENUM=2835546",
+    "raw_response": {
+      "OBJECTID": 630342,
+      "RENUM": 2835546,
+      "ZONING": "PUD",
+      "Link": "https://codelibrary.amlegal.com/codes/palmbay/latest/palmbay_fl/0-0-0-70055",
+      "Shape_STArea": 48424.49,
+      "Shape_STLength": 891.82
+    }
+  },
+
+  "future_land_use": {
+    "flu_code": "HDR",
+    "flu_description": "High Density Residential",
+    "source": "Palm Bay GIS REST — live query Feb 6, 2026",
+    "source_endpoint": "https://gis.palmbayflorida.org/arcgis/rest/services/GrowthManagement/FLU1/MapServer/0",
+    "raw_response": {
+      "OBJECTID": 158919,
+      "Township": "28",
+      "Range": "37",
+      "Section": "27",
+      "SubCode": "00",
+      "Block": "7",
+      "RENUM": "2835546",
+      "FLU_Code": "HDR",
+      "FLU_Desc": "High Density Residential",
+      "Acreage": 1.11167759
+    }
+  },
+
+  "pud_analysis": {
+    "pud_type": "Small PUD (SPUD)",
+    "code_section": "§ 185.061 (as amended by Ordinances 2019-43 and 2019-44)",
+    "min_acreage_standard_pud": 5.0,
+    "min_acreage_small_pud": 1.0,
+    "parcel_qualifies": true,
+    "qualification_note": "1.10 acres exceeds 1.0-acre minimum for Small PUD (SPUD). Does NOT qualify for standard PUD (5-acre min).",
+    "commercial_required": false,
+    "commercial_note": "SPUD does NOT require commercial uses (unlike standard PUD)",
+    "governing_standards": "Development standards controlled by the approved PUD ordinance and final development plan — NOT by standard RM district tables",
+    "pud_ordinance_status": "UNKNOWN — must be obtained from Palm Bay City Clerk",
+    "action_required": "Request PUD ordinance for parcel 28-37-27-00-7 from Palm Bay Land Development Division",
+    "contact": {
+      "department": "Palm Bay Land Development Division",
+      "phone": "(321) 733-3042",
+      "email": "landdevelopmentweb@palmbayfl.gov",
+      "city_clerk": "120 Malabar Road SE, Palm Bay FL",
+      "hours": "8:30 AM - 5:00 PM weekdays"
+    }
+  },
+
+  "reference_rm15_standards": {
+    "note": "PUD ordinance controls actual standards. RM-15 included as reference benchmark — the most likely comparable district given HDR future land use.",
+    "code_section": "§ 185.037",
+    "district_purpose": "Medium density residential with variety of housing types",
+    "max_density_du_per_acre": 15,
+    "min_lot_area_sf": 10000,
+    "setbacks_ft": {
+      "front": 25,
+      "side_interior": "15 OR building height, whichever is greater",
+      "side_corner": "25 OR building height, whichever is greater",
+      "rear": "25 OR building height, whichever is greater"
+    },
+    "max_building_height_ft": 40,
+    "building_separation_ft": 30,
+    "parking_setback_ft": 10,
+    "perimeter_fence_required": true,
+    "perimeter_fence_height_ft": 6,
+    "five_plus_units_special_provisions": true,
+    "permitted_uses_by_right": [
+      "Single-family dwellings",
+      "Two-family dwellings (duplexes)",
+      "Multiple-family dwellings"
+    ],
+    "ordinance_2024_45": {
+      "description": "All RM-10 rezoned to RM-15 citywide (Nov 7, 2024)",
+      "acres_affected": 361,
+      "applies_to_pud": false,
+      "note": "Does NOT apply to PUD-zoned parcels — PUD governed by its own ordinance"
+    }
+  },
+
+  "reference_rm20_standards": {
+    "code_section": "§ 185.038",
+    "max_density_du_per_acre": 20,
+    "setbacks_ft": {
+      "front": "25 OR building height, whichever is greater",
+      "side_interior": "15 OR building height, whichever is greater",
+      "side_corner": "25 OR building height, whichever is greater",
+      "rear": "25 OR building height, whichever is greater"
+    },
+    "building_separation_ft": 30,
+    "height_variation_rule": "Buildings 4+ stories: 15% of roofline must have 10-ft height variation"
+  },
+
+  "parking_requirements": {
+    "code_section": "§ 185.140",
+    "multifamily_efficiency": "1.0 space/unit (in mixed dev) or 1.5 spaces/unit (efficiency-only dev)",
+    "multifamily_standard": "Specific ratio not available — request § 185.140 table from city",
+    "parking_setback_ft": 10,
+    "parking_in_easement": "Survey shows PARKING in wellhead easement area — verify if surface parking (no impervious surface per easement terms) is permitted with city",
+    "handicap": "Per ADA/FHA federal requirements"
+  },
+
+  "overlay_districts": {
+    "fema_flood_zone": {
+      "zone": "A",
+      "sfha": true,
+      "sfha_description": "Special Flood Hazard Area — 1% annual chance flood (100-year floodplain)",
+      "base_flood_elevation": "NOT DETERMINED",
+      "bfe_note": "Zone A with no published BFE (study type: NP). Developer must establish BFE via flood study or LOMA.",
+      "dfirm_id": "12009C",
+      "flood_area_id": "12009C_2495",
+      "source_citation": "12009C_STUDY1",
+      "source": "FEMA NFHL REST API — layer 28, point query at -80.625,27.986",
+      "raw_attributes": {
+        "OBJECTID": 22609961,
+        "FLD_ZONE": "A",
+        "SFHA_TF": "T",
+        "STATIC_BFE": -9999.0,
+        "STUDY_TYP": "NP"
+      },
+      "development_implications": [
+        "Flood insurance MANDATORY for federally-backed mortgages",
+        "Floodplain Development Permit required from City of Palm Bay",
+        "All structures must be elevated above BFE (BFE must first be established)",
+        "Elevation Certificate required at multiple construction stages",
+        "Flood-resistant construction methods required (FEMA Technical Bulletin standards)",
+        "15-30% construction cost premium for elevated building",
+        "SJRWMD Environmental Resource Permit likely required"
+      ],
+      "estimated_flood_study_cost": "$5,000-$15,000"
+    },
+
+    "wetlands": {
+      "nwi_code": "PEM1Cd",
+      "wetland_type": "Freshwater Emergent Wetland",
+      "classification_breakdown": {
+        "P_Palustrine": "Nontidal freshwater wetland",
+        "EM_Emergent": "Dominated by rooted herbaceous plants",
+        "1_Persistent": "Vegetation remains standing year-round",
+        "C_Seasonally_Flooded": "Surface water present early season, absent by end",
+        "d_Partially_Drained": "Hydrologically altered but still supports wetland vegetation"
+      },
+      "wetland_feature_total_acres": 10.32,
+      "parcel_overlap_note": "Parcel (1.10 acres) lies within 10.32-acre wetland polygon. Exact overlap requires professional delineation.",
+      "nwi_id": "202409CSw{E4F2CB85-62BF-41DF-B3B5-3F3672F3AD14}_01",
+      "source": "NWI REST API — fwsprimary.wim.usgs.gov, point query at -80.625,27.986",
+      "development_implications": [
+        "Professional wetland delineation survey required before any development",
+        "Section 404 Clean Water Act permit from USACE if wetlands impacted",
+        "SJRWMD Environmental Resource Permit (ERP) required",
+        "25-ft wetland buffer setback likely required",
+        "Mitigation required if wetland impact unavoidable",
+        "Partially drained status may reduce (but not eliminate) mitigation requirements"
+      ],
+      "estimated_delineation_cost": "$3,000-$8,000"
+    },
+
+    "wellhead_protection": {
+      "type": "Radial easement — 200-ft radius around City of Palm Bay supply well",
+      "impact_percent": 47,
+      "restrictions": [
+        "No new construction within 200-ft radius",
+        "No new impervious surfaces",
+        "No regulated substances storage",
+        "Open space, recreation, and possibly surface parking permitted"
+      ],
+      "regulatory_basis": "Florida DEP Chapter 62-521 FAC",
+      "resolution_timeline_years": 10,
+      "source": "Tim Roberts, Palm Bay Utilities, Sept 11, 2025",
+      "survey_note": "Survey shows parking area within easement arc, buildings outside it"
+    }
+  },
+
+  "density_calculations": {
+    "gross_parcel_acres": 1.10,
+    "wellhead_easement_reduction_pct": 47,
+    "net_buildable_acres": 0.56,
+    "note": "Wetland overlap may further reduce buildable area — pending delineation",
+
+    "scenario_pud_at_15_du_acre": {
+      "density": 15,
+      "basis": "HDR FLU typically supports 15 du/acre; PUD ordinance controls actual",
+      "gross_max_units": 16,
+      "net_max_units_after_easement": 8,
+      "building_concept": "1 building, 3-4 stories, ~8 units (per survey annotation)"
+    },
+    "scenario_pud_at_20_du_acre": {
+      "density": 20,
+      "basis": "HDR FLU may support up to 20 du/acre if PUD ordinance allows",
+      "gross_max_units": 22,
+      "net_max_units_after_easement": 11,
+      "building_concept": "1-2 buildings, 3-4 stories, ~11 units (per survey annotation)"
+    },
+    "scenario_phased": {
+      "phase_1_now": {
+        "buildable_acres": 0.56,
+        "density": 15,
+        "units": "6-8",
+        "building": "1 building, 3-4 stories"
+      },
+      "phase_2_after_easement_vacated": {
+        "additional_acres": 0.54,
+        "density": 15,
+        "additional_units": "6-8",
+        "building": "1 building on former easement area"
+      },
+      "total_units": "12-16"
+    }
+  },
+
+  "constraint_stacking_summary": {
+    "total_independent_constraints": 3,
+    "constraints": [
+      {
+        "name": "PUD Zoning — Unknown Ordinance",
+        "severity": "UNKNOWN",
+        "impact": "Development standards depend entirely on PUD ordinance content",
+        "blocking": true
+      },
+      {
+        "name": "FEMA Zone A Flood",
+        "severity": "HIGH",
+        "impact": "Entire parcel in SFHA. No BFE. Adds $5K-$15K study cost + 15-30% construction premium",
+        "blocking": true
+      },
+      {
+        "name": "NWI Wetland PEM1Cd",
+        "severity": "HIGH",
+        "impact": "10.32-acre wetland feature intersects parcel. Delineation required. May further reduce buildable area",
+        "blocking": true
+      },
+      {
+        "name": "Wellhead Protection Easement",
+        "severity": "HIGH",
+        "impact": "47% of parcel encumbered. Buildings excluded. Parking possibly allowed",
+        "blocking": false
+      }
+    ],
+    "combined_risk": "HIGH — three blocking constraints require resolution before site planning",
+    "estimated_pre_development_costs": {
+      "flood_study": "$5,000-$15,000",
+      "wetland_delineation": "$3,000-$8,000",
+      "pud_ordinance_review": "$0 (public record request)",
+      "total_range": "$8,000-$23,000",
+      "note": "Before any design or permitting work begins"
+    }
+  },
+
+  "critical_next_steps": [
+    {
+      "priority": 1,
+      "action": "Obtain PUD ordinance for parcel 28-37-27-00-7",
+      "how": "Request from Palm Bay Land Development: (321) 733-3042 or landdevelopmentweb@palmbayfl.gov",
+      "blocking": true,
+      "reason": "Cannot determine density, setbacks, height, or permitted uses without PUD ordinance"
+    },
+    {
+      "priority": 2,
+      "action": "Commission professional wetland delineation",
+      "estimated_cost": "$3,000-$8,000",
+      "blocking": true,
+      "reason": "Must determine exact wetland boundary overlap with parcel before site planning"
+    },
+    {
+      "priority": 3,
+      "action": "Commission flood study to establish Base Flood Elevation",
+      "estimated_cost": "$5,000-$15,000",
+      "blocking": true,
+      "reason": "Zone A requires BFE for elevation certificate and construction height determination"
+    },
+    {
+      "priority": 4,
+      "action": "Pre-application meeting with Palm Bay Planning",
+      "how": "Schedule via (321) 733-3042",
+      "blocking": false,
+      "reason": "Discuss PUD + flood + wetland + wellhead stacking; get staff guidance on feasibility"
+    },
+    {
+      "priority": 5,
+      "action": "Verify parking allowance within wellhead easement",
+      "how": "Confirm with Tim Roberts (Palm Bay Utilities) that surface parking is permitted in easement",
+      "blocking": false,
+      "reason": "Survey shows parking in easement — need formal confirmation this is allowed"
+    }
+  ],
+
+  "data_sources": {
+    "zoning": "Palm Bay GIS REST — GrowthManagement/Zoning/MapServer/0 (RENUM=2835546)",
+    "future_land_use": "Palm Bay GIS REST — GrowthManagement/FLU1/MapServer/0 (RENUM=2835546)",
+    "flood_zone": "FEMA NFHL REST — public/NFHL/MapServer/28 (point: -80.625,27.986)",
+    "wetlands": "NWI REST — fwsprimary.wim.usgs.gov Wetlands/MapServer/0 (point: -80.625,27.986)",
+    "zoning_code": "American Legal Publishing — codelibrary.amlegal.com/codes/palmbay (§ 185.037, § 185.061)",
+    "survey": "survey_2165_sandy_pines_dr.pdf (Smith Survey Co, L.B. 7436)",
+    "property_data": "BCPAO REST API v1 — bcpao.us/api/v1/account/2835546"
+  },
+
+  "creator": "Claude Code (Opus 4.6)",
+  "organization": "Everest Capital USA"
+}

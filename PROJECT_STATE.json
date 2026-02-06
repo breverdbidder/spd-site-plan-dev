@@ -1,6 +1,6 @@
 {
   "version": "1.1.0",
-  "last_updated": "2026-02-06T12:00:00Z",
+  "last_updated": "2026-02-06T16:00:00Z",
   "modules": {
     "spd_pipeline": {
       "version": "1.0.13",
@@ -114,15 +114,30 @@
       "status": "IN_PROGRESS",
       "ml_score": 58.5,
       "ml_grade": "C",
-      "recommendation": "PROCEED_WITH_PHASED_APPROACH",
-      "critical_constraint": {
-        "type": "Wellhead Protection Easement",
-        "radius_ft": 200,
-        "impact": "47% of parcel encumbered",
-        "resolution_timeline": "~10 years",
-        "source": "Tim Roberts, Palm Bay Utilities, Sept 11 2025"
-      },
-      "highest_best_use": "Phased Multifamily Development (6-8 units now, 8-12 units in 10 years)",
+      "recommendation": "HOLD_PENDING_PUD_REVIEW",
+      "zoning": "PUD (Planned Unit Development)",
+      "future_land_use": "HDR (High Density Residential)",
+      "zoning_source": "Palm Bay GIS live query Feb 6, 2026",
+      "critical_constraints": [
+        {
+          "type": "Wellhead Protection Easement",
+          "radius_ft": 200,
+          "impact": "47% of parcel encumbered",
+          "resolution_timeline": "~10 years",
+          "source": "Tim Roberts, Palm Bay Utilities, Sept 11 2025"
+        },
+        {
+          "type": "FEMA Zone A Flood",
+          "impact": "Entire parcel in SFHA, no BFE determined",
+          "source": "FEMA NFHL query Feb 6, 2026"
+        },
+        {
+          "type": "NWI Wetland PEM1Cd",
+          "impact": "10.32-acre freshwater emergent wetland intersects parcel",
+          "source": "NWI query Feb 6, 2026"
+        }
+      ],
+      "highest_best_use": "UNDER REVIEW — PUD ordinance needed before feasibility determination",
       "zod_reference": true,
       "stages_completed": [
         {
@@ -132,13 +147,16 @@
         },
         {
           "stage": 2,
-          "name": "Survey Analysis",
-          "status": "COMPLETED"
+          "name": "Zoning Analysis (Feb 2026)",
+          "status": "COMPLETED",
+          "completed_at": "2026-02-06T16:00:00Z",
+          "findings": "PUD zoning + HDR FLU + Zone A flood + NWI wetland PEM1Cd + wellhead easement"
         },
         {
           "stage": 3,
-          "name": "Zoning Analysis",
-          "status": "COMPLETED"
+          "name": "Zoning Analysis (Dec 2025)",
+          "status": "SUPERSEDED",
+          "note": "Assumed RM-10; actual zoning is PUD per live GIS query"
         },
         {
           "stage": 4,
@@ -148,15 +166,16 @@
         {
           "stage": 10,
           "name": "ML Feasibility Score",
-          "status": "COMPLETED"
+          "status": "SUPERSEDED",
+          "note": "Score of 58.5 did not account for flood zone or wetland constraints"
         }
       ],
       "stages_pending": [
         {
           "stage": 5,
           "name": "Parking Analysis",
-          "status": "PENDING",
-          "notes": "Pending confirmation of parking in easement"
+          "status": "BLOCKED",
+          "notes": "Blocked by PUD ordinance review and parking-in-easement confirmation"
         },
         {
           "stage": 6,
@@ -176,13 +195,19 @@
         {
           "stage": 9,
           "name": "Site Layout",
+          "status": "BLOCKED",
+          "notes": "Blocked by PUD ordinance, wetland delineation, and flood study"
+        },
+        {
+          "stage": 10,
+          "name": "ML Feasibility Score (rescore)",
           "status": "PENDING",
-          "notes": "Depends on pre-app meeting results"
+          "notes": "Must rescore after PUD + flood + wetland constraints quantified"
         },
         {
           "stage": 11,
           "name": "Report Generation",
-          "status": "IN_PROGRESS"
+          "status": "PENDING"
         },
         {
           "stage": 12,
@@ -190,9 +215,9 @@
           "status": "PENDING"
         }
       ],
-      "next_action": "Pre-Application Meeting December 16, 2025",
+      "next_action": "Obtain PUD ordinance from Palm Bay (321-733-3042), commission wetland delineation + flood study",
       "created_at": "2025-12-16T14:00:00Z",
-      "updated_at": "2025-12-16T14:45:00Z"
+      "updated_at": "2026-02-06T16:00:00Z"
     },
     {
       "id": "SPD-2026-001",
@@ -348,6 +373,12 @@
     }
   ],
   "recent_decisions": [
+    {
+      "date": "2026-02-06",
+      "project": "SPD-2025-002",
+      "decision": "Stage 2 Zoning Analysis: Parcel is PUD (not RM-10/RM-15). Triple constraint confirmed: Zone A flood + NWI wetland + wellhead easement. Status changed to HOLD_PENDING_PUD_REVIEW.",
+      "rationale": "Live GIS query confirmed PUD with HDR FLU. FEMA NFHL confirms Zone A SFHA (no BFE). NWI confirms PEM1Cd freshwater emergent wetland (10.32-acre feature). Dec 2025 zoning analysis (stage3_zoning.json) assumed RM-10 — now superseded. Feasibility downgraded until PUD ordinance obtained and constraints quantified."
+    },
     {
       "date": "2026-02-06",
       "project": "SPD-2025-002",
