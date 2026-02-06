@@ -1,0 +1,237 @@
+{
+  "project_id": "SPD-2025-002",
+  "project_name": "Sandy Pines Multifamily",
+  "research_type": "PUD Ordinance Search",
+  "completed_at": "2026-02-06T17:00:00Z",
+  "executed_by": "claude-code-opus-4.6",
+  "status": "NOT_FOUND_ONLINE",
+
+  "objective": "Locate the PUD (Planned Unit Development) ordinance governing parcel 28-37-27-00-7 (Account 2835546) at 2165 Sandy Pines Dr NE, Palm Bay FL",
+
+  "parcel_context": {
+    "account_id": "2835546",
+    "parcel_id": "28-37-27-00-7",
+    "zoning": "PUD",
+    "future_land_use": "HDR (High Density Residential)",
+    "subdivision_name": "",
+    "plat_book_page": "0000/0000",
+    "unplatted": true,
+    "unplatted_note": "BCPAO shows empty subdivisionName and platBook 0000/0000 — this 1.10-acre parcel is UNPLATTED. It may be a remainder/outlot within the Sandy Pines Preserve PUD that was never developed.",
+    "legal_description": "E 1/2 OF S 1/2 OF NE 1/4 EXC E 83 FT, PB 32 PG 78, ORB 3636 PG 2327, 3731 PG 2000",
+    "legal_reference_books": [
+      {
+        "type": "Plat Book",
+        "book": "32",
+        "page": "78",
+        "note": "Referenced in legal description — may contain original plat or PUD boundary"
+      },
+      {
+        "type": "Official Records Book",
+        "book": "3636",
+        "page": "2327",
+        "note": "Referenced in legal description — could be deed, easement, or PUD-related document"
+      },
+      {
+        "type": "Official Records Book",
+        "book": "3731",
+        "page": "2000",
+        "note": "Referenced in legal description — could be deed, easement, or PUD-related document"
+      }
+    ]
+  },
+
+  "subdivision_identification": {
+    "name": "Sandy Pines Preserve",
+    "type": "Multi-phase gated PUD community",
+    "location": "Palm Bay, FL (off Malabar Road)",
+    "construction_years": "1998-2003",
+    "developer": "Regency Park Partnership (tentative — requires confirmation)",
+    "phases": [
+      "Phase 1 & 2",
+      "Phase 3 & 4",
+      "Courtyards"
+    ],
+    "hoa_entities": [
+      "Sandy Pines Preserve HOA (Phases 1 & 2)",
+      "Sandy Pines Preserve HOA (Phases 3 & 4)",
+      "Sandy Pines Preserve Courtyards HOA",
+      "Sandy Pines Preserve Master Association"
+    ],
+    "product_types": "Townhomes and single-family homes",
+    "source": "neighborhoods.com, Google Maps, HOA registrations"
+  },
+
+  "search_strategies_attempted": [
+    {
+      "strategy": "AcclaimWeb Official Records Search",
+      "target": "vaclmweb1.brevardclerk.us/AcclaimWeb/",
+      "searches_planned": [
+        "Book 3731 Page 2000 (from legal description)",
+        "Book 3636 Page 2327 (from legal description)",
+        "Book 3135 Page 2337",
+        "Party name: Sandy Pines",
+        "Party name: City of Palm Bay",
+        "Party name: Property Squad",
+        "Plat Book 46 Page 75"
+      ],
+      "result": "BLOCKED",
+      "reason": "AcclaimWeb requires JavaScript, session cookies, and interactive browser navigation. All automated URL-based queries redirect to the main portal. Cannot be queried via curl, httpx, or WebFetch.",
+      "workaround": "Must use manual browser access or phone call to Brevard County Clerk (321) 637-5413"
+    },
+    {
+      "strategy": "Palm Bay Municipal Code Search",
+      "target": "codelibrary.amlegal.com/codes/palmbay",
+      "searches": [
+        "Sandy Pines in zoning ordinances",
+        "PUD ordinance listings",
+        "Section 185.061 (Small PUD provisions)"
+      ],
+      "result": "NOT_FOUND",
+      "reason": "PUD ordinances are NOT codified in Palm Bay's municipal code. Per American Legal Publishing: 'The majority of ordinances passed by City Council (such as those related to land use) are not included in the codified ordinances.' Individual PUD ordinances are maintained by the City Clerk as separate records.",
+      "useful_finding": "Section 185.061 confirms Small PUD (SPUD) minimum 1.0 acre, standard PUD minimum 5.0 acres. Parcel qualifies for SPUD only."
+    },
+    {
+      "strategy": "Palm Bay NovusAgenda Search",
+      "target": "palmbayfl.novusagenda.com/agendapublic/",
+      "searches": [
+        "Sandy Pines in meeting agendas/minutes",
+        "PUD ordinance in council proceedings",
+        "Parcel-related rezoning actions"
+      ],
+      "result": "NOT_FOUND",
+      "reason": "NovusAgenda archive searchable by text but did not yield Sandy Pines PUD results in the date ranges searched. The original PUD ordinance likely predates the digital archive (community built 1998-2003)."
+    },
+    {
+      "strategy": "Web Search for Sandy Pines PUD Ordinance",
+      "searches": [
+        "Sandy Pines Preserve PUD ordinance Palm Bay Florida",
+        "Sandy Pines Palm Bay zoning ordinance number",
+        "Regency Park Partnership Palm Bay PUD",
+        "Palm Bay PUD ordinance list"
+      ],
+      "result": "PARTIAL",
+      "findings": [
+        "Confirmed Sandy Pines Preserve is a multi-phase gated PUD community",
+        "Built 1998-2003 with townhomes and single-family homes",
+        "Multiple HOA phases identified",
+        "No PUD ordinance number or text found in any public web source"
+      ]
+    },
+    {
+      "strategy": "BCPAO Property Records Analysis",
+      "target": "bcpao.us/api/v1/account/2835546",
+      "result": "PARTIAL",
+      "findings": {
+        "subdivision_name_empty": "subdivisionName field is empty string — parcel is not assigned to any subdivision",
+        "plat_book_zeros": "platBook '0000', platPage null — parcel is unplatted",
+        "legal_desc_references": "PB 32 PG 78, ORB 3636 PG 2327, ORB 3731 PG 2000 — these book/page references should be searched in AcclaimWeb manually",
+        "sale_history": [
+          "2023-07-24: Tax deed (XD) at $35,100 — current owner The Property Squad Inc",
+          "2011-06-30: Tax deed (XD) at $4,300",
+          "2004-10-29: Trustee deed (TD) at $277,000 — pre-crash value"
+        ],
+        "implication": "Two consecutive tax deed sales suggest long-vacant, possibly abandoned parcel. The $277K 2004 price vs $35K 2023 tax deed sale shows dramatic devaluation, consistent with a constrained parcel."
+      }
+    }
+  ],
+
+  "key_findings": {
+    "pud_ordinance_found": false,
+    "pud_ordinance_number": "UNKNOWN",
+    "pud_ordinance_date": "UNKNOWN — likely late 1990s based on community construction dates",
+
+    "critical_insight": "This parcel appears to be a remainder/outlot within the Sandy Pines Preserve PUD boundary that was never developed. Evidence: (1) BCPAO shows empty subdivision name and plat book 0000/0000 (unplatted), (2) adjacent tracts D and O are public/utility tracts per survey, (3) two consecutive tax deed sales suggest long vacancy, (4) wellhead protection easement covers 47% of parcel — may have prevented original development.",
+
+    "pud_ordinances_not_codified": true,
+    "pud_ordinances_location": "Individual PUD ordinances are maintained by the Palm Bay City Clerk as separate records, NOT included in the codified municipal code at codelibrary.amlegal.com",
+
+    "related_documents_to_retrieve": [
+      {
+        "document": "Plat Book 32, Page 78",
+        "location": "Brevard County Clerk — AcclaimWeb or in-person",
+        "relevance": "Referenced in parcel legal description — may show original PUD boundary or subdivision plat"
+      },
+      {
+        "document": "ORB 3636, Page 2327",
+        "location": "Brevard County Clerk — AcclaimWeb or in-person",
+        "relevance": "Referenced in legal description — could be PUD-related deed, easement, or covenant"
+      },
+      {
+        "document": "ORB 3731, Page 2000",
+        "location": "Brevard County Clerk — AcclaimWeb or in-person",
+        "relevance": "Referenced in legal description — could be PUD-related deed, easement, or covenant"
+      },
+      {
+        "document": "Plat Book 44, Pages 78-79",
+        "location": "Brevard County Clerk",
+        "relevance": "Survey references adjacent Tracts D and O from this plat book — likely Sandy Pines Preserve subdivision plat"
+      },
+      {
+        "document": "PUD Ordinance for Sandy Pines Preserve",
+        "location": "Palm Bay City Clerk — 120 Malabar Road SE, Palm Bay FL",
+        "relevance": "The governing PUD ordinance that controls density, setbacks, height, and permitted uses for this parcel"
+      }
+    ]
+  },
+
+  "action_items": [
+    {
+      "priority": 1,
+      "action": "Call Palm Bay Land Development Division for PUD ordinance",
+      "contact": "(321) 733-3042",
+      "email": "landdevelopmentweb@palmbayfl.gov",
+      "request": "PUD ordinance for parcel 28-37-27-00-7 (2165 Sandy Pines Dr NE). Specifically need: ordinance number, approved uses, density, setbacks, height limits, and any development conditions.",
+      "alternative": "Visit City Clerk at 120 Malabar Road SE, Palm Bay FL (8:30 AM - 5:00 PM weekdays)"
+    },
+    {
+      "priority": 2,
+      "action": "Search AcclaimWeb manually via browser",
+      "url": "https://vaclmweb1.brevardclerk.us/AcclaimWeb/",
+      "searches": [
+        "Book/Page: 3731/2000 (from legal description)",
+        "Book/Page: 3636/2327 (from legal description)",
+        "Book/Page: Plat Book 32, Page 78",
+        "Book/Page: Plat Book 44, Pages 78-79 (adjacent tracts plat)",
+        "Party name: 'Sandy Pines' (all document types)",
+        "Party name: 'Regency Park' (all document types)"
+      ],
+      "purpose": "Retrieve referenced documents from legal description + find original PUD ordinance recording"
+    },
+    {
+      "priority": 3,
+      "action": "Call Brevard County Clerk for recorded PUD documents",
+      "contact": "(321) 637-5413",
+      "request": "Copies of ORB 3636/2327, ORB 3731/2000, and Plat Book 32 Page 78 — referenced in legal description for account 2835546",
+      "purpose": "These recorded documents may contain or reference the PUD ordinance"
+    },
+    {
+      "priority": 4,
+      "action": "Pre-application meeting with Palm Bay Planning",
+      "contact": "(321) 733-3042",
+      "purpose": "Discuss PUD constraints, confirm if parcel is still governed by original PUD ordinance or if it can be rezoned independently, and get staff guidance on the triple constraint (wellhead + flood + wetland)"
+    }
+  ],
+
+  "open_questions": [
+    "Is this parcel still governed by the original Sandy Pines Preserve PUD ordinance, or was it excluded/separated?",
+    "Can an unplatted remainder parcel within a PUD be rezoned independently (e.g., to RM-15)?",
+    "Does the PUD ordinance allow the density/height shown in the survey annotations (3-4 story, 6-8 units)?",
+    "Is there a PUD master plan or final development plan on file showing this parcel's intended use?",
+    "Was this parcel intentionally left undeveloped due to the wellhead easement?"
+  ],
+
+  "conclusion": "The PUD ordinance governing parcel 28-37-27-00-7 could not be located through automated online searches. PUD ordinances in Palm Bay are NOT codified in the municipal code — they are individual ordinances maintained by the City Clerk. The parcel appears to be an unplatted remainder within the Sandy Pines Preserve PUD (built 1998-2003). The PUD ordinance must be obtained directly from Palm Bay Land Development Division at (321) 733-3042 or landdevelopmentweb@palmbayfl.gov. The legal description references three recorded documents (PB 32/78, ORB 3636/2327, ORB 3731/2000) that should also be retrieved from the Brevard County Clerk to understand the parcel's full legal history.",
+
+  "data_sources": {
+    "bcpao": "bcpao.us/api/v1/account/2835546",
+    "palm_bay_gis": "gis.palmbayflorida.org/arcgis/rest/services/GrowthManagement/Zoning/MapServer/0 (RENUM=2835546)",
+    "palm_bay_code": "codelibrary.amlegal.com/codes/palmbay (§ 185.061)",
+    "acclaimweb": "vaclmweb1.brevardclerk.us/AcclaimWeb/ (session-based, not automatable)",
+    "novus_agenda": "palmbayfl.novusagenda.com/agendapublic/",
+    "neighborhoods_com": "neighborhoods.com — Sandy Pines Preserve community profile",
+    "survey": "survey_2165_sandy_pines_dr.pdf (Smith Survey Co, L.B. 7436)"
+  },
+
+  "creator": "Claude Code (Opus 4.6)",
+  "organization": "Everest Capital USA"
+}
