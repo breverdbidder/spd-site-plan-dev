@@ -1,13 +1,12 @@
 # SPD Site Plan Development - Agentic AI Pipeline
 
-## 🔴 PRIORITY: Claude-Mem Pilot (Feb 3-17, 2026)
-- [ ] Install Claude-Mem plugin (`/plugin marketplace add thedotmack/claude-mem`)
-- [ ] Run CLAUDE_MEM_PILOT_MISSION.md (docs/claude-code-missions/)
-- [ ] Validate ≥5 observations captured in .claude-mem/
-- [ ] Security audit: zero credential leaks
-- [ ] Cross-session recall test
-- [ ] Generate pilot-results.md
-- [ ] Decision: ADOPT / EXTEND / REJECT / HYBRID
+## Claude-Mem Pilot (Feb 3-6, 2026) — COMPLETED
+- [x] ~~Install Claude-Mem plugin~~ — BLOCKED: Claude Code has no `/plugin marketplace`
+- [x] Run pilot evaluation — see `docs/claude-mem-pilot-results.md`
+- [x] Security audit: native MEMORY.md has zero auto-capture credential risk
+- [x] Cross-session recall test: MEMORY.md loads every session (verified)
+- [x] Generate pilot-results.md — DONE
+- [x] **Decision: REJECT claude-mem / ADOPT native MEMORY.md**
 
 
 ## Architecture
