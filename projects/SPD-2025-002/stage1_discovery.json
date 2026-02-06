@@ -4,26 +4,81 @@
   "stage": 1,
   "stage_name": "Discovery",
   "completed_at": "2025-12-16T14:20:00Z",
+  "refreshed_at": "2026-02-06T12:00:00Z",
+  "refreshed_by": "claude-code-opus-4.6",
   "status": "COMPLETED",
-  
+
   "property_info": {
     "address": "2165 Sandy Pines Dr NE",
     "city": "Palm Bay",
     "state": "FL",
     "zip": "32905",
     "account_id": "2835546",
-    "legal_description": "S½ of NE¼, Section 17, T28S, R37E, Brevard County, FL (per Plat Book 37, Page 200)",
+    "parcel_id": "28-37-27-00-7",
+    "legal_description": "E 1/2 OF S 1/2 OF NE 1/4 EXC E 83 FT, PB 32 PG 78, ORB 3636 PG 2327, 3731 PG 2000",
+    "legal_description_survey": "S\u00bd of NE\u00bc, Section 17, T28S, R37E, Brevard County, FL (per Plat Book 37, Page 200)",
     "jurisdiction": "City of Palm Bay",
     "county": "Brevard"
   },
-  
+
   "parcel_metrics": {
     "total_area_sf": 46394,
     "total_area_acres": 1.065,
+    "bcpao_acreage": 1.10,
     "frontage_sandy_pines_dr": "200.00 ft (Record)",
     "depth_approximate": "277.15 ft (R&M)"
   },
-  
+
+  "bcpao_data_refresh": {
+    "pulled_at": "2026-02-06T12:00:00Z",
+    "source_url": "https://www.bcpao.us/api/v1/account/2835546",
+    "roll_year": 2025,
+    "market_value": 55000,
+    "assessed_value": 55000,
+    "taxable_value": 55000,
+    "property_use_code": "0008",
+    "property_use_description": "VACANT RESIDENTIAL LAND (MULTI-FAMILY, UNPLATTED)",
+    "millage_code": "34U0",
+    "millage_description": "PALM BAY",
+    "total_buildings": 0,
+    "site_address_bcpao": "NONE"
+  },
+
+  "ownership": {
+    "current_owner": "THE PROPERTY SQUAD INC",
+    "owner_type": "Corporate",
+    "mailing_address": "390 ROOSEVELT AVE, SATELLITE BEACH FL 32937",
+    "acquisition_status": "OWNED",
+    "title_status": "Subject to wellhead easement"
+  },
+
+  "sales_history": [
+    {
+      "date": "2023-07-24",
+      "price": 35100,
+      "deed_type": "TAX DEED",
+      "qualified": false,
+      "book": "9844",
+      "page": "0688"
+    },
+    {
+      "date": "2011-06-30",
+      "price": 4300,
+      "deed_type": "TAX DEED",
+      "qualified": false,
+      "book": "6419",
+      "page": "1735"
+    },
+    {
+      "date": "2004-10-29",
+      "price": 277000,
+      "deed_type": "TRUSTEE DEED",
+      "qualified": false,
+      "book": "5382",
+      "page": "2335"
+    }
+  ],
+
   "survey_info": {
     "surveyor": "Kevin A. Smith, PSM",
     "company": "Smith Survey Company",
@@ -33,7 +88,7 @@
     "certified_to": "The Property Squad, Inc.",
     "digital_signature_date": "2025-09-04"
   },
-  
+
   "critical_constraint_discovered": {
     "type": "Wellhead Protection Easement",
     "description": "200-foot radius circular easement around City of Palm Bay supply well",
@@ -42,20 +97,19 @@
     "resolution_timeline": "~10 years (per Tim Roberts, Palm Bay Utilities)",
     "source": "Email from Tim Roberts to Mariam Shapira, September 11, 2025"
   },
-  
-  "ownership": {
-    "current_owner": "Property Squad, Inc. (affiliated)",
-    "acquisition_status": "OWNED",
-    "title_status": "Subject to wellhead easement"
-  },
-  
+
   "initial_assessment": {
     "development_potential": "CONSTRAINED",
     "constraint_severity": "HIGH",
     "recommended_approach": "Phased development with future rights agreement",
-    "notes": "Original multifamily concept must be redesigned around easement"
+    "notes": "Original multifamily concept must be redesigned around easement",
+    "vacant_land": true,
+    "zoned_multifamily": true,
+    "tax_deed_history": true,
+    "below_market_acquisition": true,
+    "acquisition_price_per_acre": 31909
   },
-  
+
   "next_stage": {
     "id": 2,
     "name": "Survey Analysis",
@@ -65,7 +119,7 @@
       "Identify permitted uses within easement"
     ]
   },
-  
+
   "creator": "Ariel Shapira, Solo Founder",
   "organization": "Everest Capital USA"
 }

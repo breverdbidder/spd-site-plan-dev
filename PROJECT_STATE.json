@@ -1,6 +1,6 @@
 {
   "version": "1.1.0",
-  "last_updated": "2026-01-13T21:04:56.379455Z",
+  "last_updated": "2026-02-06T12:00:00Z",
   "modules": {
     "spd_pipeline": {
       "version": "1.0.13",
@@ -348,6 +348,23 @@
     }
   ],
   "recent_decisions": [
+    {
+      "date": "2026-02-06",
+      "project": "SPD-2025-002",
+      "decision": "REJECT claude-mem plugin, ADOPT native Claude Code MEMORY.md for persistent memory",
+      "rationale": "Claude Code has no /plugin marketplace. Native MEMORY.md provides cross-session persistence with zero overhead, zero credential leak risk, and proven reliability across ZoneWise project."
+    },
+    {
+      "date": "2026-02-06",
+      "project": "SPD-2025-002",
+      "decision": "Stage 1 Discovery data refreshed from BCPAO API",
+      "rationale": "Fresh pull confirms: vacant multifamily land, $55K market value, 1.10 acres, corporate owner (The Property Squad Inc). Tax deed acquisition at $35.1K in 2023."
+    },
+    {
+      "date": "2026-02-06",
+      "decision": "Use PROJECT_STATE.json recent_decisions array as canonical decision log",
+      "rationale": "Git-tracked JSON is searchable, diffable, and requires no external dependencies. Combined with MEMORY.md for cross-project knowledge, covers all claude-mem use cases."
+    },
     {
       "date": "2026-01-13",
       "project": "SPD-2026-001",

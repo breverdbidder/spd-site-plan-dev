@@ -1,5 +1,14 @@
 # SPD Site Plan Development - Agentic AI Pipeline
 
+## Claude-Mem Pilot (Feb 3-6, 2026) — COMPLETED
+- [x] ~~Install Claude-Mem plugin~~ — BLOCKED: Claude Code has no `/plugin marketplace`
+- [x] Run pilot evaluation — see `docs/claude-mem-pilot-results.md`
+- [x] Security audit: native MEMORY.md has zero auto-capture credential risk
+- [x] Cross-session recall test: MEMORY.md loads every session (verified)
+- [x] Generate pilot-results.md — DONE
+- [x] **Decision: REJECT claude-mem / ADOPT native MEMORY.md**
+
+
 ## Architecture
 - **Stack:** Same as BidDeed.AI (GitHub + Supabase + Cloudflare + LangGraph)
 - **Repo:** github.com/breverdbidder/spd-site-plan-dev
