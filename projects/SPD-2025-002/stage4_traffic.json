@@ -1,0 +1,190 @@
+{
+  "project_id": "SPD-2025-002",
+  "project_name": "Sandy Pines Multifamily",
+  "stage": 4,
+  "stage_name": "Traffic Impact",
+  "completed_at": "2026-02-06T19:00:00Z",
+  "executed_by": "claude-code-opus-4.6",
+  "status": "COMPLETED",
+
+  "parcel_summary": {
+    "account_id": "2835546",
+    "address": "2165 Sandy Pines Dr NE, Palm Bay FL",
+    "frontage_ft": 214.67,
+    "frontage_road": "Sandy Pines Drive NE",
+    "frontage_type": "curved (R=1036.12 ft)"
+  },
+
+  "road_classification": {
+    "sandy_pines_drive": {
+      "functional_class": "Local road (residential)",
+      "public_private": "PRIVATE — within gated HOA community",
+      "community": "Sandy Pines Preserve",
+      "hoa": "Sandy Pines Preserve HOA",
+      "hoa_office": "2300 Sandy Pines Dr NE, Palm Bay FL 32905",
+      "hoa_phone": "(321) 728-0514",
+      "lanes": "2-lane undivided residential street",
+      "speed_limit_estimated_mph": 25,
+      "maintained_by": "HOA (not city-maintained)",
+      "critical_note": "Sandy Pines Preserve is a GATED community. Any development must comply with HOA CC&Rs. Access is controlled through community gate. HOA approval likely required for change in use or increased traffic."
+    },
+    "malabar_road_sr514": {
+      "functional_class": "Minor arterial (State Road)",
+      "road_id": "SR 514",
+      "length_miles": 4.262,
+      "current_config": "2-lane undivided (Babcock Rd to US 1 segment); 4-lane west of Babcock Rd",
+      "connects": "I-95 (Palm Bay) to US 1 (Malabar)"
+    }
+  },
+
+  "traffic_counts": {
+    "sandy_pines_drive": {
+      "aadt": "No FDOT count station — estimated 500-1,500 vpd for gated community road",
+      "source": "Estimate based on typical gated residential community volumes"
+    },
+    "malabar_road_segments": [
+      {
+        "segment": "Minton Rd to Jupiter Blvd",
+        "aadt": 16000,
+        "lanes": 2,
+        "status": "Severely congested",
+        "source": "The Palm Bayer, 2024"
+      },
+      {
+        "segment": "St. Johns Heritage Pkwy to Krassner Dr",
+        "aadt": 7200,
+        "lanes": 2,
+        "source": "The Palm Bayer, 2024"
+      },
+      {
+        "segment": "Babcock St to Weber Rd (2035 projected)",
+        "aadt_projected": 27500,
+        "lanes_proposed": 4,
+        "source": "FDOT PD&E Study, 2018"
+      }
+    ],
+    "malabar_road_crash_data": {
+      "five_year_increase_pct": 56,
+      "incidents_baseline": 88,
+      "incidents_current": 137,
+      "high_crash_intersections": ["Minton Rd", "Jupiter Blvd", "Maywood Ave/Daffodil Dr"]
+    },
+    "malabar_road_widening": {
+      "study": "FDOT PD&E completed May 2018",
+      "proposal": "Widen from 2 to 4-lane divided",
+      "estimated_cost_millions": "$83.8 - $97.0",
+      "funding_status": "NOT FUNDED for design, right-of-way, or construction",
+      "cfl_roads_link": "https://www.cflroads.com/project/430136-1"
+    }
+  },
+
+  "trip_generation": {
+    "methodology": "ITE Trip Generation Manual, 11th Edition",
+    "land_use_codes": {
+      "lu_220": { "name": "Multifamily Housing (Low-Rise, 1-2 floors)", "adt_rate": 6.74, "am_peak_rate": 0.40, "pm_peak_rate": 0.51 },
+      "lu_221": { "name": "Multifamily Housing (Mid-Rise, 3-10 floors)", "adt_rate": 4.54, "am_peak_rate": 0.35, "pm_peak_rate": 0.39 }
+    },
+    "selected_code": "LU 221 (Mid-Rise) — survey annotations show 3-4 story buildings",
+    "scenarios": [
+      {
+        "scenario": "Phase 1 Minimum",
+        "units": 8,
+        "daily_trips": 36,
+        "am_peak_total": 3,
+        "am_peak_in": 1,
+        "am_peak_out": 2,
+        "pm_peak_total": 3,
+        "pm_peak_in": 2,
+        "pm_peak_out": 1
+      },
+      {
+        "scenario": "Mid-Range",
+        "units": 16,
+        "daily_trips": 73,
+        "am_peak_total": 6,
+        "am_peak_in": 1,
+        "am_peak_out": 5,
+        "pm_peak_total": 6,
+        "pm_peak_in": 4,
+        "pm_peak_out": 2
+      },
+      {
+        "scenario": "Maximum (20 du/ac)",
+        "units": 22,
+        "daily_trips": 100,
+        "am_peak_total": 8,
+        "am_peak_in": 2,
+        "am_peak_out": 6,
+        "pm_peak_total": 9,
+        "pm_peak_in": 5,
+        "pm_peak_out": 4
+      }
+    ],
+    "note": "All scenarios generate fewer than 100 peak hour trips — below most Florida TIS thresholds"
+  },
+
+  "traffic_study_requirements": {
+    "palm_bay_code_section": "184.18",
+    "guidance_manual": "City of Palm Bay Standardized Traffic Impact Study Guidance Manual (not publicly available online)",
+    "traffic_methodology_application": "Required after Pre-Application Meeting, BEFORE Preliminary Development Plan or rezoning submittal",
+    "multifamily_requirement": "Traffic impact analysis required for multifamily development per Palm Bay development review staff",
+    "specific_trip_threshold": "Not found in public online sources — common Florida threshold is 100 peak-hour trips",
+    "project_assessment": "At 22 units max, PM peak = 9 trips — well below 100-trip threshold. However, Palm Bay may require TIS for ANY multifamily regardless of trip count.",
+    "prepared_by": "Licensed transportation engineering firm"
+  },
+
+  "access_analysis": {
+    "parcel_access": "Single access point on Sandy Pines Drive NE (~215 ft curved frontage)",
+    "gate_access": "Access passes through Sandy Pines Preserve community gate(s) before reaching Malabar Rd",
+    "turn_lane_at_parcel": "Unlikely required for <22 units on a local road",
+    "turn_lane_at_malabar": "Community entrance on Malabar Rd may already have turn lane — any improvements at that intersection, not at parcel driveway",
+    "fdot_access_class": "SR 514 is Class 5 or 6 for this 2-lane section",
+    "driveway_permit": "Required from Palm Bay Public Works per Code Chapter 179",
+    "driveway_angle": "As close to 90 degrees as practical",
+    "max_driveway_width_ft": 36
+  },
+
+  "concurrency": {
+    "florida_statutory_basis": "Chapter 163 Part II F.S. and Rule 9J-5 F.A.C.",
+    "palm_bay_requirement": "Concurrency review through development agreement process (Code Sections 172.090-172.093)",
+    "level_of_service_standard": "Adopted in Comprehensive Plan — most Florida cities use LOS D for arterials/collectors",
+    "malabar_road_status": "SR 514 (2-lane segment) operating at ~16,000 vpd — likely AT or BEYOND LOS D capacity (~11,500-15,400 vpd)",
+    "concurrency_concern": "If Malabar Road is failing adopted LOS, new development must demonstrate capacity, funded improvements, or proportionate fair-share contribution",
+    "project_impact": "De minimis — 36-100 daily trips = 0.2-0.6% of 16,000 vpd corridor volume",
+    "proportionate_fair_share": "F.S. 163.3180(16) allows developer contributions when facilities unavailable",
+    "moratorium_2022": "Palm Bay imposed temporary moratorium on residential FLUM amendments/rezonings in Sept 2022 for Comprehensive Plan update — verify current status"
+  },
+
+  "risk_assessment": {
+    "overall_traffic_risk": "MEDIUM",
+    "factors": [
+      { "factor": "Trip generation", "risk": "LOW", "note": "36-100 ADT, 3-9 PM peak trips — minimal impact" },
+      { "factor": "Traffic study requirement", "risk": "MEDIUM", "note": "Palm Bay may require TIS for any multifamily" },
+      { "factor": "Malabar Road capacity", "risk": "HIGH", "note": "16,000 vpd on 2-lane road, no funded widening" },
+      { "factor": "Concurrency", "risk": "MEDIUM", "note": "Malabar Rd may be failing LOS but project impact is de minimis" },
+      { "factor": "HOA approval", "risk": "HIGH", "note": "Gated community — HOA CC&Rs may restrict multifamily or increased traffic" },
+      { "factor": "Turn lanes", "risk": "LOW", "note": "Not expected at parcel driveway for this scale" },
+      { "factor": "Access adequacy", "risk": "LOW", "note": "215 ft frontage on Sandy Pines Dr adequate for 8-22 units" }
+    ]
+  },
+
+  "next_steps": [
+    "Contact Palm Bay Growth Management at (321) 733-3042 — confirm TIS requirements and concurrency status",
+    "Obtain City of Palm Bay Standardized Traffic Impact Study Guidance Manual",
+    "Review Sandy Pines Preserve HOA CC&Rs for restrictions on multifamily or traffic increase",
+    "Verify status of 2022 residential moratorium",
+    "Check FDOT Florida Traffic Online for current AADT on SR 514 segments near Sandy Pines Dr entrance"
+  ],
+
+  "data_sources": {
+    "ite_trip_gen": "ITE Trip Generation Manual 11th Edition",
+    "malabar_road_data": "The Palm Bayer (2024), FDOT PD&E Study (2018)",
+    "fdot_fto": "https://tdaappsprod.dot.state.fl.us/fto/",
+    "space_coast_tpo": "https://www.spacecoasttpo.com/what-we-do/performance-measures/traffic-counts",
+    "palm_bay_code": "Sections 179, 184.18, 172.090-172.093",
+    "sandy_pines_hoa": "https://sandypineshoa.com/"
+  },
+
+  "creator": "Claude Code (Opus 4.6)",
+  "organization": "Everest Capital USA"
+}

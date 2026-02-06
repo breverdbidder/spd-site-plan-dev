@@ -170,22 +170,35 @@
           "note": "Score of 58.5 did not account for flood zone or wetland constraints"
         }
       ],
+      "stages_completed_continued": [
+        {
+          "stage": 3,
+          "name": "Environmental Review (Feb 2026)",
+          "status": "COMPLETED",
+          "completed_at": "2026-02-06T19:00:00Z",
+          "findings": "PEM1Cd wetland (10.3-ac polygon envelops parcel), Zone A SFHA (no BFE), no SJRWMD permits on record, Palm Bay HCP scrub-jay/gopher tortoise requirements. Environmental compliance costs estimated $77K-$203K."
+        },
+        {
+          "stage": 4,
+          "name": "Traffic Impact (Feb 2026)",
+          "status": "COMPLETED",
+          "completed_at": "2026-02-06T19:00:00Z",
+          "findings": "Sandy Pines Dr is PRIVATE road in gated HOA community. ITE LU221: 36-100 ADT, 3-9 PM peak trips. Malabar Rd (SR 514) severely congested at 16,000 vpd on 2 lanes. HOA CC&R approval required."
+        },
+        {
+          "stage": 5,
+          "name": "Utility Assessment (Feb 2026)",
+          "status": "COMPLETED",
+          "completed_at": "2026-02-06T19:00:00Z",
+          "findings": "City water AVAILABLE (wellhead within 200ft). Sewer UNCERTAIN (must verify). MTWCD jurisdiction confirmed. FPL electric. Impact fees estimated $12K-$16K per unit."
+        }
+      ],
       "stages_pending": [
         {
           "stage": 5,
           "name": "Parking Analysis",
           "status": "BLOCKED",
           "notes": "Blocked by PUD ordinance review and parking-in-easement confirmation"
-        },
-        {
-          "stage": 6,
-          "name": "Traffic Impact",
-          "status": "PENDING"
-        },
-        {
-          "stage": 7,
-          "name": "Utilities Assessment",
-          "status": "PENDING"
         },
         {
           "stage": 8,
@@ -215,9 +228,9 @@
           "status": "PENDING"
         }
       ],
-      "next_action": "Obtain PUD ordinance from Palm Bay (321-733-3042), commission wetland delineation + flood study",
+      "next_action": "Obtain PUD ordinance (321-733-3042), verify sewer availability (321-952-3420), review HOA CC&Rs, commission wetland delineation + flood study",
       "created_at": "2025-12-16T14:00:00Z",
-      "updated_at": "2026-02-06T16:00:00Z"
+      "updated_at": "2026-02-06T19:00:00Z"
     },
     {
       "id": "SPD-2026-001",
@@ -373,6 +386,12 @@
     }
   ],
   "recent_decisions": [
+    {
+      "date": "2026-02-06",
+      "project": "SPD-2025-002",
+      "decision": "Stages 3-5 completed in parallel: Environmental Review confirms $77K-$203K compliance costs (wetland mitigation is largest component). Traffic shows Sandy Pines Dr is PRIVATE road in gated HOA community — HOA CC&R approval required. Utility assessment confirms city water available but sewer UNCERTAIN.",
+      "rationale": "Environmental costs alone ($77K-$203K) may exceed land value ($55K). Critical new finding: Sandy Pines Preserve is a gated community with HOA controlling road access — any multifamily development must comply with CC&Rs. Sewer availability is the single most important utility unknown."
+    },
     {
       "date": "2026-02-06",
       "project": "SPD-2025-002",

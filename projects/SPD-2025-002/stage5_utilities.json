@@ -1,0 +1,211 @@
+{
+  "project_id": "SPD-2025-002",
+  "project_name": "Sandy Pines Multifamily",
+  "stage": 5,
+  "stage_name": "Utility Assessment",
+  "completed_at": "2026-02-06T19:00:00Z",
+  "executed_by": "claude-code-opus-4.6",
+  "status": "COMPLETED",
+
+  "parcel_summary": {
+    "account_id": "2835546",
+    "address": "2165 Sandy Pines Dr NE, Palm Bay FL",
+    "acreage": 1.11,
+    "subdivision": "Sandy Pines Preserve (adjacent/within)"
+  },
+
+  "utilities": {
+    "water": {
+      "provider": "City of Palm Bay Utilities Department (PBUD)",
+      "service_area_sqmi": 44,
+      "water_source": "Groundwater from ~41 active raw water wells",
+      "availability": "HIGHLY LIKELY — AVAILABLE",
+      "confidence": "HIGH",
+      "evidence": "City wellhead located within 200 ft of parcel. Wellhead protection easement covers 47% of parcel. City water mains almost certainly run through adjacent Tracts D/O (Preserve & Public Utilities).",
+      "mandatory_connection": true,
+      "mandatory_connection_note": "Nov 2, 2023 ordinance: WANC properties must connect within 1 year of notification. New multifamily development would require connection.",
+      "verification": "Contact PBUD at (321) 952-3420 or use interactive service availability map",
+      "service_map_url": "https://www.palmbayfl.gov/government/city-departments-a-to-e/customer-service/start-stop-service/service-availability"
+    },
+
+    "sewer": {
+      "provider": "City of Palm Bay Utilities Department (PBUD)",
+      "availability": "UNCERTAIN — MUST VERIFY",
+      "confidence": "MEDIUM",
+      "note": "Sewer coverage is NOT universal in Palm Bay. ~1,275 homes on septic despite sewer availability. ~1,066 parcels classified SANC (Sewer Available Not Connected). Sandy Pines Preserve is a newer subdivision (Plat Book 44) which may have had sewer included in original PUD development agreement.",
+      "if_sewer_available": "Mandatory connection ordinance applies for new development",
+      "if_sewer_not_available": "Septic may be infeasible: (1) 1.11 acres is tight for multifamily septic, (2) wellhead protection constraints, (3) FDEP/FDOH restrictions on septic near public water supply wells. May require sewer main extension at developer cost.",
+      "septic_to_sewer_program": "Palm Bay has ARPA-funded program ($420,000 allocated)",
+      "verification": "Contact PBUD at (321) 952-3420 or use interactive service availability map. Also review PUD development order."
+    },
+
+    "stormwater": {
+      "primary_authority": "Melbourne-Tillman Water Control District (MTWCD)",
+      "secondary_authority": "City of Palm Bay Stormwater Utility",
+      "mtwcd_jurisdiction_confirmed": true,
+      "mtwcd_coverage_sqmi": 100,
+      "mtwcd_infrastructure": "163 miles of canals, 2,300+ acres of canal rights-of-way",
+      "mtwcd_governance": "7-member board: 3 Palm Bay, 3 Brevard County, 1 West Melbourne",
+      "mtwcd_permitting": "Required for any stormwater discharge to MTWCD canals and canal crossings. Palm Bay Building Dept will NOT issue building permits for properties adjacent to MTWCD canals without MTWCD permit.",
+      "mtwcd_fees": "Annual user fees assessed per acre (Agricultural/Residential/Commercial)",
+      "design_storm": "25-year, 24-hour storm event (9.5 inches of rainfall in 24 hours)",
+      "standard": "On-site facilities must maintain pre-development discharge rate",
+      "stormwater_fee_credits": {
+        "retention_systems": "50% credit",
+        "detention_systems": "30% credit",
+        "extended_detention": "Additional 20% credit"
+      },
+      "sjrwmd_erp_trigger": "Projects >4,000 sq ft impervious surface",
+      "mtwcd_permit_url": "https://www.melbournetillman.org/permitting-process",
+      "mtwcd_policy_url": "https://www.melbournetillman.org/files/479ac5a0e/The-COMPLETE-PERMIT-POLICY-FINAL.pdf"
+    },
+
+    "electric": {
+      "provider": "Florida Power & Light (FPL)",
+      "availability": "CONFIRMED — AVAILABLE",
+      "confidence": "HIGH",
+      "note": "FPL serves all of Brevard County including Palm Bay. ~4.6M customer accounts statewide.",
+      "local_contact": "(321) 723-7795",
+      "website": "https://www.fpl.com/"
+    },
+
+    "natural_gas": {
+      "provider": "Florida City Gas",
+      "provider_note": "NOT TECO Peoples Gas — Florida City Gas serves most of Brevard County",
+      "availability": "LIKELY AVAILABLE — address-specific confirmation needed",
+      "confidence": "MEDIUM",
+      "new_construction_phone": "(800) 599-3770",
+      "existing_service_phone": "(800) 993-7546",
+      "startup_fee": 50,
+      "note": "Natural gas not essential for multifamily — electric alternatives exist for all building systems"
+    },
+
+    "telecommunications": {
+      "cable_internet": {
+        "provider": "Spectrum",
+        "coverage_pct": 100,
+        "max_speed_mbps": 1000,
+        "starting_price": "$49.99/mo"
+      },
+      "fiber_internet": {
+        "provider": "AT&T Fiber",
+        "coverage_pct": 32,
+        "max_speed_mbps": 5000,
+        "note": "Address-specific check needed — 32% Palm Bay coverage"
+      },
+      "other_isps": ["Brightspeed", "EarthLink Fiber", "HughesNet (100% coverage)", "Viasat"],
+      "wireless_5g": {
+        "provider": "Verizon 5G",
+        "coverage_pct": 30.6,
+        "max_speed_mbps": 50,
+        "starting_price": "$50/mo"
+      },
+      "multifamily_note": "Bulk agreements with Spectrum or AT&T common for multifamily developments"
+    }
+  },
+
+  "fire_protection": {
+    "department": "Palm Bay Fire-Rescue",
+    "total_stations": 6,
+    "nearest_station": {
+      "name": "Station 1",
+      "address": "1201 Port Malabar Boulevard NE",
+      "apparatus": ["Engine 1 (2018 Sutphen Monarch)", "Truck 1 (2021 Sutphen SPH100 — 100' aerial)", "Squad 1", "Brush 1", "Battalion 1", "Ladder 7"],
+      "shared_with": "Brevard County Fire Rescue Station 84"
+    },
+    "fire_flow_requirements": {
+      "governing_code": "Florida Fire Prevention Code (FFPC) 8th Edition (2023), based on NFPA 1",
+      "flow_table": "NFPA 1, Table 18.4.5.2.1",
+      "typical_range_gpm": "1,500 - 2,000 (unsprinklered 3-story wood-frame multifamily)",
+      "sprinkler_reduction": "75% reduction with automatic sprinkler system",
+      "sprinklered_flow_gpm": "375 - 500",
+      "hydrant_spacing_ft": "300 - 600 for multifamily",
+      "fire_flow_test": "Must be within last 12 months per NFPA 13 (2016 Edition)",
+      "wellhead_advantage": "Nearby city wellhead suggests adequate water pressure and flow for fire protection"
+    }
+  },
+
+  "impact_fees": {
+    "palm_bay_water_impact_per_erc": 3553,
+    "palm_bay_sewer_impact_per_erc": 5670,
+    "palm_bay_combined_per_erc": 9223,
+    "erc_definition": "1 ERC = 210 gallons per day average annual flow",
+    "multifamily_erc_factor": "Typically 0.5-0.75 ERC per unit — confirm with PBUD",
+    "brevard_county_transportation_per_unit": { "1_2_story": 2677, "3_plus_story": 2381 },
+    "brevard_county_education_per_unit": 1941,
+    "brevard_county_other_per_unit_estimated": "1000 - 2500 (parks, fire, law enforcement)",
+    "total_per_unit_estimated": { "low": 12240, "high": 16341 },
+    "total_for_8_units": { "low": 97920, "high": 130728 },
+    "total_for_16_units": { "low": 195840, "high": 261456 },
+    "total_for_22_units": { "low": 269280, "high": 359502 },
+    "caveat": "Estimates based on publicly available data. Brevard County fee schedule dates to Jan 2017 and may be updated. Contact Palm Bay Building Dept and Brevard County Planning for current schedules.",
+    "sources": {
+      "palm_bay_fees": "palmbayfl.gov — Rates, Charges and Fees; Code Sec. 171.50",
+      "brevard_fees": "brevardfl.gov — Residential Impact Fee Schedule (2017)"
+    }
+  },
+
+  "utility_easements_from_survey": {
+    "tract_d": {
+      "location": "Northwest (adjacent to north and west boundaries)",
+      "designation": "Preserve & Public Utilities",
+      "plat": "Plat Book 44, Page 78",
+      "inferred_utilities": ["City water main (serving nearby wellhead)", "Possible city sewer main", "Possible stormwater conveyance to MTWCD canal system"]
+    },
+    "tract_o": {
+      "location": "East (adjacent to east boundary)",
+      "designation": "Preserve & Public Utilities",
+      "plat": "Plat Book 44, Page 79",
+      "inferred_utilities": ["City water main", "Possible drainage easement"]
+    },
+    "wellhead_protection_area": {
+      "radius_ft": 200,
+      "regulatory_basis": "Florida DEP Chapter 62-521 FAC — minimum 500-ft Wellhead Protection Area (WHPA)",
+      "restrictions": ["No construction", "No septic systems near well", "No hazardous material storage", "No impervious surfaces"],
+      "note": "Must coordinate with PBUD for utility connections through Tracts D/O"
+    },
+    "preserve_dual_designation": "Tracts labeled 'Preserve & Public Utilities' likely serve as both environmental buffers and utility corridors — condition of original PUD approval. Cannot be disturbed."
+  },
+
+  "critical_unknowns": [
+    {
+      "item": "Sewer availability",
+      "priority": 1,
+      "impact": "If no sewer, septic may be infeasible near wellhead — could require sewer extension at developer cost",
+      "action": "Call PBUD (321) 952-3420"
+    },
+    {
+      "item": "PUD development order utility commitments",
+      "priority": 2,
+      "impact": "Original PUD may specify required utilities, connections, and infrastructure",
+      "action": "Obtain from Palm Bay City Clerk"
+    },
+    {
+      "item": "Current impact fee schedule",
+      "priority": 3,
+      "impact": "Fee estimates may be outdated (Brevard County schedule from 2017)",
+      "action": "Contact Palm Bay Building Dept and Brevard County Planning"
+    },
+    {
+      "item": "MTWCD receiving canal",
+      "priority": 4,
+      "impact": "Need to confirm which MTWCD canal receives stormwater from this area",
+      "action": "Contact MTWCD at (321) 723-8300"
+    }
+  ],
+
+  "data_sources": {
+    "palm_bay_utilities": "palmbayfl.gov — Customer Service / About Palm Bay Utilities",
+    "palm_bay_mandatory_connection": "palmbayfl.gov — Utility Maintenance and Testing",
+    "palm_bay_stormwater": "palmbayfl.gov — Public Works / Stormwater Utility",
+    "mtwcd": "melbournetillman.org — District Overview and Permitting",
+    "fpl": "fpl.com",
+    "florida_city_gas": "floridacitygas.com",
+    "broadband": "broadbandnow.com — Palm Bay ISPs",
+    "palm_bay_fire": "palmbayfl.gov — Fire Rescue / Stations and Apparatus",
+    "impact_fees": "palmbayfl.gov — Rates, Charges and Fees; brevardfl.gov — Impact Fees"
+  },
+
+  "creator": "Claude Code (Opus 4.6)",
+  "organization": "Everest Capital USA"
+}

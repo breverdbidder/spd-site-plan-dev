@@ -1,0 +1,195 @@
+{
+  "project_id": "SPD-2025-002",
+  "project_name": "Sandy Pines Multifamily",
+  "stage": 3,
+  "stage_name": "Environmental Review",
+  "completed_at": "2026-02-06T19:00:00Z",
+  "executed_by": "claude-code-opus-4.6",
+  "status": "COMPLETED",
+
+  "parcel_summary": {
+    "account_id": "2835546",
+    "parcel_id": "28-37-27-00-7",
+    "address": "2165 Sandy Pines Dr NE, Palm Bay FL",
+    "coordinates": { "lat": 27.986, "lon": -80.625 },
+    "acreage": 1.11
+  },
+
+  "wetlands": {
+    "nwi_code": "PEM1Cd",
+    "wetland_type": "Freshwater Emergent Wetland",
+    "feature_total_acres": 10.316,
+    "feature_area_sqm": 53736.44,
+    "nwi_objectid": 8014879,
+    "classification": {
+      "system": { "code": "P", "name": "Palustrine", "definition": "Nontidal freshwater wetlands" },
+      "class": { "code": "EM", "name": "Emergent", "definition": "Erect, rooted herbaceous hydrophytes" },
+      "subclass": { "code": "1", "name": "Persistent", "definition": "Species remain standing until next growing season" },
+      "water_regime": { "code": "C", "name": "Seasonally Flooded", "definition": "Surface water present early season, absent by end" },
+      "modifier": { "code": "d", "name": "Partially Drained/Ditched", "definition": "Hydrologically altered but still supports hydrophytes" }
+    },
+    "parcel_overlap": "Entire 1.11-acre parcel sits within the 10.3-acre NWI polygon. Exact jurisdictional boundary requires formal delineation.",
+    "source": "NWI REST API — fwsprimary.wim.usgs.gov, point query at -80.625,27.986"
+  },
+
+  "flood_zone": {
+    "fld_zone": "A",
+    "sfha": true,
+    "sfha_description": "Special Flood Hazard Area — 1% annual chance (100-year) flood",
+    "base_flood_elevation": "NOT DETERMINED",
+    "study_type": "NP (No detailed study performed — Approximate Zone A)",
+    "dfirm_id": "12009C",
+    "flood_area_id": "12009C_2495",
+    "source_citation": "12009C_STUDY1",
+    "zone_polygon_acres": 279.6,
+    "palm_bay_crs_rating": 7,
+    "crs_flood_insurance_discount_pct": 15,
+    "source": "FEMA NFHL / Esri Living Atlas mirror, point query at -80.625,27.986",
+    "development_requirements": [
+      "BFE must be established by applicant via hydraulic study (HEC-RAS modeling)",
+      "Floodplain Development Permit required from City of Palm Bay (Code Chapter 174)",
+      "All structures elevated above BFE + 1 ft minimum freeboard (Florida Building Code 8th Ed.)",
+      "Elevation Certificate (FEMA Form FF-206-FY-22-152) required at 3 construction stages",
+      "Flood insurance mandatory for federally-backed mortgages",
+      "LOMA/LOMR-F option available if fill raises lot above BFE (no FEMA fee, ~60 day processing)",
+      "Residential floodproofing NOT permitted under NFIP — must elevate"
+    ],
+    "estimated_bfe_study_cost": "$5,000 - $25,000"
+  },
+
+  "sjrwmd_permits": {
+    "parcel_specific_permits": "NONE FOUND",
+    "sandy_pines_permits": "NONE FOUND — no SJRWMD ERP permits on record under 'Sandy Pines'",
+    "nearby_permits": [
+      {
+        "permit_id": "40-009-66668-1",
+        "name": "Park at Palm Bay",
+        "applicant": "Park at Palm Bay Limited Partnership",
+        "rule_type": "40C-40 (ERP Standard General)",
+        "status": "Compliance (expired 2005-08-31)",
+        "receiving_waterbody": "Melbourne-Tillman Canal",
+        "link": "https://permitting.sjrwmd.com/ep/#/prmtInfo?offclId=66668&seqNo=1"
+      },
+      {
+        "permit_id": "40-009-70968-1",
+        "name": "MTWCD Box Culvert C-72W",
+        "applicant": "Ringhaver Equipment Company",
+        "owner": "Melbourne Tillman Water Control District",
+        "rule_type": "40C-40 (ERP Standard General)",
+        "status": "Compliance (expired 2006-05-09)",
+        "receiving_waterbody": "Indian River",
+        "link": "https://permitting.sjrwmd.com/ep/#/prmtInfo?offclId=70968&seqNo=1"
+      }
+    ],
+    "receiving_waterbody": "Melbourne-Tillman Canal (for future ERP application)",
+    "source": "SJRWMD ePermit GIS layers at permitting.sjrwmd.com/arcgis02"
+  },
+
+  "listed_species": {
+    "palm_bay_hcp": {
+      "status": "Active — USFWS-approved Habitat Conservation Plan",
+      "covered_species": ["Florida Scrub-Jay", "Eastern Indigo Snake", "Gopher Tortoise"],
+      "scrub_jay_fee": "$125 per quarter-acre with building permit",
+      "nesting_season_restriction": "March 1 - June 30 — land clearing PROHIBITED in occupied polygons",
+      "land_clearing_window": "July 1 - February 28/29 (with permit)",
+      "gopher_tortoise_note": "Separate FWC permit required — NOT covered by City HCP ITP",
+      "contact": "Palm Bay Building Dept: (321) 953-8924",
+      "scrub_jay_database": "https://www.palmbayfl.gov/government/city-departments-a-to-e/building-permits-inspections/habitat-conservation-plan/scrub-jay-lots"
+    },
+    "potentially_relevant_species": [
+      {
+        "species": "Wood Stork (Mycteria americana)",
+        "status": "Federally Threatened",
+        "relevance": "Uses freshwater emergent wetlands for foraging. USFWS consultation may be required within 18.6-mile Core Foraging Area of active colonies."
+      },
+      {
+        "species": "Florida Sandhill Crane (Antigone canadensis pratensis)",
+        "status": "State Threatened",
+        "relevance": "Uses freshwater marshes/emergent wetlands — PEM1Cd habitat type"
+      },
+      {
+        "species": "Gopher Tortoise",
+        "status": "State Threatened",
+        "relevance": "Upland portions only. 100% survey required before land clearing. FWC relocation permit if burrows found."
+      },
+      {
+        "species": "Florida Scrub-Jay",
+        "status": "Federally Threatened",
+        "relevance": "Scrub habitat — unlikely in PEM wetland but check adjacent uplands and Palm Bay scrub-jay lot database"
+      },
+      {
+        "species": "Bald Eagle",
+        "status": "Federally protected (BGEPA)",
+        "relevance": "Nest buffers apply if nests within 660 ft. Check FWC eagle nest locator."
+      }
+    ],
+    "fwc_data_sources": {
+      "geodata_portal": "https://geodata.myfwc.com/",
+      "gopher_tortoise_map": "https://app.myfwc.com/maps/gtmapping/gtpermitmap.html",
+      "gopher_tortoise_sightings": "https://app.myfwc.com/HSC/GopherTortoise/"
+    }
+  },
+
+  "permits_required": {
+    "environmental_resource_permit": {
+      "agency": "SJRWMD (or FDEP)",
+      "rule": "40C-40",
+      "trigger": "Any activity affecting surface water, wetlands, or stormwater",
+      "fee": "$9,000 (standard general ERP, <640 acres, <50 ac wetland impact)"
+    },
+    "section_404_permit": {
+      "agency": "FDEP (state assumed from USACE since Dec 22, 2020)",
+      "note": "Florida assumed CWA Section 404 permitting for most freshwater palustrine wetlands. Joint ERP/404 application processed through SJRWMD/FDEP. Verify if retained waters (within 300 ft of navigable waterway) require federal USACE jurisdiction.",
+      "standard": "Applicant must demonstrate avoidance, minimization, and mitigation"
+    },
+    "floodplain_development_permit": {
+      "agency": "City of Palm Bay",
+      "code_section": "Chapter 174 (Floodplain & Stormwater Management)",
+      "requirement": "Required before any construction in Zone A SFHA"
+    },
+    "listed_species_surveys": {
+      "gopher_tortoise": "100% survey + FWC relocation permit if burrows found",
+      "scrub_jay": "Check Palm Bay scrub-jay lots database",
+      "wood_stork": "USFWS consultation if within Core Foraging Area",
+      "general_listed_species_survey": "Recommended pre-development survey for all state/federal listed species"
+    }
+  },
+
+  "estimated_environmental_costs": {
+    "bfe_determination_hydraulic_study": { "low": 5000, "high": 25000 },
+    "elevation_certificates_3x": { "low": 500, "high": 6000 },
+    "wetland_delineation": { "low": 3000, "high": 8000 },
+    "listed_species_surveys": { "low": 2000, "high": 8000 },
+    "erp_application_fee": { "low": 9000, "high": 9000 },
+    "environmental_consultant_full_package": { "low": 15000, "high": 40000 },
+    "wetland_mitigation_credits": { "low": 40000, "high": 100000, "note": "~0.3-0.5 UMAM credits at $125K-$200K/credit in south Brevard. Farmton Mitigation Bank is primary bank." },
+    "gopher_tortoise_survey_relocation": { "low": 1500, "high": 6000 },
+    "scrub_jay_fee_if_applicable": { "low": 560, "high": 560 },
+    "total_range": { "low": 76560, "high": 202560 },
+    "note": "Mitigation credits ($40K-$100K) are the largest single cost component. Partially drained wetland status may reduce but not eliminate mitigation requirements."
+  },
+
+  "constraint_severity_assessment": {
+    "overall_risk": "VERY HIGH",
+    "rationale": "Triple constraint stacking (wetland + flood + wellhead) with estimated $77K-$203K in environmental compliance costs BEFORE any design or construction. Wetland mitigation alone could exceed the $55K land value.",
+    "blocking_items": [
+      "BFE must be established before any building design can proceed",
+      "Formal wetland delineation required to determine actual jurisdictional boundary",
+      "PUD ordinance must be obtained to confirm what development is permitted",
+      "Listed species surveys must be completed before land clearing"
+    ]
+  },
+
+  "data_sources": {
+    "nwi": "NWI REST API — fwsprimary.wim.usgs.gov/server/rest/services/Wetlands/MapServer/0",
+    "fema": "FEMA NFHL via Esri Living Atlas — services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/USA_Flood_Hazard_Reduced_Set_gdb/FeatureServer/0",
+    "sjrwmd": "SJRWMD ePermit GIS — permitting.sjrwmd.com/arcgis02/rest/services/SJRWMD/EPermit_ERP/MapServer",
+    "fwc": "FWC GeoData Portal — geodata.myfwc.com",
+    "palm_bay_hcp": "palmbayfl.gov — Habitat Conservation Plan",
+    "palm_bay_flood": "Palm Bay Code Chapter 174 — Floodplain & Stormwater Management",
+    "florida_dep_404": "floridadep.gov — State 404 Program"
+  },
+
+  "creator": "Claude Code (Opus 4.6)",
+  "organization": "Everest Capital USA"
+}
